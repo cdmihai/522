@@ -1,0 +1,11 @@
+mod TREE-SEARCH is protecting TREE .
+	op search : Int Tree -> Bool .
+	vars I J : Int . vars L R : Tree .
+	eq search(I, L J R) = 
+			if I == J then 
+				true 
+			else 
+				search(I, L) or search(I, R) 
+			fi .
+	eq search(I, empty) = false .
+endm

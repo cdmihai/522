@@ -1,0 +1,19 @@
+mod INT-SET 
+	is protecting INT .
+	sort INTSET .
+	subsort Int < INTSET .
+	op nil : -> INTSET .
+	op __ : INTSET INTSET -> INTSET [assoc comm id: nil] .
+	op _in_ : Int INTSET -> Bool .
+	
+	var I : Int . var S : INTSET .
+	
+	eq I in I S = true .
+	eq I in S = false [owise] .
+endm
+
+red 2 in 1 2 3 .
+red 2 in 1 3 5 .
+red 1 nil 2 nil nil nil nil nil nil 3 .
+
+q

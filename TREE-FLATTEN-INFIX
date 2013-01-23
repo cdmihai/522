@@ -1,0 +1,8 @@
+mod FLATTEN-INFIX is
+	protecting INT-LIST-APPEND .
+	protecting TREE .
+	op flattenInfix : Tree -> IntList .
+	vars L R : Tree . var I : Int .
+	eq flattenInfix (L I R) = append(flattenInfix(L), I flattenInfix(R)) .
+	eq flattenInfix (empty) = nil .
+endm

@@ -1,0 +1,6 @@
+mod INT-LIST-APPEND is protecting INT-LIST .
+	op append : IntList IntList -> IntList .
+	var I : Int . vars L1 L2 : IntList .
+	eq append(I L1, L2) = I append(L1, L2) .
+	eq append(nil, L2) = L2 .
+endm
