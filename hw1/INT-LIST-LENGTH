@@ -1,0 +1,6 @@
+mod LENGTH is protecting INT-LIST .
+	op length : IntList -> Nat .
+	var I : Int . var L : IntList .
+	eq length(I L) = 1 + length(L) .
+	eq length(nil) = 0 .
+endm
