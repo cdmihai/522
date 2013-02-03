@@ -1,5 +1,0 @@
-mod INT-LIST is protecting INT .
-	sort IntList . subsort Int < IntList .
-	op __ : Int IntList -> IntList [id: nil] .
-	op nil : -> IntList .
-endm

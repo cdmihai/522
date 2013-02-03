@@ -1,8 +1,0 @@
-mod FLATTEN-POSTFIX is
-	protecting INT-LIST-APPEND .
-	protecting TREE .
-	op flattenPostfix : Tree -> IntList .
-	vars L R : Tree . var I : Int .
-	eq flattenPostfix (L I R) = append(flattenPostfix(L) flattenPostfix(R), I) .
-	eq flattenPostfix (empty) = nil .
-endm

@@ -1,6 +1,0 @@
-mod IN is protecting INT-LIST .
-	op _in_ : Int IntList -> Bool .
-	vars I J : Int . var L : IntList .
-	eq I in J L = if I == J then true else I in L fi .
-	eq I in nil = false .
-endm	

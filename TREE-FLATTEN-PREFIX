@@ -1,8 +1,0 @@
-mod FLATTEN-PREFIX is
-	protecting INT-LIST-APPEND .
-	protecting TREE .
-	op flattenPrefix : Tree -> IntList .
-	vars L R : Tree . var I : Int .
-	eq flattenPrefix (L I R) = append(I, flattenPrefix(L) flattenPrefix(R)) .
-	eq flattenPrefix (empty) = nil .
-endm

@@ -1,5 +1,0 @@
-mod TREE is protecting INT .
-	sort Tree .
-	op ___ : Tree Int Tree -> Tree .
-	op empty : -> Tree .
-endm

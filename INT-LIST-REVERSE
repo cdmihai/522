@@ -1,6 +1,0 @@
-mod REV is protecting APPEND .
-	op rev : IntList -> IntList .
-	var I : Int . var L : IntList .
-	eq rev(I L) = append(rev(L), I) .
-	eq rev(nil) = nil .
-endm
