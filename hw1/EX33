@@ -1,0 +1,6 @@
+in INT-LIST-TREESORT
+
+red treesort(5 4 3 2 1) .
+red treesort(1 2 3 4 5 6 6 7 8 9 0) .
+
+q

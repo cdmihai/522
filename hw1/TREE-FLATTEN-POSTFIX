@@ -1,4 +1,4 @@
-mod FLATTEN-POSTFIX is
+mod TREE-FLATTEN-POSTFIX is
 	protecting INT-LIST-APPEND .
 	protecting TREE .
 	op flattenPostfix : Tree -> IntList .

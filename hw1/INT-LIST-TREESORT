@@ -1,0 +1,21 @@
+in INT-LIST
+in INT-LIST-APPEND
+in TREE
+in TREE-INSERT
+in TREE-FLATTEN-INFIX
+
+mod INT-LIST-TREESORT is
+	protecting INT-LIST .
+	protecting TREE-INSERT .
+	protecting TREE-FLATTEN-INFIX .
+	op treesort : IntList -> IntList .
+	op prv : IntList Tree -> IntList .
+	
+	var I J : Int . var L R : Tree . var LIST : IntList .
+	
+	eq treesort(I LIST) = prv(LIST, bt-insert(I, empty)) .
+	
+	eq prv(I LIST, L J R) = prv(LIST, bt-insert(I, L J R)) . 
+	
+	eq prv(nil, L J R) = flattenInfix(L J R) . 
+endm

@@ -1,13 +1,23 @@
-mod TREE-INSERT is protecting TREE .
-	op insert : Int Tree -> Tree .
+in TREE
+
+mod TREE-INSERT is 
+	protecting TREE .
+	
+	op bt-insert : Int Tree -> Tree .
 	vars I J : Int . vars L R : Tree .
 	
-	eq insert(I, L J R) = 
+	eq bt-insert(I, L J R) = 
 			if I <= J then 
-				insert(I, L) 
+				bt-insert(I, L) J R
 			else 
-				insert(I, R) 
+				L J bt-insert(I, R) 
 			fi .
 			
-	eq insert(I, empty) = empty I empty [owise] .
+	eq bt-insert(I, empty) = empty I empty [owise] .
 endm
+
+---red bt-insert(1, ((empty 2 (empty 3 empty)) 5 ((empty 6 empty) 7 empty))) .
+---red bt-insert(6, ((empty 2 (empty 3 empty)) 5 (empty 7 empty))) .
+---red bt-insert(4, ((empty 2 (empty 3 empty)) 5 (empty 7 empty))) .
+
+---q

@@ -1,4 +1,4 @@
-mod FLATTEN-PREFIX is
+mod TREE-FLATTEN-PREFIX is
 	protecting INT-LIST-APPEND .
 	protecting TREE .
 	op flattenPrefix : Tree -> IntList .
