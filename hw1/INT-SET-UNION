@@ -1,0 +1,14 @@
+mod INT-SET-UNION is 
+	including INT-SET . 
+	
+	var I : Int . var S A B : IntSet .
+	
+	eq U(I S, A) =	if I in A then
+				U(S, A)
+			else
+				I U(S, A)
+			fi . 
+	eq U(nil, A) = A [owise] .
+			
+endm
+

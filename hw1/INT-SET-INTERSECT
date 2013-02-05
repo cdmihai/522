@@ -1,0 +1,15 @@
+mod INT-SET-INTERSECT is 
+	including INT-SET . 
+	
+	var I : Int . var S A B : IntSet .
+	
+	eq ^(I S, A) =	if I in A then
+				I ^(S, A)
+			else
+				^(S, A)
+			fi . 
+			
+	eq ^(nil, A) = nil [owise] .
+			
+endm
+

@@ -1,0 +1,15 @@
+mod INT-SET-DIFF is 
+	including INT-SET . 
+	
+	var I : Int . var S A B : IntSet .
+	
+	eq /(I S, A) =	if I in A then
+				/(S, A)
+			else
+				I  /(S, A)
+			fi . 
+			
+	eq /(nil, A) = nil [owise] .
+			
+endm
+

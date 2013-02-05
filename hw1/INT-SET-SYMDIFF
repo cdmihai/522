@@ -1,0 +1,13 @@
+in INT-SET
+in INT-SET-UNION
+in INT-SET-INTERSECT
+in INT-SET-DIFF
+
+mod INT-SET-SYMDIFF is 
+	including INT-SET + INT-SET-UNION + INT-SET-INTERSECT + INT-SET-DIFF .
+	
+	var A B : IntSet .
+	
+	eq SYMDIFF(A, B) = /(U(A, B), ^(A, B)) .
+endm
+
