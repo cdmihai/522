@@ -1,0 +1,14 @@
+mod TURING-MACHINE-UNR is
+	including TAPE-UNR .
+	
+	sorts State Configuration . 
+	
+	op _(_,_) : State Tape Tape -> Configuration . 
+	
+	var S : State . var L R : Tape .
+	
+	eq S(L, zeros) = S(L, 0 : zeros) . 
+	eq S(zeros, R) = S(0 : zeros, R) . 
+	
+endm
+

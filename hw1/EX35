@@ -1,0 +1,11 @@
+in TAPE-UNR
+in TURING-MACHINE-ADD2
+
+rew qs(zeros, 0 : 1 : 1 : 1 : 0 : 1 : 1 : zeros) .
+
+in TAPE1
+in TURING-MACHINE1
+
+rew qs(zeros, 0 : 1 : 1 : 1 : 0 : 1 : 1 : zeros) .
+
+q

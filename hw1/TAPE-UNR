@@ -1,0 +1,9 @@
+mod TAPE-UNR is
+	sorts Cell Tape .
+	
+	ops 0 1 : -> Cell .
+	op _:_ : Cell Tape -> Tape .
+	op zeros : -> Tape .
+endm
+	
+	

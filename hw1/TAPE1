@@ -1,0 +1,11 @@
+mod TAPE1 is
+	sorts Cell Tape .
+	
+	ops 0 1 : -> Cell .
+	op _:_ : Cell Tape -> Tape [strat (1 0)] .
+	op zeros : -> Tape .
+	
+	eq zeros = 0 : zeros .
+endm
+	
+	

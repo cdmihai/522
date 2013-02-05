@@ -1,0 +1,20 @@
+in TURING-MACHINE-UNR
+
+mod TURING-MACHINE-ADD2 is
+	including TURING-MACHINE-UNR .
+	
+	ops qs q1 q2 q3 qh : -> State .
+	
+	var L R : Tape . var B : Cell .
+	
+	rl qs(L, 0 : R) => q1(0 : L, R) .
+	
+	rl q1(L, 1 : R) => q1(L, 0 : R) .
+	rl q1(L, 0 : R) => q2(0 : L, R) .
+	
+	rl q2(L, 1 : R) => q2(1 : L, R) .
+	rl q2(L, 0 : R) => q3(L, 1 : R) .
+	
+	rl q3(B : L, 1 : R) => q3(L, B : 1 : R) .
+	rl q3(L, 0 : R) => qh(L, 0 : R) .
+endm
