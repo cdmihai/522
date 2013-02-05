@@ -1,0 +1,11 @@
+mod TURING-MACHINE-UNRNOEQ is
+	including TAPE-UNR .
+	
+	sorts State Configuration . 
+	
+	op _(_,_) : State Tape Tape -> Configuration . 
+	
+	var S : State . var L R : Tape .
+	
+endm
+
