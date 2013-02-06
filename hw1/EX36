@@ -1,0 +1,10 @@
+in PCP
+
+---LCM(4, 6)
+search[1] 1[1 1 1 1, .] 2[., 1 1 1 1 1 1]=>* L[S,S] Ts:Tiles .
+
+---LCM(2, 3)
+search[1] 1[1 1, .] 2[., 1 1 1]=>* L[S,S] Ts:Tiles .
+
+q
+
