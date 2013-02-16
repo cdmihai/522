@@ -1,0 +1,32 @@
+in ../../../builtins.maude
+in ../imp-syntax.maude
+in ../../state.maude
+
+in imp-semantics-bigstep-error.maude
+
+in ../imp-programs.maude
+
+mod TEST is including IMP-SEMANTICS-BIGSTEP-ERROR + IMP-PROGRAMS .  endm
+
+rewrite < sumPgm > .
+rewrite < collatzStmt, n |-> 10 & (q,r,s) |-> 0 > .
+rewrite < collatzPgm > .
+rewrite < multiplicationStmt, x |-> 25 & y |-> 5 & (q,r,z) |-> 0 > .
+rewrite < primalityStmt, n |-> 1021 & (i,q,r,t,x,y,z) |-> 0 > .
+rewrite < countPrimesPgm > .
+
+rewrite < divzLoopIf > .
+rewrite < divzLoopCond > .
+rewrite < divzSum1 > .
+rewrite < divzSum2 > .
+rewrite < divzDiv > .
+rewrite < divzIf1 > .
+rewrite < divzIf2 > .
+rewrite < boolLE1 > .
+rewrite < boolLE2 > .
+rewrite < boolAnd1 > .
+rewrite < boolAnd2 > .
+
+---search < sumPgm > =>! Cfg:Configuration .
+
+quit

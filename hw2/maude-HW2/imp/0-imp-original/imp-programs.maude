@@ -1,5 +1,5 @@
 mod IMP-PROGRAMS is including IMP-SYNTAX .
-  ops sumPgm collatzPgm countPrimesPgm : -> Pgm .
+  ops boolLE1, boolLE2, boolAnd1, boolAnd2, divzDiv, divzIf1, divzIf2, divzSum1, divzSum2, divzLoopCond, divzLoopIf, sumPgm collatzPgm countPrimesPgm : -> Pgm .
   ops collatzStmt multiplicationStmt primalityStmt : -> Stmt .
   eq sumPgm = (
      int n, s ;
@@ -51,4 +51,82 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
        if (1 <= t) { s = s + 1 ; } else {}
        n = n + 1 ;
      }     ) .
+     
+   eq divzLoopIf = (
+     int n, s ;
+     n = 100 ;
+     while (!(n <= 0)) {
+       if (1 <= 2) { s = s / 0 ; } else { }
+       n = n + -1 ;
+     }    ) .  
+     
+    eq divzLoopCond = (
+   	int n, s ;
+   	n = 5 ;
+   	while (!(n / 0 <= 0)) {
+   		n = n + -1 ; 
+   	}
+   ) . 
+   
+   eq divzSum1 = (
+   	int a, b, c ;
+   	a = 1 ;
+   	b = 1 ;
+   	b = b + (a / c) ;
+   ) . 
+   
+   eq divzSum2 = (
+   	int a, b, c ;
+   	a = 1 ;
+   	b = 1 ;
+   	b = (a / c) + b ;
+   ) . 
+   
+   eq divzDiv = (
+   	int b, c ;
+   	b = 1 ;
+   	b = ((b / c) / 1) + b ;
+   ) . 
+   
+   eq divzIf1 = (
+   	int a, b, c ;
+   	a = 1 ;
+   	
+   	if (a / c <= 2) { b = 0 ;} else {b = 1 ;}
+   ) .
+   
+   eq divzIf2 = (
+   	int a, b, c ;
+   	a = 1 ;
+   	
+   	if (2 <= 1) { b = 0 ;} else {b = a / c ;}
+   ) .
+   
+   eq boolLE1 = (
+   	int a, b, c ;
+   	a = 1 ;
+   	
+   	if (a <= (a / 0)) { b = 0 ;} else {b = 1 ;}
+   ) . 	
+   
+   eq boolLE2 = (
+   	int a, b, c ;
+   	a = 1 ;
+   	
+   	if ((a / 0) <= a) { b = 0 ;} else {b = 1 ;}
+   ) . 	
+   eq boolAnd1 = (
+   	int a, b ;
+   	a = 1 ;
+   	
+   	if (((a / 0) <= a) && (1 <= 2)) { b = 0 ;} else {b = 1 ;}
+   ) . 	
+   eq boolAnd2 = (
+   	int a, b ;
+   	a = 1 ;
+   	
+   	if ((1 <= 2) && ((a / 0) <= a)) { b = 0 ;} else {b = 1 ;}
+   ) . 	
+   
+   
 endm
