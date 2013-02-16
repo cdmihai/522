@@ -1,5 +1,5 @@
 mod IMP-PROGRAMS is including IMP-SYNTAX .
-  ops boolLE1, boolLE2, boolAnd1, boolAnd2, divzDiv, divzIf1, divzIf2, divzSum1, divzSum2, divzLoopCond, divzLoopIf, sumPgm collatzPgm countPrimesPgm : -> Pgm .
+  ops divzSimple, boolLE1, boolLE2, boolAnd1, boolAnd2, divzDiv, divzIf1, divzIf2, divzSum1, divzSum2, divzLoopCond, divzLoopIf, sumPgm collatzPgm countPrimesPgm : -> Pgm .
   ops collatzStmt multiplicationStmt primalityStmt : -> Stmt .
   eq sumPgm = (
      int n, s ;
@@ -114,13 +114,15 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
    	a = 1 ;
    	
    	if ((a / 0) <= a) { b = 0 ;} else {b = 1 ;}
-   ) . 	
+   ) . 
+   	
    eq boolAnd1 = (
    	int a, b ;
    	a = 1 ;
    	
    	if (((a / 0) <= a) && (1 <= 2)) { b = 0 ;} else {b = 1 ;}
-   ) . 	
+   ) .
+    	
    eq boolAnd2 = (
    	int a, b ;
    	a = 1 ;
@@ -128,5 +130,11 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
    	if ((1 <= 2) && ((a / 0) <= a)) { b = 0 ;} else {b = 1 ;}
    ) . 	
    
+   eq divzSimple = (
+   	int a, b ;
+   	a = 1 ;
+   	
+   	b = a / b ;
+   ) . 	
    
 endm

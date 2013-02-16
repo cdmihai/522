@@ -26,6 +26,7 @@ rewrite < boolLE1 > .
 rewrite < boolLE2 > .
 rewrite < boolAnd1 > .
 rewrite < boolAnd2 > .
+rewrite < divzSimple > .
 
 ---search < sumPgm > =>! Cfg:Configuration .
 

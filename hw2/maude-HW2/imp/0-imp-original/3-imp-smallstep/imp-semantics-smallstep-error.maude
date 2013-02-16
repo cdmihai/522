@@ -14,7 +14,7 @@ mod IMP-CONFIGURATIONS-SMALLSTEP is including IMP-SYNTAX + STATE .
  crl * Cfg => * Cfg' if o Cfg => Cfg' .
 endm
 
-mod IMP-SEMANTICS-SMALLSTEP is including IMP-CONFIGURATIONS-SMALLSTEP .
+mod IMP-SEMANTICS-SMALLSTEP-ERROR is including IMP-CONFIGURATIONS-SMALLSTEP .
   var X : Id .  var Sigma Sigma' : State .  var I I1 I2 : Int .  var Xl : List{Id} .
   var A A' A1 A1' A2 A2' : AExp .  var B B' B1 B1' B2 : BExp .  var S S' S1 S1' S2 : Stmt .
 
@@ -59,9 +59,33 @@ mod IMP-SEMANTICS-SMALLSTEP is including IMP-CONFIGURATIONS-SMALLSTEP .
   
   ---here be errors
  
- rl o < I1 / 0,Sigma > => < Error > .
+ ---crl o < A1 / A2,Sigma > => < Error > if o < A2,Sigma > => < 0, Sigma > . ---apparently two rules apply in this case and maude chooses the first one
+ crl o < I1 / I2,Sigma > => < Error > if I2 ==Bool 0 .
+ 
  crl o < A1 / A2,Sigma > => < Error > if o < A1,Sigma > => < Error > .
  crl o < A1 / A2,Sigma > => < Error > if o < A2,Sigma > => < Error > .
+ 
+ crl o < A1 + A2,Sigma > => < Error > if o < A1,Sigma > => < Error > .
+ crl o < A1 + A2,Sigma > => < Error > if o < A2,Sigma > => < Error > .
+ 
+ crl o < A1 <= A2,Sigma > => < Error > if o < A1,Sigma > => < Error > .
+ crl o < I1 <= A2,Sigma > => < Error > if o < A2,Sigma > => < Error > .
+ 
+ crl o < B1 && B2,Sigma > => < Error > if o < B1,Sigma > => < Error > .
+  rl o < true && B2,Sigma > => < B2,Sigma > .
+ 
+ crl o < ! B,Sigma > => < Error > if o < B,Sigma > => < Error > .
+ 
+ crl o < {S},Sigma > => < Error > if o < S, Sigma > => < Error > .
+ 
+ crl o < X = A ;,Sigma > => < Error > if o < A,Sigma > => < Error > .
+ 
+ crl o < S1 S2,Sigma > => < Error > if o < S1,Sigma > => < Error > .
+ crl o < {} S2,Sigma > => < Error > if o < S2, Sigma > => < Error > .
+ 
+ crl o < if (B) S1 else S2,Sigma > => < Error > if o < B,Sigma > => < Error > .
+ crl o < if (true) S1 else S2,Sigma > => < Error > if o < S1,Sigma > => < Error > .
+ crl o < if (false) S1 else S2,Sigma > => < Error > if o < S2,Sigma > => < Error > .
 
-  
+ crl o < int Xl ; S > => < Error > if o < S,(Xl |-> 0) > => < Error > .
 endm
