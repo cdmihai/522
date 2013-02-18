@@ -3,7 +3,20 @@ in ../builtins
 mod FUNCTIONS is including PL-INT + CPO .
   subsort Int < CPO .
   ops factorial ackermann1 ackermann2 : -> CPO .
-  eq factorial  = fixCPO(funCPO g -> funCPO n -> ifCPO(n ==Bool 0, 1, ifCPO(n >Int 0, n *Int appCPO(g, n -Int 1), undefined))) .
+  eq factorial  = fixCPO(funCPO g -> funCPO n -> ifCPO(n ==Bool 0, 1, 
+  								ifCPO(n >Int 0, n *Int appCPO(g, n -Int 1), 
+  								undefined))) .
+  eq ackermann1  = fixCPO(funCPO g -> funCPO m -> funCPO n -> ifCPO(m ==Bool 0, n +Int 1, 
+  										ifCPO(m >Int 0 andBool n ==Bool 0, appCPO(appCPO(g, m -Int 1), 1), 
+  										ifCPO(m >Int 0 andBool n >Int 0, appCPO(appCPO(g, m -Int 1), appCPO(appCPO(g, m), n -Int 1)), 
+  										undefined)))) .
+  
+  eq ackermann2  = fixCPO(funCPO g -> funCPO p -> ifCPO(1stCPO(p) ==Bool 0, 2ndCPO(p) +Int 1, 
+  									ifCPO(1stCPO(p) >Int 0 andBool 2ndCPO(p) ==Bool 0, appCPO(appCPO(g, 1stCPO(p) -Int 1), 1), 
+  									ifCPO(1stCPO(p) >Int 0 andBool 2ndCPO(p) >Int 0, appCPO(appCPO(g, 1stCPO(p) -Int 1), appCPO(appCPO(g, 1stCPO(p)), 2ndCPO(p) -Int 1)),  										undefined)))) .
+  
+  										
+  	
 --- add equations defining the ackermann functions here
 endm
 
