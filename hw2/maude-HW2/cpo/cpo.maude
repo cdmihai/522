@@ -15,7 +15,7 @@ mod FUNCTIONS is including PL-INT + CPO .
   									ifCPO(1stCPO(p) >Int 0 andBool 2ndCPO(p) ==Bool 0, appCPO(appCPO(g, 1stCPO(p) -Int 1), 1), 
   									ifCPO(1stCPO(p) >Int 0 andBool 2ndCPO(p) >Int 0, appCPO(appCPO(g, 1stCPO(p) -Int 1), appCPO(appCPO(g, 1stCPO(p)), 2ndCPO(p) -Int 1)),  										undefined)))) .
   
-  										
+  											
   	
 --- add equations defining the ackermann functions here
 endm

@@ -15,4 +15,6 @@ rewrite [[collatzPgm]] .
 ---rewrite appCPO([[primalityStmt]], n |-> 1021 & (i,q,r,t,x,y,z) |-> 0 ) .
 rewrite [[countPrimesPgm]] .
 
+rewrite [[divzSimple]] .
+
 quit
