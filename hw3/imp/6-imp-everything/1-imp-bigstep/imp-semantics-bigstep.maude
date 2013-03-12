@@ -121,4 +121,10 @@ mod IMP-SEMANTICS-BIGSTEP is including IMP-CONFIGURATIONS-BIGSTEP .
   if < A,Sigma,OmegaIn > => < I,Sigma',OmegaIn' > .
 *** </new>
 
+********************INCREMENT********************
+*** <new> The actual big-step SOS of increment
+ crl < ++ X,Sigma,OmegaIn > => < Sigma(X) +Int 1,Sigma[(Sigma(X) +Int 1) / X],OmegaIn >
+  if Sigma(X) =/=Bool undefined .
+*** </new>
+
 endm
