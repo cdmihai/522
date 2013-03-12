@@ -5,11 +5,11 @@ mod IMP-CONFIGURATIONS-BIGSTEP is including IMP-SYNTAX + STATE .
 *** </new>
 
 *** <new> Add an input buffer to all configurations holding expressions
-  sort Configuration .
+  sort Configuration . 
   op <_,_,_> : AExp State Buffer -> Configuration .
-  op   <_,_> : Int Buffer -> Configuration .
   op <_,_,_> : BExp State Buffer -> Configuration .
-  op   <_,_> : Bool Buffer -> Configuration .
+***  op   <_,_> : Int Buffer -> Configuration .
+***  op   <_,_> : Bool Buffer -> Configuration .
 *** </new>
 
 *** <new> Add an input buffer to non-result configurations holding statements:
@@ -34,7 +34,7 @@ mod IMP-SEMANTICS-BIGSTEP is including IMP-CONFIGURATIONS-BIGSTEP .
 *** <new> Add the input buffer to all the configurations below.  Also, new rules are added
 *** attempting to capture the non-deterministic evaluation strategy of + and /.
   var OmegaIn OmegaIn' OmegaIn'' OmegaIn1 OmegaIn2 OmegaOut OmegaOut' OmegaOut1 OmegaOut2 : Buffer .
-  
+
   rl < I,Sigma,OmegaIn > => < I,OmegaIn > .
  crl < X,Sigma,OmegaIn > => < Sigma(X),OmegaIn >
   if Sigma(X) =/=Bool undefined .
