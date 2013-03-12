@@ -34,6 +34,7 @@ mod IMP-SEMANTICS-BIGSTEP is including IMP-CONFIGURATIONS-BIGSTEP .
 *** <new> Add the input buffer to all the configurations below.  Also, new rules are added
 *** attempting to capture the non-deterministic evaluation strategy of + and /.
   var OmegaIn OmegaIn' OmegaIn'' OmegaIn1 OmegaIn2 OmegaOut OmegaOut' OmegaOut1 OmegaOut2 : Buffer .
+  
   rl < I,Sigma,OmegaIn > => < I,OmegaIn > .
  crl < X,Sigma,OmegaIn > => < Sigma(X),OmegaIn >
   if Sigma(X) =/=Bool undefined .

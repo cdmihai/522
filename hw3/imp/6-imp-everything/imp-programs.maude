@@ -52,6 +52,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
        n = n + 1 ;
      }     ) .
 
+***<new>  Programs with IO
   op sumIOPgm : -> Pgm .
   eq sumIOPgm = (
      int m, n, s ;
@@ -77,5 +78,23 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
        print(read()
              / (read()
                 / read())) ;     ) .
+***</new>
+
+*** <new> Programs with increment
+  op sum++Pgm : -> Pgm .
+  eq sum++Pgm = (
+     int m, n, s ;
+     n = 100 ;
+     while (++ m <= n) {
+     s = s + m ;
+     }     ) .
+
+  op nondet++Pgm : -> Pgm .
+  eq nondet++Pgm = (
+     int x ;
+     x = 1 ;
+     x = ++ x / (++ x / x) ;
+  ) .
+*** </new>
 
 endm

@@ -25,4 +25,8 @@ mod IMP-SYNTAX is including PL-INT + PL-BOOL + PL-ID .
   op print(_); : AExp -> Stmt [prec 57] .
 *** </new>
 
+*** <new> Syntax for variable increment
+  op ++_ : Id -> AExp [prec 0] .
+*** </new>
+
 endm
