@@ -48,8 +48,10 @@ mod IMP-TYPE-SYSTEM-BIGSTEP is including IMP-TYPE-SYSTEM-CONFIGURATIONS-BIGSTEP 
  crl < int Xl ; S > => < pgm >
   if < S,Xl > => < ST > .
 
-*** <new> The actual typing rule for variable increment
-  rl < ++ X,(Xl,X,Xl') > => < int > .
+*** <new> Add the typing rule for input/output
+  rl < read(),Xl > => < int > .
+ crl < print(A);,Xl > => < stmt >
+  if < A,Xl > => < int > .
 *** </new>
 
 endm

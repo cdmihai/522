@@ -20,8 +20,9 @@ mod IMP-SYNTAX is including PL-INT + PL-BOOL + PL-ID .
   sort Pgm .
   op int_;_ : List{Id} Stmt -> Pgm [prec 70 format (nb o d ni d)] .
 
-*** <new> Syntax for variable increment
-  op ++_ : Id -> AExp [prec 0] .
+*** <new> Syntax for input/output
+  op read() : -> AExp .
+  op print(_); : AExp -> Stmt [prec 57] .
 *** </new>
 
 endm

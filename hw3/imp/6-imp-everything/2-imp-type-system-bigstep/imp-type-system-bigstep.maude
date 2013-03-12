@@ -19,11 +19,12 @@ rewrite < countPrimesPgm > .
 search < sumPgm > =>! Cfg:Configuration .
 
 *** <new> Type the new programs
-rewrite < sum++Pgm > .
-search  < sum++Pgm > =>! Cfg:Configuration .
-
-rewrite < nondet++Pgm > .
-search  < nondet++Pgm > =>! Cfg:Configuration .
+rewrite < sumIOPgm > .
+search  < sumIOPgm > =>! Cfg:Configuration .
+rewrite < whileIOPgm > .
+search  < whileIOPgm > =>! Cfg:Configuration .
+rewrite < nondetIOStmt, .List{Id} > .
+search  < nondetIOStmt, .List{Id} > =>! Cfg:Configuration .
 *** </new>
 
 quit
