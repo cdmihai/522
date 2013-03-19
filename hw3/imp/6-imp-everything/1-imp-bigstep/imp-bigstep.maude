@@ -19,24 +19,39 @@ rewrite < multiplicationStmt, x |-> 25 & y |-> 5 & (q,r,z) |-> 0, epsilon > .
 rewrite < primalityStmt, n |-> 1021 & (i,q,r,t,x,y,z) |-> 0, epsilon > .
 rewrite < countPrimesPgm, epsilon > .
 
-search  < sumPgm, epsilon > =>! Cfg:Configuration .
+---search  < sumPgm, epsilon > =>! Cfg:Configuration .
 
 *** <new> Execute the IO programs
-	rewrite < sumIOPgm, 100 > .
-	search  < sumIOPgm, 100 > =>! Cfg:Configuration .
+	rewrite < sumIOPgm, 2 > .
+---	search  < sumIOPgm, 100 > =>! Cfg:Configuration .
 	rewrite < whileIOPgm, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > .
-	search  < whileIOPgm, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > =>! Cfg:Configuration .
+----	search  < whileIOPgm, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > =>! Cfg:Configuration .
 	rewrite < nondetIOStmt, .State, 10 : 20 : 30 > .
-	search  < nondetIOStmt, .State, 10 : 20 : 30 > =>! Cfg:Configuration .
+---	search  < nondetIOStmt, .State, 10 : 20 : 30 > =>! Cfg:Configuration .
 *** </new>
 
 *** <new> Execute the increment programs
 	rewrite < sum++Pgm, epsilon > .
-	search  < sum++Pgm, epsilon > =>! Cfg:Configuration .
+---	search  < sum++Pgm, epsilon > =>! Cfg:Configuration .
 
 	rewrite < nondet++Pgm, epsilon > .
-	search  < nondet++Pgm, epsilon > =>! Cfg:Configuration .
+---	search  < nondet++Pgm, epsilon > =>! Cfg:Configuration .
 *** </new>
 
+***<new> Halting programs
+
+	*** <new> Execute the new programs; make n = 2 in these programs, because they are VERY slow.
+	*** The reason they are slow is because the search space for the rewrites in conditions is huge now.
+	*** Big-step SOS is not really meant to be executable; we should regard it as a "search" semantics:
+	*** if a derivation is found then the computation is possible; it may take a lot to find the derivation.
+	*** The rewrites above are fast because it just happens that the normal rules are picked first by
+	*** Maude during its search.  However, the search above fails because it enforces complete search.
+	rewrite < sumHaltPgm, epsilon > .
+	search  < sumHaltPgm, epsilon > =>! Cfg:Configuration .
+
+	rewrite < sumDivByZeroPgm, epsilon > .
+	search  < sumDivByZeroPgm, epsilon > =>! Cfg:Configuration .
+	*** </new>
+***</new>
 
 quit

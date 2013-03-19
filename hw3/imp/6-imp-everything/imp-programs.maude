@@ -3,7 +3,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
   ops collatzStmt multiplicationStmt primalityStmt : -> Stmt .
   eq sumPgm = (
      int n, s ;
-     n = 100 ;
+     n = 2 ;
      while (!(n <= 0)) {
        s = s + n ;
        n = n + -1 ;
@@ -84,7 +84,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
   op sum++Pgm : -> Pgm .
   eq sum++Pgm = (
      int m, n, s ;
-     n = 100 ;
+     n = 2 ;
      while (++ m <= n) {
      s = s + m ;
      }     ) .
@@ -101,7 +101,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
   op sumHaltPgm : -> Pgm .
   eq sumHaltPgm = (
      int m, n, s ;
-     n = 100 ;  --- replace 100 by 2 in big-step SOS with abrupt termination
+     n = 2 ;  --- replace 100 by 2 in big-step SOS with abrupt termination
      while (true) {
        if (m <= n) {
          s = s + m ;
@@ -113,7 +113,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
   op sumDivByZeroPgm : -> Pgm .
   eq sumDivByZeroPgm = (
      int m, n, s ;
-     n = 100 ;  --- replace 100 by 2 in big-step SOS with abrupt termination
+     n = 2 ;  --- replace 100 by 2 in big-step SOS with abrupt termination
      while (true) {
        if (m <= n) {
          s = s + m ;
