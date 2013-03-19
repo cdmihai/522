@@ -12,30 +12,30 @@ in ../imp-programs.maude
 
 mod TEST is including IMP-SEMANTICS-BIGSTEP + IMP-PROGRAMS .  endm
 
-rewrite < sumPgm, epsilon > .
+rewrite < sumPgm, s |-> 0, epsilon > .
 rewrite < collatzStmt, n |-> 10 & (q,r,s) |-> 0, epsilon > .
-rewrite < collatzPgm,epsilon > .
-rewrite < multiplicationStmt, x |-> 25 & y |-> 5 & (q,r,z) |-> 0, epsilon > .
-rewrite < primalityStmt, n |-> 1021 & (i,q,r,t,x,y,z) |-> 0, epsilon > .
-rewrite < countPrimesPgm, epsilon > .
+rewrite < collatzPgm, s |-> 0, epsilon > .
+rewrite < multiplicationStmt, x |-> 25 & y |-> 5 & z |-> 0, epsilon > .
+rewrite < primalityStmt, n |-> 1021 & t |-> 0, epsilon > .
+rewrite < countPrimesPgm, s |-> 0, epsilon > .
 
 search  < sumPgm, epsilon > =>! Cfg:Configuration .
 
 *** <new> Execute the IO programs
-	rewrite < sumIOPgm, 2 > .
----	search  < sumIOPgm, 2 > =>! Cfg:Configuration .
-	rewrite < whileIOPgm, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > .
----	search  < whileIOPgm, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > =>! Cfg:Configuration .
+	rewrite < sumIOPgm, s |-> 0, 2 > .
+---	search  < sumIOPgm, s |-> 0, 2 > =>! Cfg:Configuration .
+	rewrite < whileIOPgm, s |-> 0, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > .
+---	search  < whileIOPgm, s |-> 0, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > =>! Cfg:Configuration .
 	rewrite < nondetIOStmt, .State, 10 : 20 : 30 > .
 ---	search  < nondetIOStmt, .State, 10 : 20 : 30 > =>! Cfg:Configuration .
 *** </new>
 
 *** <new> Execute the increment programs
-	rewrite < sum++Pgm, epsilon > .
----	search  < sum++Pgm, epsilon > =>! Cfg:Configuration .
+	rewrite < sum++Pgm, s |-> 0, epsilon > .
+---	search  < sum++Pgm, s |-> 0, epsilon > =>! Cfg:Configuration .
 
-	rewrite < nondet++Pgm, epsilon > .
----	search  < nondet++Pgm, epsilon > =>! Cfg:Configuration .
+	rewrite < nondet++Pgm, x |-> 0, epsilon > .
+---	search  < nondet++Pgm, x |-> 0, epsilon > =>! Cfg:Configuration .
 *** </new>
 
 ***<new> Halting programs
@@ -46,19 +46,29 @@ search  < sumPgm, epsilon > =>! Cfg:Configuration .
 	*** if a derivation is found then the computation is possible; it may take a lot to find the derivation.
 	*** The rewrites above are fast because it just happens that the normal rules are picked first by
 	*** Maude during its search.  However, the search above fails because it enforces complete search.
-	rewrite < sumHaltPgm, epsilon > .
----	search  < sumHaltPgm, epsilon > =>! Cfg:Configuration .
+	rewrite < sumHaltPgm, s |-> 0, epsilon > .
+---	search  < sumHaltPgm, s |-> 0, epsilon > =>! Cfg:Configuration .
 
-	rewrite < sumDivByZeroPgm, epsilon > .
----	search  < sumDivByZeroPgm, epsilon > =>! Cfg:Configuration .
+	rewrite < sumDivByZeroPgm, s |-> 0, epsilon > .
+---	search  < sumDivByZeroPgm, s |-> 0, epsilon > =>! Cfg:Configuration .
 	*** </new>
 ***</new>
 
-*** <new> Execute the new programs
-	rewrite < sumSpawnPgm,epsilon > .
-	search  < sumSpawnPgm,epsilon > =>! Cfg:Configuration .  --- Could be slow. For n=10, there are 13 states and s can be any of 55,56,...,66.
-	rewrite < spawnPgm,epsilon > .
-	search  < spawnPgm,epsilon > =>! Cfg:Configuration .     --- Only one bahavior cought, when x = 111 at the end.
+*** <new> Threading programs
+	rewrite < sumSpawnPgm, s |-> 0,epsilon > .
+	search  < sumSpawnPgm, s |-> 0,epsilon > =>! Cfg:Configuration .  --- Could be slow. For n=10, there are 13 states and s can be any of 55,56,...,66.
+	rewrite < spawnPgm, x |-> 0,epsilon > .
+	search  < spawnPgm, x |-> 0,epsilon > =>! Cfg:Configuration .     --- Only one bahavior cought, when x = 111 at the end.
+*** </new>
+
+*** <new> variable shadowing programs
+rewrite < int s ; sumPgm, epsilon > .
+search  < int s ; sumPgm, epsilon > =>! Cfg:Configuration .
+
+rewrite < shadow1Stmt, (y,z) |-> 0, epsilon > .
+search  < shadow1Stmt, (y,z) |-> 0, epsilon > =>! Cfg:Configuration .
+rewrite < shadow2Stmt, (y,z) |-> 0, epsilon > .
+search  < shadow2Stmt, (y,z) |-> 0, epsilon > =>! Cfg:Configuration .
 *** </new>
 
 

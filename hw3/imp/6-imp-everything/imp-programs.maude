@@ -2,8 +2,8 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
   ops sumPgm collatzPgm countPrimesPgm : -> Pgm .
   ops collatzStmt multiplicationStmt primalityStmt : -> Stmt .
   eq sumPgm = (
-     int n, s ;
-     n = 2 ;
+     int n ;
+     n = 100 ;
      while (!(n <= 0)) {
        s = s + n ;
        n = n + -1 ;
@@ -11,14 +11,18 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
 
   eq collatzStmt = (
      while (!(n <= 1)) {
-       s = s + 1 ;  q = n / 2 ;  r = q + q + 1 ;
+       s = s + 1 ;
+       int q, r ;
+       q = n / 2 ;
+       r = q + q + 1 ;
        if (r <= n) { n = n + n + n + 1 ; } else { n = q ; }
      }     ) .
 
   eq collatzPgm = (
-     int m, n, q, r, s ;
+     int m ;
      m = 10 ;
      while (!(m <= 2)) {
+       int n ;
        n = m ;
        m = m + -1 ;
        collatzStmt
@@ -27,6 +31,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
   eq multiplicationStmt = (        --- fast multiplication (base 2) algorithm
      z = 0 ;
      while (!(x <= 0)) {
+       int q, r ;
        q = x / 2 ;
        r = q + q + 1 ;
        if (r <= x) { z = z + y ; } else {}
@@ -35,8 +40,12 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
      }     ) .
 
   eq primalityStmt = (
-     i = 2 ;  q = n / i ;  t = 1 ;
+     int i, q ;
+     i = 2 ;
+     q = n / i ;
+     t = 1 ;
      while (i <= q && 1 <= t) {
+       int x, y, z ;
        x = i ;
        y = q ;
        multiplicationStmt
@@ -44,7 +53,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
      }     ) .
 
   eq countPrimesPgm = (
-     int i, m, n, q, r, s, t, x, y, z ;
+     int m, n, t ;
      m = 10 ;  n = 2 ;
      while (n <= m) {
        primalityStmt
@@ -55,7 +64,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
 ***<new>  Programs with IO
   op sumIOPgm : -> Pgm .
   eq sumIOPgm = (
-     int m, n, s ;
+     int m, n ;
      n = read() ;
      while (m <= n) {
        print(m) ;
@@ -66,7 +75,6 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
 
   op whileIOPgm : -> Pgm .
   eq whileIOPgm = (
-     int s ;
      s = 0 ;
      while (!(read() <= 0)) {
        s = s + read() ;
@@ -83,7 +91,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
 *** <new> Programs with increment
   op sum++Pgm : -> Pgm .
   eq sum++Pgm = (
-     int m, n, s ;
+     int m, n ;
      n = 2 ;
      while (++ m <= n) {
      s = s + m ;
@@ -91,7 +99,6 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
 
   op nondet++Pgm : -> Pgm .
   eq nondet++Pgm = (
-     int x ;
      x = 1 ;
      x = ++ x / (++ x / x) ;
   ) .
@@ -100,7 +107,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
 *** <new> Programs which terminate abruptly
   op sumHaltPgm : -> Pgm .
   eq sumHaltPgm = (
-     int m, n, s ;
+     int m, n ;
      n = 2 ;  --- replace 100 by 2 in big-step SOS with abrupt termination
      while (true) {
        if (m <= n) {
@@ -112,7 +119,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
 
   op sumDivByZeroPgm : -> Pgm .
   eq sumDivByZeroPgm = (
-     int m, n, s ;
+     int m, n ;
      n = 2 ;  --- replace 100 by 2 in big-step SOS with abrupt termination
      while (true) {
        if (m <= n) {
@@ -126,7 +133,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
 *** <new> Programs making use of spawn
   op sumSpawnPgm : -> Pgm .
   eq sumSpawnPgm = (
-     int m, n, s ;
+     int m, n ;
      n = 1 ;   --- 100 may be too large for some semantics
      while (m <= n) {
        spawn {s = s + m ;}
@@ -135,12 +142,31 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
 
   op spawnPgm : -> Pgm .
   eq spawnPgm = (
-     int x ;
      {
         spawn {x = x + 1 ;}
         spawn {x = x + 10 ;}
      } --- such grouping can appear, e.g., when unrolling loops
      x = x + 100 ;     ) .
+*** </new>
+
+*** <new> Programs testing shadowing
+  op shadow1Stmt : -> Stmt .
+  eq shadow1Stmt = {
+     int x ;
+     x = 1 ;
+     y = x ;
+     int x ;
+     x = 2 ;
+     z = x ;    } .
+
+  op shadow2Stmt : -> Stmt .
+  eq shadow2Stmt = {
+     int x ;
+     x = 1 ;
+     { int x ;
+       x = 2 ;
+       z = x ; }
+     y = x ;    } .
 *** </new>
 
 endm
