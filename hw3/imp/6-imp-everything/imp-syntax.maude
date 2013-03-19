@@ -29,4 +29,8 @@ mod IMP-SYNTAX is including PL-INT + PL-BOOL + PL-ID .
   op ++_ : Id -> AExp [prec 0] .
 *** </new>
 
+*** <new> Syntax for halt
+  op halt`; : -> Stmt .
+*** </new>
+
 endm
