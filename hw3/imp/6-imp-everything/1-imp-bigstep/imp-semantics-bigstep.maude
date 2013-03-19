@@ -206,4 +206,19 @@ crl < if (B) S1 else S2,Sigma,OmegaIn > => < halting,Sigma1,OmegaIn1,OmegaOut1 >
   rl < halt ;,Sigma,OmegaIn > => < halting,Sigma,OmegaIn,epsilon > .
 *** </new>
 
+
+********************THREADING********************
+*** <new> A "desperate" attempt to catch the semantics of spawning using big-step SOS rules
+ crl < spawn S,Sigma,OmegaIn > => < Sigma',OmegaIn',OmegaOut' >
+  if < S,Sigma,OmegaIn > => < Sigma',OmegaIn',OmegaOut' > .
+ crl < spawn S,Sigma,OmegaIn > => < halting,Sigma',OmegaIn',OmegaOut' >
+  if < S,Sigma,OmegaIn > => < halting,Sigma',OmegaIn',OmegaOut' > .
+
+ crl < spawn S1 S2,Sigma,OmegaIn > => < Sigma1,OmegaIn1,OmegaOut1 : OmegaOut2 >
+  if < S2,Sigma,OmegaIn > => < Sigma2,OmegaIn2,OmegaOut2 > /\ < S1,Sigma2,OmegaIn2 > => < Sigma1,OmegaIn1,OmegaOut1 > .
+ crl < spawn S1 S2,Sigma,OmegaIn > => < halting,Sigma1,OmegaIn1,OmegaOut1 : OmegaOut2 >
+  if < S2,Sigma,OmegaIn > => < Sigma2,OmegaIn2,OmegaOut2 > /\ < S1,Sigma2,OmegaIn2 > => < halting,Sigma1,OmegaIn1,OmegaOut1 > .
+ crl < spawn S1 S2,Sigma,OmegaIn > => < halting,Sigma2,OmegaIn2,OmegaOut2 >
+  if < S2,Sigma,OmegaIn > => < Sigma2,OmegaIn2,OmegaOut2 > .
+*** </new>
 endm
