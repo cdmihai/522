@@ -97,4 +97,30 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
   ) .
 *** </new>
 
+*** <new> Programs which terminate abruptly
+  op sumHaltPgm : -> Pgm .
+  eq sumHaltPgm = (
+     int m, n, s ;
+     n = 100 ;  --- replace 100 by 2 in big-step SOS with abrupt termination
+     while (true) {
+       if (m <= n) {
+         s = s + m ;
+         m = m + 1 ;
+       }
+       else { halt ; }
+     }     ) .
+
+  op sumDivByZeroPgm : -> Pgm .
+  eq sumDivByZeroPgm = (
+     int m, n, s ;
+     n = 100 ;  --- replace 100 by 2 in big-step SOS with abrupt termination
+     while (true) {
+       if (m <= n) {
+         s = s + m ;
+         m = m + 1 ;
+       }
+       else { s = s / (n / m) ; }
+     }     ) .
+*** </new>
+
 endm
