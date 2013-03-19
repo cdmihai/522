@@ -23,19 +23,19 @@ search  < sumPgm, epsilon > =>! Cfg:Configuration .
 
 *** <new> Execute the IO programs
 	rewrite < sumIOPgm, 2 > .
-	search  < sumIOPgm, 100 > =>! Cfg:Configuration .
+---	search  < sumIOPgm, 2 > =>! Cfg:Configuration .
 	rewrite < whileIOPgm, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > .
-	search  < whileIOPgm, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > =>! Cfg:Configuration .
+---	search  < whileIOPgm, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > =>! Cfg:Configuration .
 	rewrite < nondetIOStmt, .State, 10 : 20 : 30 > .
-	search  < nondetIOStmt, .State, 10 : 20 : 30 > =>! Cfg:Configuration .
+---	search  < nondetIOStmt, .State, 10 : 20 : 30 > =>! Cfg:Configuration .
 *** </new>
 
 *** <new> Execute the increment programs
 	rewrite < sum++Pgm, epsilon > .
-	search  < sum++Pgm, epsilon > =>! Cfg:Configuration .
+---	search  < sum++Pgm, epsilon > =>! Cfg:Configuration .
 
 	rewrite < nondet++Pgm, epsilon > .
-	search  < nondet++Pgm, epsilon > =>! Cfg:Configuration .
+---	search  < nondet++Pgm, epsilon > =>! Cfg:Configuration .
 *** </new>
 
 ***<new> Halting programs
@@ -47,18 +47,18 @@ search  < sumPgm, epsilon > =>! Cfg:Configuration .
 	*** The rewrites above are fast because it just happens that the normal rules are picked first by
 	*** Maude during its search.  However, the search above fails because it enforces complete search.
 	rewrite < sumHaltPgm, epsilon > .
-	search  < sumHaltPgm, epsilon > =>! Cfg:Configuration .
+---	search  < sumHaltPgm, epsilon > =>! Cfg:Configuration .
 
 	rewrite < sumDivByZeroPgm, epsilon > .
-	search  < sumDivByZeroPgm, epsilon > =>! Cfg:Configuration .
+---	search  < sumDivByZeroPgm, epsilon > =>! Cfg:Configuration .
 	*** </new>
 ***</new>
 
 *** <new> Execute the new programs
-	rewrite < sumSpawnPgm > .
-	search  < sumSpawnPgm > =>! Cfg:Configuration .  --- Could be slow. For n=10, there are 13 states and s can be any of 55,56,...,66.
-	rewrite < spawnPgm > .
-	search  < spawnPgm > =>! Cfg:Configuration .     --- Only one bahavior cought, when x = 111 at the end.
+	rewrite < sumSpawnPgm,epsilon > .
+	search  < sumSpawnPgm,epsilon > =>! Cfg:Configuration .  --- Could be slow. For n=10, there are 13 states and s can be any of 55,56,...,66.
+	rewrite < spawnPgm,epsilon > .
+	search  < spawnPgm,epsilon > =>! Cfg:Configuration .     --- Only one bahavior cought, when x = 111 at the end.
 *** </new>
 
 
