@@ -26,7 +26,8 @@ endm
 
 mod IMP-SEMANTICS-SMALLSTEP is including IMP-CONFIGURATIONS-SMALLSTEP .
   var X : Id .  var Sigma Sigma' : State .  var I I1 I2 : Int .  var Xl : List{Id} .
-  var A A' A1 A1' A2 A2' : AExp .  var B B' B1 B1' B2 : BExp .  var S S1 S1' S2 : Stmt .
+  var A A' A1 A1' A2 A2' : AExp .  var B B' B1 B1' B2 : BExp .  var S S' S1 S1' S2 : Stmt .
+  var P : Pgm .
 
 *** <new> Add input buffer to all expression configurations, and propagate it properly
   var OmegaIn OmegaIn' OmegaOut OmegaOut' : Buffer .
@@ -70,14 +71,30 @@ mod IMP-SEMANTICS-SMALLSTEP is including IMP-CONFIGURATIONS-SMALLSTEP .
   rl o < while (B) S,Sigma,OmegaIn,OmegaOut > => < if (B) {S while (B) S} else {},Sigma,OmegaIn,OmegaOut > .
 *** </new>
 
-*** <new> Modified the rule for programs to initialize the state to one also including the output
-  rl o < int Xl ; S,OmegaIn > => < S,(Xl |-> 0),OmegaIn,epsilon > .
+*** <new> Programs are regarded as statements in the initial state
+  rl o < P, OmegaIn, OmegaOut > => < P, .State, OmegaIn, OmegaOut > .
 *** </new>
+
+*** <new> Modified the rule for programs to initialize the state to one also including the output
+---  rl o < int Xl ; S,OmegaIn > => < S,(Xl |-> 0),OmegaIn,epsilon > .
+*** </new>
+
 
 *** <new> Added the actual small-step SOS of input/output
   rl o < read(), Sigma, I : OmegaIn > => < I, Sigma, OmegaIn > .
  crl o < print(A);,Sigma,OmegaIn,OmegaOut > => < print(A');,Sigma,OmegaIn',OmegaOut > if o < A,Sigma,OmegaIn > => < A',Sigma,OmegaIn' > .
   rl o < print(I);,Sigma,OmegaIn,OmegaOut > => < {},Sigma,OmegaIn,OmegaOut : I > .
 *** </new>
+
+
+*** <new> Added the actual small-step SOS of let
+ crl o < let X = A in S,Sigma,OmegaIn,OmegaOut > => < let X = A' in S,Sigma,OmegaIn',OmegaOut > if o < A,Sigma,OmegaIn > => < A',Sigma,OmegaIn' > .
+
+ crl o < let X = I in S,Sigma,OmegaIn,OmegaOut > => < let X = Sigma'(X) in S',Sigma'[Sigma(X) / X],OmegaIn',OmegaOut' >
+  if o < S,Sigma[I / X],OmegaIn,OmegaOut > => < S',Sigma',OmegaIn',OmegaOut' > .
+ 
+  rl o < let X = I in {},Sigma,OmegaIn,OmegaOut > => < {},Sigma,OmegaIn,OmegaOut > .
+*** </new>
+
 
 endm
