@@ -21,7 +21,17 @@ rewrite * < countPrimesPgm, s |-> 0, epsilon, epsilon > .
 
 search  * < sumPgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 
-*** <new> Execute the new programs
+
+*** <new> Increment
+rewrite * < sum++Pgm, epsilon > .
+search  * < sum++Pgm, epsilon > =>! Cfg:ExtendedConfiguration .
+
+rewrite * < nondet++Pgm, epsilon > .
+search  * < nondet++Pgm, epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
+
+*** <new> IO
 	rewrite * < sumIOPgm, s |-> 0, 100, epsilon > .
 	search  * < sumIOPgm, s |-> 0, 100, epsilon > =>! Cfg:ExtendedConfiguration .
 	rewrite * < whileIOPgm, s |-> 0, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10, epsilon > .
@@ -30,7 +40,7 @@ search  * < sumPgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 	search  * < nondetIOStmt, .State, 10 : 20 : 30, epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
-*** <new> locals
+*** <new> Locals
 	rewrite * < int s ; sumPgm, epsilon > .
 	search  * < int s ; sumPgm, epsilon > =>! Cfg:ExtendedConfiguration .
 
