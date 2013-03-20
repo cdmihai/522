@@ -1,4 +1,4 @@
-mod IMP-CONFIGURATIONS-BIGSTEP is including IMP-SYNTAX + STATE .
+mod IMP-CONFIGURATIONS-BIGSTEP is including IMP-DESUGARED-SYNTAX + STATE .
 
 *** <new> Included the module BUFFER as well
   including BUFFER .
@@ -35,10 +35,11 @@ endm
 mod IMP-SEMANTICS-BIGSTEP is including IMP-CONFIGURATIONS-BIGSTEP .
   var X : Id .  var Xl : List{Id} .  var Sigma Sigma' Sigma'' Sigma1 Sigma2 : State .  var T : Bool .
   var I I1 I2 : Int .  var A A1 A2 : AExp .  var B B1 B2 : BExp .  var S S1 S2 : Stmt .
+  var P : Pgm .
 
 *** <new> Add the input buffer to all the configurations below.  Also, new rules are added
 *** attempting to capture the non-deterministic evaluation strategy of + and /.
-  var OmegaIn OmegaIn' OmegaIn'' OmegaIn1 OmegaIn2 OmegaOut OmegaOut' OmegaOut1 OmegaOut2 : Buffer .
+  var OmegaIn OmegaIn' OmegaIn'' OmegaIn1 OmegaIn2 OmegaOut OmegaOut' OmegaOut'' OmegaOut1 OmegaOut2 : Buffer .
 
 
 ********************int exp********************
@@ -172,14 +173,27 @@ crl < if (B) S1 else S2,Sigma,OmegaIn > => < halting,Sigma1,OmegaIn1,OmegaOut1 >
 ********************top level********************
 *** <new> Modify the rule for programs to initialize the state to one also including the input
 *** and to also report the remaining input and the entire output in the result configuration
- crl < int Xl ; S,OmegaIn > => < Sigma,OmegaIn',OmegaOut >
-  if < S,(Xl |-> 0),OmegaIn > => < Sigma,OmegaIn',OmegaOut > .
+---crl < int Xl ; S,OmegaIn > => < Sigma,OmegaIn',OmegaOut >
+--- if < S,(Xl |-> 0),OmegaIn > => < Sigma,OmegaIn',OmegaOut > .
 
 ***swallow the halting signal
- crl < int Xl ; S,OmegaIn > => < Sigma,OmegaIn',OmegaOut >
-  if < S,(Xl |-> 0),OmegaIn > => < halting,Sigma,OmegaIn',OmegaOut > .
+--- crl < int Xl ; S,OmegaIn > => < Sigma,OmegaIn',OmegaOut >
+---  if < S,(Xl |-> 0),OmegaIn > => < halting,Sigma,OmegaIn',OmegaOut > .
 
 *** </new>
+
+*** <new> Programs are regarded as statements in the initial state.
+*** However, without any option to output, the resulting configuration
+*** will always contain only an empty state and nothing else (empty indeed,
+*** because all the locally declared variables are removed from the state
+*** when their block ends).
+ crl < P,OmegaIn > => < Sigma,OmegaIn',OmegaOut >
+  if < P, .State,OmegaIn > => < Sigma,OmegaIn',OmegaOut > .
+
+ crl < P,OmegaIn > => < Sigma,OmegaIn',OmegaOut >
+  if < P, .State,OmegaIn > => < halting,Sigma,OmegaIn',OmegaOut > .
+*** </new>
+
 
 
 ********************IO********************
@@ -221,4 +235,17 @@ crl < if (B) S1 else S2,Sigma,OmegaIn > => < halting,Sigma1,OmegaIn1,OmegaOut1 >
  crl < spawn S1 S2,Sigma,OmegaIn > => < halting,Sigma2,OmegaIn2,OmegaOut2 >
   if < S2,Sigma,OmegaIn > => < Sigma2,OmegaIn2,OmegaOut2 > .
 *** </new>
+
+********************LOCALS********************
+*** <new> Add the new big-step SOS for local variables
+ crl < let X = A in S,Sigma,OmegaIn > => < Sigma''[Sigma(X) / X],OmegaIn'',OmegaOut'' >
+  if < A,Sigma,OmegaIn > => < I,Sigma',OmegaIn' > /\ < S,Sigma'[I / X],OmegaIn' > => < Sigma'',OmegaIn'',OmegaOut'' > .
+
+ crl < let X = A in S,Sigma,OmegaIn > => < halting,Sigma''[Sigma(X) / X],OmegaIn'',OmegaOut'' >
+  if < A,Sigma,OmegaIn > => < I,Sigma',OmegaIn' > /\ < S,Sigma'[I / X],OmegaIn' > => < halting,Sigma'',OmegaIn'',OmegaOut'' > .
+
+  crl < let X = A in S,Sigma,OmegaIn > => < halting,Sigma'[Sigma(X) / X],OmegaIn',epsilon >
+  if < A,Sigma,OmegaIn > => < error,Sigma',OmegaIn' > .
+*** </new>
+
 endm

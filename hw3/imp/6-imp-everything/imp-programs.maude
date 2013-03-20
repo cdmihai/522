@@ -3,7 +3,7 @@ mod IMP-PROGRAMS is including IMP-SYNTAX .
   ops collatzStmt multiplicationStmt primalityStmt : -> Stmt .
   eq sumPgm = (
      int n ;
-     n = 100 ;
+     n = 2 ;
      while (!(n <= 0)) {
        s = s + n ;
        n = n + -1 ;
