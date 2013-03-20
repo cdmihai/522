@@ -23,11 +23,11 @@ search  * < sumPgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 
 
 *** <new> Increment
-rewrite * < sum++Pgm, epsilon > .
-search  * < sum++Pgm, epsilon > =>! Cfg:ExtendedConfiguration .
+rewrite * < sum++Pgm, s |-> 0, epsilon, epsilon > .
+search  * < sum++Pgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 
-rewrite * < nondet++Pgm, epsilon > .
-search  * < nondet++Pgm, epsilon > =>! Cfg:ExtendedConfiguration .
+rewrite * < nondet++Pgm, x |-> 0, epsilon, epsilon > .
+search  * < nondet++Pgm, x |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
 
@@ -40,9 +40,9 @@ search  * < nondet++Pgm, epsilon > =>! Cfg:ExtendedConfiguration .
 	search  * < nondetIOStmt, .State, 10 : 20 : 30, epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
-*** <new> Locals
-	rewrite * < int s ; sumPgm, epsilon > .
-	search  * < int s ; sumPgm, epsilon > =>! Cfg:ExtendedConfiguration .
+*** <new> locals
+	rewrite * < int s ; sumPgm, s |-> 0, epsilon, epsilon > .
+	search  * < int s ; sumPgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 
 	rewrite * < shadow1Stmt, (y,z) |-> 0, epsilon, epsilon > .
 	search  * < shadow1Stmt, (y,z) |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
