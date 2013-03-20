@@ -1,4 +1,4 @@
-mod IMP-CONFIGURATIONS-SMALLSTEP is including IMP-SYNTAX + STATE .
+mod IMP-CONFIGURATIONS-SMALLSTEP is including IMP-DESUGARED-SYNTAX + STATE .
 
 *** <new> Include the module BUFFER as well
   including BUFFER .

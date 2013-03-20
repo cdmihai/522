@@ -12,22 +12,32 @@ in ../imp-programs.maude
 
 mod TEST is including IMP-SEMANTICS-SMALLSTEP + IMP-PROGRAMS .  endm
 
-rewrite * < sumPgm, epsilon > .
+rewrite * < sumPgm, s |-> 0,epsilon, epsilon > .
 rewrite * < collatzStmt, n |-> 10 & (q,r,s) |-> 0, epsilon, epsilon > .
-rewrite * < collatzPgm, epsilon > .
-rewrite * < multiplicationStmt, x |-> 25 & y |-> 5 & (q,r,z) |-> 0, epsilon, epsilon > .
-rewrite * < primalityStmt, n |-> 1021 & (i,q,r,t,x,y,z) |-> 0, epsilon, epsilon > .
-rewrite * < countPrimesPgm, epsilon > .
+rewrite * < collatzPgm, s |-> 0, epsilon, epsilon > .
+rewrite * < multiplicationStmt, x |-> 25 & y |-> 5 & z |-> 0, epsilon, epsilon > .
+rewrite * < primalityStmt, n |-> 1021 & t |-> 0, epsilon, epsilon > .
+rewrite * < countPrimesPgm, s |-> 0, epsilon, epsilon > .
 
-search  * < sumPgm, epsilon > =>! Cfg:ExtendedConfiguration .
+search  * < sumPgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 
 *** <new> Execute the new programs
-rewrite * < sumIOPgm, 100 > .
-search  * < sumIOPgm, 100 > =>! Cfg:ExtendedConfiguration .
-rewrite * < whileIOPgm, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > .
-search  * < whileIOPgm, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > =>! Cfg:ExtendedConfiguration .
-rewrite * < nondetIOStmt, .State, 10 : 20 : 30, epsilon > .
-search  * < nondetIOStmt, .State, 10 : 20 : 30, epsilon > =>! Cfg:ExtendedConfiguration .
+	rewrite * < sumIOPgm, s |-> 0, 100, epsilon > .
+	search  * < sumIOPgm, s |-> 0, 100, epsilon > =>! Cfg:ExtendedConfiguration .
+	rewrite * < whileIOPgm, s |-> 0, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10, epsilon > .
+	search  * < whileIOPgm, s |-> 0, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10, epsilon > =>! Cfg:ExtendedConfiguration .
+	rewrite * < nondetIOStmt, .State, 10 : 20 : 30, epsilon > .
+	search  * < nondetIOStmt, .State, 10 : 20 : 30, epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
+*** <new> locals
+	rewrite * < int s ; sumPgm,epsilon > .
+	search  * < int s ; sumPgm,epsilon > =>! Cfg:ExtendedConfiguration .
+
+	rewrite * < shadow1Stmt, (y,z) |-> 0,epsilon, epsilon > .
+	search  * < shadow1Stmt, (y,z) |-> 0,epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
+	rewrite * < shadow2Stmt, (y,z) |-> 0,epsilon, epsilon > .
+search  * < shadow2Stmt, (y,z) |-> 0,epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
 quit
