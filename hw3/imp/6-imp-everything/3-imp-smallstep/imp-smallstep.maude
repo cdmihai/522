@@ -59,5 +59,13 @@ search  * < shadow2Stmt, (y,z) |-> 0,epsilon, epsilon > =>! Cfg:ExtendedConfigur
 	search  * < sumDivByZeroPgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
+*** <new> Threads
+	rewrite * < sumSpawnPgm, s |-> 0, epsilon, epsilon > .
+	search  * < sumSpawnPgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .  --- Slow! For n=1, there are 2858 states and s can be any of 0,1,2,3,4.
+	                                                           --- For n=2, there are 94408 states and s can be any of 0,1,...,9.
+	rewrite * < spawnPgm, x |-> 0, epsilon, epsilon > .
+	search  * < spawnPgm, x |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
 
 quit

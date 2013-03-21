@@ -165,4 +165,26 @@ mod IMP-SEMANTICS-SMALLSTEP is including IMP-CONFIGURATIONS-SMALLSTEP .
 *** </new>
 
 
+********************threading********************
+*** <new> The small-step SOS of spawning
+  vars S2' : Stmt .
+  op spawn_ : Stmt -> Stmt [ditto] .
+ crl o < spawn S,Sigma,OmegaIn,OmegaOut > => < spawn S',Sigma',OmegaIn',OmegaOut' > if o < S,Sigma,OmegaIn,OmegaOut > => < S',Sigma',OmegaIn',OmegaOut' > .
+ crl o < spawn S,Sigma,OmegaIn,OmegaOut > => < halting,Sigma',OmegaIn',OmegaOut' > if o < S,Sigma,OmegaIn,OmegaOut > => < halting,Sigma',OmegaIn',OmegaOut' > .
+
+
+ crl o < spawn S1 S2,Sigma,OmegaIn,OmegaOut > => < spawn S1 S2',Sigma',OmegaIn',OmegaOut' > if o < S2,Sigma,OmegaIn,OmegaOut > => < S2',Sigma',OmegaIn',OmegaOut' > .
+ crl o < spawn S1 S2,Sigma,OmegaIn,OmegaOut > => < halting,Sigma',OmegaIn',OmegaOut' > if o < S2,Sigma,OmegaIn,OmegaOut > => < halting,Sigma',OmegaIn',OmegaOut' > .
+
+
+  rl o < spawn {},Sigma,OmegaIn,OmegaOut > => < {},Sigma,OmegaIn,OmegaOut > .
+
+--- The following rule is not enough:
+---  rl o < spawn S {}, Sigma > => < spawn S, Sigma > .
+--- We need the following "structural" equation:
+--- Already defined in syntax by the LET desugaring
+---  eq (S1 S2) S = S1 (S2 S) .
+*** </new>
+
+
 endm
