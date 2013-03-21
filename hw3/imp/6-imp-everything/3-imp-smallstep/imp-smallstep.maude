@@ -50,4 +50,13 @@ search  * < nondet++Pgm, x |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfigurati
 search  * < shadow2Stmt, (y,z) |-> 0,epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
+*** <new> Halting
+rewrite * < sumHaltPgm, s |-> 0, epsilon, epsilon > .
+search  * < sumHaltPgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
+
+rewrite * < sumDivByZeroPgm, s |-> 0, epsilon, epsilon > .
+search  * < sumDivByZeroPgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
+
 quit
