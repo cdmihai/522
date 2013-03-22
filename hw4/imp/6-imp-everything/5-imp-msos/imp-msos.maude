@@ -31,12 +31,20 @@ search  * < sumPgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
 	search  * < nondetIOStmt, state = .State, input = 10 : 20 : 30, output = epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
-*** <new> Execute the new programs
+*** <new> increment
 	rewrite * < sum++Pgm, s |-> 0, epsilon > .
 	search  * < sum++Pgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
 
 	rewrite * < nondet++Pgm, x |-> 0, epsilon > .
 search  * < nondet++Pgm, x |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
+*** <new> halting
+	rewrite * < sumHaltPgm, s |-> 0, epsilon > .
+	search  * < sumHaltPgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
+
+	rewrite * < sumDivByZeroPgm, s |-> 0, epsilon > .
+	search  * < sumDivByZeroPgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
 quit

@@ -16,6 +16,10 @@ mod IMP-CONFIGURATIONS-MSOS is including IMP-DESUGARED-SYNTAX + STATE .
   op output`=_ : Buffer -> Attribute [gather(&)] .
 *** </new>
 
+*** <new> Add a new attribute in the label to hold the halting status
+  op halting`=_ : Bool -> Attribute .
+*** </new>
+
   op <_,_> : AExp Record -> Configuration .
   op <_,_> : BExp Record -> Configuration .
   op <_,_> : Stmt Record -> Configuration .
@@ -90,11 +94,30 @@ mod IMP-SEMANTICS-MSOS is including IMP-CONFIGURATIONS-MSOS .
 *** <new> Programs are reduced to statements in the initial empty state, or an initial state for undeclared variables, if any. Ugly hack, for some reason I cannot make < P, (state = s, input = i, R)> to work
   var P : Pgm .
 
-  rl o < P,Sigma,OmegaIn > => < P,(state = Sigma, input = OmegaIn, output = epsilon) > .
+  rl o < P,Sigma,OmegaIn > => < top P,(state = Sigma, input = OmegaIn, output = epsilon, halting = false) > .
 
-  rl o < P,OmegaIn > => < P,(state = .State, input = OmegaIn, output = epsilon) > .
+  rl o < P,OmegaIn > => < top P,(state = .State, input = OmegaIn, output = epsilon, halting = false) > .
 *** </new>
 
+******************HALTING******************
+*** <new> Actual MSOS of division by zero and halt: set the halting flag to true
+  var T : Bool .
+  rl o <  I / 0,(halting = T, R) > => <  I / 0,(halting = true, R) > .
+  rl o < halt ;,(halting = T, R) > => < halt ;,(halting = true, R) > .
+*** </new>
+
+*** <new> A top construct needs to be added together with three MSOS rules for it.
+*** Its role is to "catch" halting signals at the top of the program.
+  op top_ : Stmt -> Stmt .
+  
+ crl o < top S,(halting = T, R) > => < top S',(halting = false, R') >
+  if o < S,(halting = T, R) > => < S',(halting = false, R') > .
+
+  rl o < top {},R > => < {},R > .
+
+ crl o < top S,(halting = T, R) > => < {},(halting = false, R') >
+  if o < S,(halting = T, R) > => < S',(halting = true, R') > .
+*** </new>
 
 ******************LET******************
  crl o < let X = A in S,R > => < let X = A' in S,R' > if o < A,R > => < A',R' > .
