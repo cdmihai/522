@@ -110,4 +110,9 @@ mod IMP-SEMANTICS-MSOS is including IMP-CONFIGURATIONS-MSOS .
   rl o < print(I);,(output = OmegaOut, R) > => < {},(output = (OmegaOut : I), R) > .
 
 
+******************INCREMENT******************
+*** <new> The actual MSOS of increment
+ crl o < ++ X,(state = Sigma, R) > => < Sigma(X) +Int 1, (state = Sigma[(Sigma(X) +Int 1) / X], R) > if Sigma(X) =/=Bool undefined .
+*** </new>
+
 endm

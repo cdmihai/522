@@ -22,13 +22,21 @@ rewrite * < countPrimesPgm, s |-> 0, epsilon > .
 
 search  * < sumPgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
 
-*** <new> Execute the new programs
+*** <new> IO
 	rewrite * < sumIOPgm, s |-> 0, 100 > .
 	search  * < sumIOPgm, s |-> 0, 100 > =>! Cfg:ExtendedConfiguration .
 	rewrite * < whileIOPgm, s |-> 0, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > .
 	search  * < whileIOPgm, s |-> 0, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > =>! Cfg:ExtendedConfiguration .
 	rewrite * < nondetIOStmt, state = .State, input = 10 : 20 : 30, output = epsilon > .
 	search  * < nondetIOStmt, state = .State, input = 10 : 20 : 30, output = epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
+*** <new> Execute the new programs
+	rewrite * < sum++Pgm, s |-> 0, epsilon > .
+	search  * < sum++Pgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
+
+	rewrite * < nondet++Pgm, x |-> 0, epsilon > .
+search  * < nondet++Pgm, x |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
 quit
