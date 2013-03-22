@@ -37,9 +37,11 @@ endm
 
 mod IMP-SEMANTICS-MSOS is including IMP-CONFIGURATIONS-MSOS .
   var X : Id .   var R R' : Record . var Sigma Sigma' : State .
-  var I I1 I2 : Int .  var Xl : List{Id} .  var S S1 S1' S2 : Stmt .
+  var I I1 I2 : Int .  var Xl : List{Id} .  var S S' S1 S1' S2 : Stmt .
   var A A' A1 A1' A2 A2' : AExp .  var B B' B1 B1' B2 B2' : BExp .
 
+
+******************AEXP******************
  crl o < X,(state = Sigma, R) > => < Sigma(X),(state = Sigma, R) >
   if Sigma(X) =/=Bool undefined .
  crl o < A1 + A2,R > => < A1' + A2,R' > if o < A1,R > => < A1',R' > .
@@ -48,6 +50,9 @@ mod IMP-SEMANTICS-MSOS is including IMP-CONFIGURATIONS-MSOS .
  crl o < A1 / A2,R > => < A1' / A2,R' > if o < A1,R > => < A1',R' > .
  crl o < A1 / A2,R > => < A1 / A2',R' > if o < A2,R > => < A2',R' > .
  crl o < I1 / I2,R > => < I1 /Int I2,R > if I2 =/=Bool 0 .
+
+
+ ******************BEXP******************
  crl o < A1 <= A2,R > => < A1' <= A2,R' > if o < A1,R > => < A1',R' > .
  crl o < I1 <= A2,R > => < I1 <= A2',R' > if o < A2,R > => < A2',R' > .
   rl o < I1 <= I2,R > => < I1 <=Int I2,R > .
@@ -57,6 +62,9 @@ mod IMP-SEMANTICS-MSOS is including IMP-CONFIGURATIONS-MSOS .
  crl o < B1 && B2,R > => < B1' && B2,R' > if o < B1,R > => < B1',R' > .
   rl o < false && B2,R > => < false,R > .
   rl o < true && B2,R > => < B2,R > .
+
+
+ ******************STATEMENTS******************
   rl o < {S}, R > => < S,R > .
  crl o < X = A ;,R > => < X = A' ;,R' > if o < A,R > => < A',R' > .
  crl o < X = I ;,(state = Sigma, R) > => < {},(state = Sigma[I / X], R) >
@@ -68,6 +76,8 @@ mod IMP-SEMANTICS-MSOS is including IMP-CONFIGURATIONS-MSOS .
   rl o < if (false) S1 else S2,R > => < S2,R > .
   rl o < while (B) S,R > => < if (B) {S while (B) S} else {},R > .
 
+
+******************TOP******************
 *** <new> The rule below is not good enough anymore.
 *** It will be changed below to initialize all the attributes.
 ---  rl o < int Xl ; S > => < S,(state = Xl |-> 0) > .
@@ -85,11 +95,19 @@ mod IMP-SEMANTICS-MSOS is including IMP-CONFIGURATIONS-MSOS .
   rl o < P,OmegaIn > => < P,(state = .State, input = OmegaIn, output = epsilon) > .
 *** </new>
 
-*** <new> Add the actual MSOS of input/output
+
+******************LET******************
+ crl o < let X = A in S,R > => < let X = A' in S,R' > if o < A,R > => < A',R' > .
+ crl o < let X = I in S,(state = Sigma, R) > => < let X = Sigma'(X) in S',(state = Sigma'[Sigma(X) / X], R') >
+  if o < S,(state = Sigma[I / X],R) > => < S',(state = Sigma',R') > .
+  rl o < let X = I in {},R > => < {},R > .
+
+
+******************IO******************
   var OmegaIn OmegaOut : Buffer .
   rl o < read(),(input = I : OmegaIn, R) > => < I,(input = OmegaIn, R) > .
  crl o < print(A);,R > => < print(A');,R' > if o < A,R > => < A',R' > .
   rl o < print(I);,(output = OmegaOut, R) > => < {},(output = (OmegaOut : I), R) > .
-*** </new>
+
 
 endm
