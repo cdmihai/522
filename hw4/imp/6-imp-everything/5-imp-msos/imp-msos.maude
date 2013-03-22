@@ -47,4 +47,14 @@ search  * < nondet++Pgm, x |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
 	search  * < sumDivByZeroPgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
+
+*** <new> threads
+rewrite * < sumSpawnPgm, s |-> 0, epsilon > .
+search  * < sumSpawnPgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .  --- Same comments as in the case of small-step SOS
+
+rewrite * < spawnPgm, x |-> 0, epsilon > .
+search  * < spawnPgm, x |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
+
 quit

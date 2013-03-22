@@ -138,4 +138,19 @@ mod IMP-SEMANTICS-MSOS is including IMP-CONFIGURATIONS-MSOS .
  crl o < ++ X,(state = Sigma, R) > => < Sigma(X) +Int 1, (state = Sigma[(Sigma(X) +Int 1) / X], R) > if Sigma(X) =/=Bool undefined .
 *** </new>
 
+
+******************SPAWN******************
+*** <new> The MSOS of spawning
+--- See comments on small-step SOS
+  vars S2' : Stmt .
+  op spawn_ : Stmt -> Stmt [ditto] .
+
+ crl o < spawn S,R > => < spawn S',R' > if o < S,R > => < S',R' > .
+
+ crl o < spawn S1 S2,R > => < spawn S1 S2',R' > if o < S2,R > => < S2',R' > .
+ 
+  rl o < spawn {},R > => < {},R > .
+  eq (S1 S2) S = S1 (S2 S) .
+*** </new>
+
 endm
