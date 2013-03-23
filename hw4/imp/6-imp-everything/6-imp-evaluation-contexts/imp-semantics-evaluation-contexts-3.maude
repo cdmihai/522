@@ -1,6 +1,7 @@
 mod IMP-SEMANTICS-EVALUATION-CONTEXTS is including IMP-SPLIT-PLUG-EVALUATION-CONTEXTS .
   var X : Id .  var I I1 I2 : Int .  var B B2 : BExp .  var S S1 S2 : Stmt .  var Xl : List{Id} .
   var Sigma : State .  var Cfg Cfg' : Configuration .  var Syn Syn' : Syntax  .  var C : Context .
+  var P : Pgm .
 
   crl o Cfg => Cfg' if plug(o split(Cfg)) => Cfg' .           --- generic rule enabling splitting
   crl o C[Syn] => C[Syn'] if C =/=Bool [] /\ o Syn => Syn' .  --- characteristic rule
@@ -32,12 +33,20 @@ mod IMP-SEMANTICS-EVALUATION-CONTEXTS is including IMP-SPLIT-PLUG-EVALUATION-CON
 
 *** <new> Changed the rule below to also include the input buffer and
 *** the empty output buffer in the initial configuration
-  rl o < int Xl ; S,OmegaIn > => < S,(Xl |-> 0),OmegaIn,epsilon > .
+---  rl o < int Xl ; S,OmegaIn > => < S,(Xl |-> 0),OmegaIn,epsilon > .
+*** </new>
+
+*** <new> Programs are regarded as statements in the initial state
+  rl o < P, OmegaIn > => < P,.State,OmegaIn,epsilon > .
 *** </new>
 
 *** <new> Added the actual reduction semantics with evaluation contexts of read and print
   rl o < C,Sigma,I : OmegaIn,OmegaOut >[read()] => < C,Sigma,OmegaIn,OmegaOut >[I] .
   rl o < C,Sigma,OmegaIn,OmegaOut >[print(I);] => < C,Sigma,OmegaIn,OmegaOut : I >[{}] .
+*** </new>
+
+*** <new> Added the reduction semantics rule for let
+  rl o < C, Sigma,OmegaIn,OmegaOut >[let X = I in S] => < C,Sigma[I / X],OmegaIn,OmegaOut >[S  X = Sigma(X) ;] .
 *** </new>
 
 endm
