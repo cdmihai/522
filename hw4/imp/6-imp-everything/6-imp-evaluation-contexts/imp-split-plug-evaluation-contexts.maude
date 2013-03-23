@@ -1,4 +1,4 @@
-mod IMP-CONFIGURATIONS-EVALUATION-CONTEXTS is including IMP-SYNTAX + STATE .
+mod IMP-CONFIGURATIONS-EVALUATION-CONTEXTS is including IMP-DESUGARED-SYNTAX + STATE .
 
 *** <new> Included the module BUFFER as well
   including BUFFER .   
