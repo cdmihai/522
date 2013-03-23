@@ -54,5 +54,10 @@ mod IMP-SEMANTICS-EVALUATION-CONTEXTS is including IMP-SPLIT-PLUG-EVALUATION-CON
   if Sigma(X) =/=Bool undefined .
 *** </new>
 
+*** <new> The actual RSEC of division-by-zero and halt
+  rl o < C,Sigma,OmegaIn,OmegaOut >[ I / 0] => < {},Sigma,OmegaIn,OmegaOut > .
+  rl o < C,Sigma,OmegaIn,OmegaOut >[halt ;] => < {},Sigma,OmegaIn,OmegaOut > .
+*** </new>
+
 
 endm
