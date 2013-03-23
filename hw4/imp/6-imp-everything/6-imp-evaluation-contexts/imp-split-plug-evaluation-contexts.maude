@@ -80,5 +80,15 @@ mod IMP-SPLIT-PLUG-EVALUATION-CONTEXTS is including IMP-CONFIGURATIONS-EVALUATIO
   eq plug((let X = C in S)[Syn]) = let X = plug(C[Syn]) in S .
 *** </new>
 
+*** <new> Added evaluation contexts for spawn:
+  op spawn_ : Context -> Context .  eq plug((spawn C)[Syn]) = spawn plug(C[Syn]) .
+ crl split(spawn S) => (spawn C)[Syn] if split(S) => C[Syn] .
+
+  op spawn__ : Stmt Context -> Context .  eq plug((spawn S1 C)[Syn]) = spawn S1 plug(C[Syn]) .
+ crl split(spawn S1 S2) => (spawn S1 C)[Syn] if split(S2) => C[Syn] .
+--- it is important that __ was right associative, so the above gives
+--- all the behaviors of, for example, (spawn s1 spawn s2) s3 (s3 can also reduce first).
+*** </new>
+
 
 endm

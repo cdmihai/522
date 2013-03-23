@@ -59,5 +59,10 @@ mod IMP-SEMANTICS-EVALUATION-CONTEXTS is including IMP-SPLIT-PLUG-EVALUATION-CON
   rl o < C,Sigma,OmegaIn,OmegaOut >[halt ;] => < {},Sigma,OmegaIn,OmegaOut > .
 *** </new>
 
+*** <new> Same comments as for the first variant.
+  op spawn_ : Stmt -> Stmt [ditto] .
+  rl spawn {} => {} .
+--- eq (S1 S2) S = S1 (S2 S) . already introduced by locals
+*** </new>
 
 endm
