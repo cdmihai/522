@@ -49,4 +49,10 @@ mod IMP-SEMANTICS-EVALUATION-CONTEXTS is including IMP-SPLIT-PLUG-EVALUATION-CON
   rl o < C, Sigma,OmegaIn,OmegaOut >[let X = I in S] => < C,Sigma[I / X],OmegaIn,OmegaOut >[S  X = Sigma(X) ;] .
 *** </new>
 
+*** <new> The actual RSEC of increment
+ crl o < C,Sigma,OmegaIn,OmegaOut >[++ X] => < C,Sigma[(Sigma(X) +Int 1) / X],OmegaIn,OmegaOut >[Sigma(X) +Int 1]
+  if Sigma(X) =/=Bool undefined .
+*** </new>
+
+
 endm

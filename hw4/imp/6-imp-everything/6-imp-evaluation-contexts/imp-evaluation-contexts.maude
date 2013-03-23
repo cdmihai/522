@@ -52,4 +52,12 @@ search  * < sumPgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 search  * < shadow2Stmt, (y,z) |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
 *** </new>
 
+*** <new> increment
+	rewrite * < sum++Pgm, s |-> 0, epsilon, epsilon > .
+	search  * < sum++Pgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
+
+	rewrite * < nondet++Pgm, x |-> 0, epsilon, epsilon > .
+	search  * < nondet++Pgm, s |-> 0, epsilon, epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
 quit
