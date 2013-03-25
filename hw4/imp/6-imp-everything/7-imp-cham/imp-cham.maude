@@ -55,5 +55,13 @@ search  {| {| sumPgm |} # {| s |-> 0 |} # {| epsilon |} |} =>! Sol:Solution .
 	search  {| {| nondet++Pgm |} # {| x |-> 0 |} # {| epsilon |} |} =>! Sol:Solution .
 *** </new>
 
+*** <new Halting
+	rewrite {| {| sumHaltPgm |} # {| s |-> 0 |} # {| epsilon |}  |} .
+	search  {| {| sumHaltPgm |} # {| s |-> 0 |} # {| epsilon |}  |} =>! Sol:Solution .
+
+	rewrite {| {| sumDivByZeroPgm |} # {| s |-> 0 |} # {| epsilon |}  |} .
+	search  {| {| sumDivByZeroPgm |} # {| s |-> 0 |} # {| epsilon |}  |} =>! Sol:Solution .
+*** </new>
+
 
 quit
