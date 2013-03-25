@@ -1,4 +1,4 @@
-mod IMP-HEATING-COOLING-CHAM is including IMP-SYNTAX + CHAM .
+mod IMP-HEATING-COOLING-CHAM is including IMP-DESUGARED-SYNTAX + CHAM .
   sorts Hole ResultAExp ResultBExp ResultStmt Result .
   subsorts Hole < AExp BExp Stmt < Molecule .
   subsorts ResultAExp ResultBExp ResultStmt < Result < Molecule .
