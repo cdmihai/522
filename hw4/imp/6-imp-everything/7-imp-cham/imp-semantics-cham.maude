@@ -17,6 +17,8 @@ mod IMP-SEMANTICS-CHAM is including IMP-HEATING-COOLING-CHAM + STATE .
 
   var X : Id .  var Xl : List{Id} .  var C : Molecule .  var Ms : Bag{Molecule} .
   var Sigma : State .  var B B2 : BExp .  var I J I1 I2 : Int .  var S S1 S2 : Stmt .
+  var P : Pgm .
+
   rl {| {| X ~> C |} # {| X |-> I & Sigma |} # Ms |} => {| {| I ~> C |} # {| X |-> I & Sigma |} # Ms |} .
   rl {| (I1 + I2 ~> C) # Ms |} => {| (I1 +Int I2 ~> C) # Ms |} .
  crl {| (I1 / I2 ~> C) # Ms |} => {| (I1 /Int I2 ~> C) # Ms |} if I2 =/=Bool 0 .
@@ -33,14 +35,18 @@ mod IMP-SEMANTICS-CHAM is including IMP-HEATING-COOLING-CHAM + STATE .
   rl {| (while (B) S ~> C) # Ms |} => {| (if (B) {S while (B) S} else {} ~> C) # Ms |} .
 
 *** <new> Changed the rule below to initialize the input and the (empty) output buffers.
-  rl {| {| int Xl ; S |} # {| OmegaIn |} # Ms |}
-  => {| {| S |} # {| Xl |-> 0 |} # {| input # OmegaIn |} # {| output # epsilon |} # Ms |} .
+  rl {| {| P |} # {| Sigma |} # {| OmegaIn |} # Ms |}
+  => {| {| P |} # {| Sigma |} # {| input # OmegaIn |} # {| output # epsilon |} # Ms |} .
 *** </new>
 
 *** <new> Actual CHAM semantics of input/output
   var OmegaIn OmegaOut : Buffer .
   rl {| {| read() ~> C |} # {| input # I : OmegaIn |} # Ms |} => {| {| I ~> C |} # {| input # OmegaIn |} # Ms |} .
   rl {| {| print(I); ~> C |} # {| output # OmegaOut |} # Ms |} => {| {| {} ~> C |} # {| output # OmegaOut : I |} # Ms |} .
+*** </new>
+
+*** <new> Added the CHAM rule for let
+  rl {| {| let X = I in S ~> C |} # {| Sigma |} # Ms |} => {| {| S  X = _`(_`)(Sigma,X) ; ~> C |} # {| Sigma[I / X] |} # Ms |} .
 *** </new>
   
 endm

@@ -20,20 +20,31 @@ mod TEST is including IMP-SEMANTICS-CHAM + IMP-PROGRAMS .  endm
 
 rewrite {| {| sumPgm |} # {| s |-> 0 |} # {| epsilon |} |} .
 rewrite {| {| collatzStmt |} # {| n |-> 10 & (q,r,s) |-> 0 |} # {| input # epsilon |} # {| output # epsilon |} |} .
-rewrite {| {| collatzPgm |} # {| epsilon |} |} .
+rewrite {| {| collatzPgm |} # {| s |-> 0 |} # {| epsilon |} |} .
 rewrite {| {| multiplicationStmt |} # {| x |-> 25 & y |-> 5 & (q,r,z) |-> 0 |} # {| input # epsilon |} # {| output # epsilon |} |} .
 rewrite {| {| primalityStmt |} # {| n |-> 1021 & (i,q,r,t,x,y,z) |-> 0 |} # {| input # epsilon |} # {| output # epsilon |} |} .
-rewrite {| {| countPrimesPgm |} # {| epsilon |} |} .
+rewrite {| {| countPrimesPgm |} # {| s |-> 0 |} # {| epsilon |} |} .
 
 search  {| {| sumPgm |} # {| s |-> 0 |} # {| epsilon |} |} =>! Sol:Solution .
 
-*** <new> Execute the new programs
-rewrite {| {| sumIOPgm |} # {| s |-> 0 |} # {| 100 |} |} .
-search  {| {| sumIOPgm |} # {| s |-> 0 |} # {| 100 |} |} =>! Sol:Solution .
-rewrite {| {| whileIOPgm |} # {| s |-> 0 |} # {| 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 |} |} .
-search  {| {| whileIOPgm |} # {| s |-> 0 |} # {| 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 |} |}  =>! Sol:Solution .
-rewrite {| {| nondetIOStmt |} # {| .State |} # {| input # 10 : 20 : 30 |} # {| output # epsilon |} |} .
-search  {| {| nondetIOStmt |} # {| .State |} # {| input # 10 : 20 : 30 |} # {| output # epsilon |} |} =>! Sol:Solution .
+*** <new> IO
+	rewrite {| {| sumIOPgm |} # {| s |-> 0 |} # {| 100 |} |} .
+	search  {| {| sumIOPgm |} # {| s |-> 0 |} # {| 100 |} |} =>! Sol:Solution .
+	rewrite {| {| whileIOPgm |} # {| s |-> 0 |} # {| 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 |} |} .
+	search  {| {| whileIOPgm |} # {| s |-> 0 |} # {| 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 |} |}  =>! Sol:Solution .
+	rewrite {| {| nondetIOStmt |} # {| .State |} # {| input # 10 : 20 : 30 |} # {| output # epsilon |} |} .
+	search  {| {| nondetIOStmt |} # {| .State |} # {| input # 10 : 20 : 30 |} # {| output # epsilon |} |} =>! Sol:Solution .
+*** </new>
+
+
+*** <new> shadowing
+	rewrite {| {| int s ; sumPgm |} # {| .State |} # {| input # epsilon |} # {| output # epsilon |}  |} .
+	search  {| {| int s ; sumPgm |} # {| .State |} # {| input # epsilon |} # {| output # epsilon |}  |} =>! Sol:Solution .
+
+	rewrite {| {| shadow1Stmt |} # {| (y,z) |-> 0 |} # {| input # epsilon |} # {| output # epsilon |}  |} .
+	search  {| {| shadow1Stmt |} # {| (y,z) |-> 0 |} # {| input # epsilon |} # {| output # epsilon |}  |} =>! Sol:Solution .
+	rewrite {| {| shadow2Stmt |} # {| (y,z) |-> 0 |} # {| input # epsilon |} # {| output # epsilon |}  |} .
+	search  {| {| shadow2Stmt |} # {| (y,z) |-> 0 |} # {| input # epsilon |} # {| output # epsilon |}  |} =>! Sol:Solution .
 *** </new>
 
 quit

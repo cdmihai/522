@@ -54,4 +54,9 @@ mod IMP-HEATING-COOLING-CHAM is including IMP-DESUGARED-SYNTAX + CHAM .
   rl {| (R ~> print([]); ~> C) # Ms |} => {| (print(R); ~> C) # Ms |} .
 *** </new>
 
+*** <new> Added heating/cooling rules for let, allowing to evaluate its binding expression
+  crl {| (let X = A in S ~> C) # Ms |} => {| (A ~> let X = [] in S ~> C) # Ms |} if notBool(A :: Result) .
+   rl {| (R ~> let X = [] in S ~> C) # Ms |} => {| (let X = R in S ~> C) # Ms |} .
+*** </new>
+
 endm
