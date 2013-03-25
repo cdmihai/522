@@ -47,4 +47,13 @@ search  {| {| sumPgm |} # {| s |-> 0 |} # {| epsilon |} |} =>! Sol:Solution .
 	search  {| {| shadow2Stmt |} # {| (y,z) |-> 0 |} # {| input # epsilon |} # {| output # epsilon |}  |} =>! Sol:Solution .
 *** </new>
 
+*** <new> increment
+	rewrite {| {| sum++Pgm |} # {| s |-> 0 |} # {| epsilon |} |} .
+	search  {| {| sum++Pgm |} # {| s |-> 0 |} # {| epsilon |} |} =>! Sol:Solution .
+
+	rewrite {| {| nondet++Pgm |} # {| x |-> 0 |} # {| epsilon |} |}.
+	search  {| {| nondet++Pgm |} # {| x |-> 0 |} # {| epsilon |} |} =>! Sol:Solution .
+*** </new>
+
+
 quit

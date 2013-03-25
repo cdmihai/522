@@ -48,5 +48,10 @@ mod IMP-SEMANTICS-CHAM is including IMP-HEATING-COOLING-CHAM + STATE .
 *** <new> Added the CHAM rule for let
   rl {| {| let X = I in S ~> C |} # {| Sigma |} # Ms |} => {| {| S  X = _`(_`)(Sigma,X) ; ~> C |} # {| Sigma[I / X] |} # Ms |} .
 *** </new>
+
+*** <new> The actual CHAM rule of increment
+  rl {| {| ++ X ~> C |} # {| X |-> I & Sigma |} # Ms |}
+  => {| {| I +Int 1 ~> C |} # {| X |-> (I +Int 1) & Sigma |} # Ms |} .
+*** </new>
   
 endm
