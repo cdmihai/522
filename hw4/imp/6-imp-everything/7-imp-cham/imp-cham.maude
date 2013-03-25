@@ -63,5 +63,13 @@ search  {| {| sumPgm |} # {| s |-> 0 |} # {| epsilon |} |} =>! Sol:Solution .
 	search  {| {| sumDivByZeroPgm |} # {| s |-> 0 |} # {| epsilon |}  |} =>! Sol:Solution .
 *** </new>
 
+*** <new> Execute the new program
+	rewrite {| {| sumSpawnPgm |} # {| s |-> 0 |} # {| epsilon |}   |}.
+	search  {| {| sumSpawnPgm |} # {| s |-> 0 |} # {| epsilon |}   |}=>! Sol:Solution .  --- Slow! For n=1, there are 15100 states and s can be any of 0,1,2,3,4.
+	                                              --- For n=2, there are 430945 states and s can be any of 0,1,...,9 (took about 1 min).
+	rewrite {| {| spawnPgm |} # {| s |-> 0 |} # {| epsilon |}   |}.
+	search  {| {| spawnPgm |} # {| s |-> 0 |} # {| epsilon |}   |} =>! Sol:Solution .
+*** </new>
+
 
 quit

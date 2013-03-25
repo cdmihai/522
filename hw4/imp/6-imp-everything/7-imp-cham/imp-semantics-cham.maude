@@ -58,5 +58,11 @@ mod IMP-SEMANTICS-CHAM is including IMP-HEATING-COOLING-CHAM + STATE .
   rl {| ( I / 0 ~> C) # Ms |} => {| {} # Ms |} .
   rl {| (halt ; ~> C) # Ms |} => {| {} # Ms |} .
 *** </new>
+
+*** <new> Actual CHAM semantics for spawn
+  op die : -> Molecule .
+  rl {| {| spawn S ~> C |} # Ms |} => {| {| {} ~> C |} # {| S ~> die |} # Ms |} .
+  rl {| {| {} ~> die |} # Ms |} => {| Ms |} .
+*** </new>
   
 endm
