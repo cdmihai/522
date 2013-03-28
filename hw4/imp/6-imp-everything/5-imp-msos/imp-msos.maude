@@ -1,0 +1,60 @@
+in ../../../builtins.maude
+in ../imp-syntax.maude
+in ../../state.maude
+
+*** <new> Including the input/output buffer
+in ../buffer.maude
+*** </new>
+
+in imp-semantics-msos
+
+in ../imp-programs.maude
+
+mod TEST is including IMP-SEMANTICS-MSOS + IMP-PROGRAMS .  endm
+
+rewrite * < sumPgm, s |-> 0, epsilon > .
+
+rewrite * < collatzStmt, state = (n |-> 10 & (q,r,s) |-> 0), input = epsilon, output = epsilon > .
+rewrite * < collatzPgm, s |-> 0, epsilon > .
+rewrite * < multiplicationStmt, state = (x |-> 25 & y |-> 5 & z |-> 0), input = epsilon, output = epsilon > .
+rewrite * < primalityStmt, state = (n |-> 1021 & t |-> 0), input = epsilon, output = epsilon > .
+rewrite * < countPrimesPgm, s |-> 0, epsilon > .
+
+search  * < sumPgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
+
+*** <new> IO
+	rewrite * < sumIOPgm, s |-> 0, 100 > .
+	search  * < sumIOPgm, s |-> 0, 100 > =>! Cfg:ExtendedConfiguration .
+	rewrite * < whileIOPgm, s |-> 0, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > .
+	search  * < whileIOPgm, s |-> 0, 10 : 1 : 17 : 2 : 21 : 3 : 0 : 5 : 8 : -2 : -5 : 10 > =>! Cfg:ExtendedConfiguration .
+	rewrite * < nondetIOStmt, state = .State, input = 10 : 20 : 30, output = epsilon > .
+	search  * < nondetIOStmt, state = .State, input = 10 : 20 : 30, output = epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
+*** <new> increment
+	rewrite * < sum++Pgm, s |-> 0, epsilon > .
+	search  * < sum++Pgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
+
+	rewrite * < nondet++Pgm, x |-> 0, epsilon > .
+search  * < nondet++Pgm, x |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
+*** <new> halting
+	rewrite * < sumHaltPgm, s |-> 0, epsilon > .
+	search  * < sumHaltPgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
+
+	rewrite * < sumDivByZeroPgm, s |-> 0, epsilon > .
+	search  * < sumDivByZeroPgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
+
+*** <new> threads
+rewrite * < sumSpawnPgm, s |-> 0, epsilon > .
+search  * < sumSpawnPgm, s |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .  --- Same comments as in the case of small-step SOS
+
+rewrite * < spawnPgm, x |-> 0, epsilon > .
+search  * < spawnPgm, x |-> 0, epsilon > =>! Cfg:ExtendedConfiguration .
+*** </new>
+
+
+quit
