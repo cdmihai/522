@@ -164,5 +164,44 @@ rew (/\ x . /\ y . x y z)[x / z] .
 rew (/\ u . /\ x . /\ y . x y z)[x / z] .
 rew ((/\ x . x z) (/\ x . /\ y . x y z))[x / z] .
 
+mod LAMBDA-STANDARD is
+  including SUBSTITUTION .
+  including APPLICATION .
+  var X : Var .  var E F : Exp .
+--- Comment the next rule out to see how big the deasugared
+--- lambda terms are before lambda reduction.
+--- Note that sometimes one may get much faster rewrites if one
+--- makes the rule below an equation instead of a rule.
+--- However, one should be careful with this, because equations
+--- do not obey the frozeness declarations, so one will not
+--- achieve the desired evaluation strategy; in particular,
+--- one may have non-termination where it should terminate.
+  rl (/\ X . E) F => E[F / X]  --- beta reduction
+endm
+
+mod LAMBDA-CALL-BY-VALUE is
+--- Call-by-value lambda calculus differs from other variants of lambda
+--- calculus in that beta reduction is applied only after the two arguments
+--- of the application operation are fully evaluated.  To distinguish
+--- the fully evaluated expressions from the other, a new syntactic
+--- category of values, Val, is typically introduced.  Note that the
+--- beta reduction rule below requires F to be of sort Val.
+--- Also, note that in addition to variables and builtins, the lambda
+--- abstraction is also added as a construct for values.  Maude's
+--- least-sort computation mechanism will guarantee that terms are
+--- always sorted to Val whenever possible, in spite of the overloaded
+--- lambda abstraction.  Call-by-value works best when the lambda-abstraction
+--- is restricted to not evaluate its argument, that is, when we include
+--- LAMBDA-ABSTRACTION-RESTRICTED in module LAMBDA-ABSTRACTION above.
+--- Also, the application operation has to be allowed to evaluate both
+--- its arguments, which is why APPLICATION-UNRESTRICTED is included below.
+  including SUBSTITUTION .
+  including APPLICATION-UNRESTRICTED .
+  var X : Var .  var E : Exp .  var F : Val .
+  sort Val .
+  subsorts Var Builtin < Val < Exp .
+  op /\_._ : Var Exp -> Val [ditto] .
+  rl (/\ X . E) F => E[F / X] .  --- beta reduction
+endm
 
 q
