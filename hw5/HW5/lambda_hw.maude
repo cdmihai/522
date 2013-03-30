@@ -1,0 +1,168 @@
+*** Copyright 2013, Grigore Rosu (University of Illinois). ***
+
+--- This file contains various definitions of untyped lambda calculi,
+--- some based on substitution, others based on combinators, and others
+--- based on de Bruijn nameless encodings.  There are four places
+--- where the definition can be configured, indicated by comments
+--- of the form "!!!SETTING n!!!", with n in {1,2,3,4}.  Specifically,
+--- !!!SETTING 1!!! allows to pick a lambda abstraction which is
+--- either restricted to prohibit reductions in its body or unrestricted;
+--- !!!SETTING 2!!! allows to pick an application operation which is either
+--- unrestricted or prohibits reductions in the argument (call-by-name);
+--- !!!SETTING 3!!! is only related to de Bruijn and allows to either
+--- include the conventional de Bruijn technique or the optimized one;
+--- !!!SETTING 4!!! allows to pick a particular kind of lambda calculus, that
+--- is, standard, call-by-value, with combinators, or with de Bruijn.
+
+--- Example 01: Substitution-based, standard lambda-calculus; that is,
+--- unrestricted lambda-abstraction and unrestricted application
+---   SETTING 1 = LAMBDA-ABSTRACTION-UNRESTRICTED
+---   SETTING 2 = APPLICATION-UNRESTRICTED
+---   SETTING 3 = irrelevant
+---   SETTING 4 = LAMBDA-STANDARD
+
+--- Example 02: Substitution-based lambda-calculus
+--- with no reductions in lambda abstractions
+---   SETTING 1 = LAMBDA-ABSTRACTION-RESTRICTED
+---   SETTING 2 = APPLICATION-UNRESTRICTED
+---   SETTING 3 = irrelevant
+---   SETTING 4 = LAMBDA-STANDARD
+
+--- Example 03: Substitution-based call-by-name lambda-calculus
+--- with reductions allowed in lambda abstractions
+---   SETTING 1 = LAMBDA-ABSTRACTION-UNRESTRICTED
+---   SETTING 2 = APPLICATION-CALL-BY-NAME
+---   SETTING 3 = irrelevant
+---   SETTING 4 = LAMBDA-STANDARD
+
+--- Example 04: Substitution-based call-by-name lambda-calculus
+--- with no reductions allowed in lambda abstractions
+---   SETTING 1 = LAMBDA-ABSTRACTION-RESTRICTED
+---   SETTING 2 = APPLICATION-CALL-BY-NAME
+---   SETTING 3 = irrelevant
+---   SETTING 4 = LAMBDA-STANDARD
+
+--- Example 05: Substitution-based call-by-value lambda-calculus
+--- with reductions allowed in lambda abstractions
+---   SETTING 1 = LAMBDA-ABSTRACTION-UNRESTRICTED
+---   SETTING 2 = irrelevant
+---   SETTING 3 = irrelevant
+---   SETTING 4 = LAMBDA-CALL-BY-VALUE
+
+--- Example 06: Substitution-based call-by-value lambda-calculus
+--- with no reductions allowed in lambda abstractions
+---   SETTING 1 = LAMBDA-ABSTRACTION-RESTRICTED
+---   SETTING 2 = irrelevant
+---   SETTING 3 = irrelevant
+---   SETTING 4 = LAMBDA-CALL-BY-VALUE
+
+--- Example 07: Combinators-based lambda-calculus, unrestricted application
+---   SETTING 1 = irrelevant
+---   SETTING 2 = APPLICATION-UNRESTRICTED
+---   SETTING 3 = irrelevant
+---   SETTING 4 = LAMBDA-WITH-COMBINATORS
+
+--- Example 08: Combinators-based lambda-calculus, call-by-name application
+---   SETTING 1 = irrelevant
+---   SETTING 2 = APPLICATION-CALL-BY-NAME
+---   SETTING 3 = irrelevant
+---   SETTING 4 = LAMBDA-WITH-COMBINATORS
+
+--- Example 09: De Bruijn lambda-calculus, unrestricted application
+---   SETTING 1 = irrelevant
+---   SETTING 2 = APPLICATION-UNRESTRICTED
+---   SETTING 3 = DE-BRUIJN
+---   SETTING 4 = LAMBDA-WITH-DE-BRUIJN
+
+--- Example 10: De Bruijn lambda-calculus, call-by-name application
+---   SETTING 1 = irrelevant
+---   SETTING 2 = APPLICATION-CALL-BY-NAME
+---   SETTING 3 = DE-BRUIJN
+---   SETTING 4 = LAMBDA-WITH-DE-BRUIJN
+
+--- Example 11: Optimized De Bruijn lambda-calculus, unrestricted application
+---   SETTING 1 = irrelevant
+---   SETTING 2 = APPLICATION-UNRESTRICTED
+---   SETTING 3 = DE-BRUIJN-OPTIMIZED
+---   SETTING 4 = LAMBDA-WITH-DE-BRUIJN
+
+--- Example 12: Optimized De Bruijn lambda-calculus, call-by-name application
+---   SETTING 1 = irrelevant
+---   SETTING 2 = APPLICATION-CALL-BY-NAME
+---   SETTING 3 = DE-BRUIJN-OPTIMIZED
+---   SETTING 4 = LAMBDA-WITH-DE-BRUIJN
+
+in builtins
+
+mod GENERIC-EXPRESSION is
+  including PL-ID .
+  sorts Var Builtin Exp .
+  subsort Id < Var .
+  subsort Var Builtin < Exp .
+endm
+
+mod LAMBDA-ABSTRACTION-UNRESTRICTED is
+  including GENERIC-EXPRESSION .
+--- Unrestricted lambda abstraction means that reductions can also take place
+--- inside its body.  So no strategy is defined for /\_._
+  op /\_._ : Var Exp -> Exp [prec 50] .
+endm
+
+mod LAMBDA-ABSTRACTION-RESTRICTED is
+  including GENERIC-EXPRESSION .
+--- Restricted lambda abstraction means that reductions are forbidden
+--- to take place inside its body.  So a strategy is defined for /\_._
+  op /\_._ : Var Exp -> Exp [frozen(2) prec 50] .
+endm
+
+mod LAMBDA-ABSTRACTION is
+--- !!!SETTING 1!!!
+--- Pick one of the following:
+---  including LAMBDA-ABSTRACTION-UNRESTRICTED .
+  including LAMBDA-ABSTRACTION-RESTRICTED .
+endm
+
+mod APPLICATION-UNRESTRICTED is
+  including GENERIC-EXPRESSION .
+--- Unrestricted application means that reductions can take place
+--- anywhere (both in the function and in its argument)
+  op __ : Exp Exp -> Exp [prec 25 gather(E e)] .  --- left associative, binds tighter than /\_._
+endm
+
+mod APPLICATION-CALL-BY-NAME is
+  including GENERIC-EXPRESSION .
+--- Call-by-name means that only the first argument (the function) of
+--- the application needs to be be reduced before the application takes place.
+--- The second argument is not reduced at all.
+  op __ : Exp Exp -> Exp [frozen(2) prec 25 gather(E e)] .
+endm
+
+mod APPLICATION is
+--- !!!SETTING 2!!!
+--- Pick one of the following:
+  including APPLICATION-UNRESTRICTED .
+---  including APPLICATION-CALL-BY-NAME .
+endm
+
+mod SUBSTITUTION is
+  including PL-GENERIC-SUBSTITUTION .
+  including LAMBDA-ABSTRACTION .
+  subsort Exp < GenericTerm .
+  eq bind('/\_._) = 1 .
+  op _[_/_] : Exp Exp Var -> Exp .
+  vars E F : Exp .  var X : Id .
+  eq E[F / X] = substitute(E, F, X) .
+endm
+
+mod TEST-SUBSTITUTION is
+  including SUBSTITUTION .
+  including APPLICATION .
+endm
+
+--- Testing substitution (variable capture)
+rew (/\ x . /\ y . x y z)[x / z] .
+rew (/\ u . /\ x . /\ y . x y z)[x / z] .
+rew ((/\ x . x z) (/\ x . /\ y . x y z))[x / z] .
+
+
+q
