@@ -301,5 +301,36 @@ rew (/\ /\ {0}) x .
 rew (/\ /\ {1}) x .
 rew (/\ /\ x {1} y) x .
 
+mod LAMBDA-WITH-DE-BRUIJN is
+--- There are (at least) two ways to transform a lambda expression into
+--- an equaivalent de Bruijn expression.  One is top down, where one
+--- needs to maintain a mapping from variables to "counter" natural numbers,
+--- making sure that one increases all the counters as one passes lambdas.
+--- Another is bottom up, where one elminates one bound variable at a time
+--- and this way one need not worry about maintaining any counter mapping.
+--- The former is more involved but faster; the latter is simpler but slower;
+--- note, however, that this transformation step is typically cheap anyway
+--- compared to the actual computation, so it does not really matter how we
+--- do it.   My solution below follows the bottom up approach.
+
+--- It does not really matter whether we include the restricted
+--- or the unrestricted variant of the original lambda-abstraction,
+--- because that construct gets eliminated anyway.
+  including LAMBDA-ABSTRACTION-UNRESTRICTED .
+--- !!!SETTING 3!!!
+--- Below, include either the classic de Bruijn or the optimized version.
+---  including DE-BRUIJN .
+  including DE-BRUIJN-OPTIMIZED .
+
+  op de-Bruijn-ify : Exp Var Int -> [Exp] .
+
+  var X Y : Var .  var E E1 E2 : Exp .  var N : Int .  var B : Builtin .
+
+  eq /\ X . E = /\ de-Bruijn-ify(E, X, 0) .
+  eq de-Bruijn-ify(E1 E2, X, N) = de-Bruijn-ify(E1, X, N) de-Bruijn-ify(E2, X, N) .
+  eq de-Bruijn-ify(Y, X, N) = if X ==Bool Y then {N} else Y fi .
+  eq de-Bruijn-ify(/\ Y . E, X, N) = /\ Y . de-Bruijn-ify(E, X, N +Int 1) . ---assume everything has been alpha converted to uniqueness
+
+endm
 
 q
