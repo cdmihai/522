@@ -217,7 +217,8 @@ mod DE-BRUIJN-SYNTAX is
 endm
 
 
-set print with parentheses on .
+---set print with parentheses on .
+---set trace on .
 
 mod DE-BRUIJN is
   including DE-BRUIJN-SYNTAX .
@@ -225,17 +226,37 @@ mod DE-BRUIJN is
   op ^ : Exp Int Int -> Exp . --- lift exp by amount for index
   ops Lup Ldown : Exp -> Exp . --- lift up and lift down by one index
 
-  var E E1 E2 : Exp . var C N M : Int .
+  var E E' E1 E2 : Exp . var C N M : Int . var X : Id .
 
 --- lifting
   eq Lup(E) = ^(E, 1, 0).
   eq Ldown(E) = ^(E, -1, 0).
   
   eq ^(E1 E2, C, N) = ^(E1, C, N) ^(E2, C, N) .
-  eq ^(/\ E, C, N) = /\ ^( E, C, {N +Int 1}) .
-  eq ^({M}, C, N) = if M >=Int N then M +Int C else M fi . 
+  eq ^(/\ E, C, N) = /\ ^( E, C, N +Int 1) .
+  eq ^({M}, C, N) = if (M >=Int N) then {M +Int C} else {M} fi .
+  eq ^(X, C, N) = X .
+
+--- substitution
+  eq (E1 E2)[E / {N}] = (E1[E / {N}]) (E2[E / {N}]) .  
+  eq (/\ E')[E / {N}] = /\ E'[Lup(E) / {N +Int 1}] .
+  eq {M}[E / {N}] = if M ==Bool N then E else {M} fi .
+  eq X[E / {N}] = X .
+
+--- beta reduction
+  rl (/\ E') E => Ldown(E'[Lup(E) / {0}]) .
 
 endm
+
+--- Testing Lifting
+---rew Lup({0}) .
+---rew Ldown ({0}) .
+
+---rew Lup({1}) .
+---rew Ldown ({1}) .
+
+---rew Lup((/\ {0} {1})) .
+---rew Ldown (/\ {0} {1}) .
 
 --- Testing De Bruijn
 rew (/\ {0}) x .
