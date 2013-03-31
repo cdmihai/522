@@ -217,7 +217,7 @@ mod DE-BRUIJN-SYNTAX is
 endm
 
 
----set print with parentheses on .
+set print with parentheses on .
 ---set trace on .
 
 mod DE-BRUIJN is
@@ -259,6 +259,43 @@ endm
 ---rew Ldown (/\ {0} {1}) .
 
 --- Testing De Bruijn
+rew (/\ {0}) x .
+rew (/\ /\ {0}) x .
+rew (/\ /\ {1}) x .
+rew (/\ /\ x {1} y) x .
+
+
+mod DE-BRUIJN-OPTIMIZED is
+  including DE-BRUIJN-SYNTAX .
+---...HW5... (equations defining the substitution and lifting, plus one rule for beta-reduction)
+  op ^ : Exp Int Int -> Exp . --- lift exp by amount for index
+  ops Lup Ldown : Exp -> Exp . --- lift up and lift down by one index
+
+  var E E' E1 E2 : Exp . var C N M : Int . var X : Id .
+
+--- lifting
+  eq Lup(E) = ^(E, 1, 0).
+  eq Ldown(E) = ^(E, -1, 0).
+  
+  eq ^(E1 E2, C, N) = ^(E1, C, N) ^(E2, C, N) .
+  eq ^(/\ E, C, N) = /\ ^( E, C, N +Int 1) .
+  eq ^({M}, C, N) = if (M >=Int N) then {M +Int C} else {M} fi .
+  eq ^(X, C, N) = X .
+
+--- substitution
+  eq (E1 E2)[E / {N}] = (E1[E / {N}]) (E2[E / {N}]) .  
+  eq (/\ E')[E / {N}] = /\ E'[Lup(E) / {N +Int 1}] .
+  eq X[E / {N}] = X .
+
+  eq {M}[E / {N}] = if (M ==Bool N) then E else 
+                      (if (M >Int N) then {M -Int 1} else {M} fi) 
+                    fi .
+
+--- beta reduction
+  rl (/\ E') E => E'[E / {0}] .
+endm
+
+--- Testing optimized De Bruijn
 rew (/\ {0}) x .
 rew (/\ /\ {0}) x .
 rew (/\ /\ {1}) x .
