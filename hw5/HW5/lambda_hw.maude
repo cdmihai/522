@@ -176,7 +176,7 @@ mod LAMBDA-STANDARD is
 --- do not obey the frozeness declarations, so one will not
 --- achieve the desired evaluation strategy; in particular,
 --- one may have non-termination where it should terminate.
-  rl (/\ X . E) F => E[F / X]  --- beta reduction
+  rl (/\ X . E) F => E[F / X] .  --- beta reduction
 endm
 
 mod LAMBDA-CALL-BY-VALUE is
@@ -203,5 +203,38 @@ mod LAMBDA-CALL-BY-VALUE is
   op /\_._ : Var Exp -> Val [ditto] .
   rl (/\ X . E) F => E[F / X] .  --- beta reduction
 endm
+
+mod DE-BRUIJN-SYNTAX is
+  including APPLICATION .
+  including PL-INT .
+--- Like in the standard lambda-calculus, both restricted and unrestricted
+--- lambda abstraction make sense.  However, for simplicity, we only consider
+--- the restriced lambda abstraction here.  Remove the "frozen" attribute
+--- below if you want to obtain unrestricted abstraction.
+  op /\_ : Exp -> Exp [frozen prec 50] .
+  op {_} : Int -> Var .
+  op _[_/_] : Exp Exp Int -> [Exp] [prec 10] .
+endm
+
+
+set print with parentheses on .
+
+mod DE-BRUIJN is
+  including DE-BRUIJN-SYNTAX .
+---...HW5... (equations defining the substitution and lifting, plus one rule for beta-reduction)
+  op ^_,_,_ : Exp Var Var -> Exp . --- lift var by amount for index
+
+  var E E1 E2 : Exp . var C N : Var . var I : Int . 
+  eq ^(E1 E2), C, N = (^ E1, C, N) (^ E2, C, N) .
+  eq ^ (/\ E), C, {I} = /\(^ E, C, {I +Int 1}) . 
+
+endm
+
+--- Testing De Bruijn
+rew (/\ {0}) x .
+rew (/\ /\ {0}) x .
+rew (/\ /\ {1}) x .
+rew (/\ /\ x {1} y) x .
+
 
 q
