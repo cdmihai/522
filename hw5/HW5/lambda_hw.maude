@@ -217,7 +217,7 @@ mod DE-BRUIJN-SYNTAX is
 endm
 
 
-set print with parentheses on .
+---set print with parentheses on .
 ---set trace on .
 
 mod DE-BRUIJN is
@@ -329,8 +329,37 @@ mod LAMBDA-WITH-DE-BRUIJN is
   eq /\ X . E = /\ de-Bruijn-ify(E, X, 0) .
   eq de-Bruijn-ify(E1 E2, X, N) = de-Bruijn-ify(E1, X, N) de-Bruijn-ify(E2, X, N) .
   eq de-Bruijn-ify(Y, X, N) = if X ==Bool Y then {N} else Y fi .
-  eq de-Bruijn-ify(/\ Y . E, X, N) = /\ Y . de-Bruijn-ify(E, X, N +Int 1) . ---assume everything has been alpha converted to uniqueness
+
+ *** I guess the following rule is not needed since it starts from the innermost lambdas and then goes upward 
+ --- eq de-Bruijn-ify(/\ Y . E, X, N) = /\ Y . de-Bruijn-ify(E, X, N +Int 1) . ---assume everything has been alpha converted to uniqueness
+
+  eq de-Bruijn-ify(/\ E, X, N) = /\ de-Bruijn-ify(E, X, N +Int 1) . ---assume everything has been alpha converted to uniqueness
 
 endm
+
+mod LAMBDA is
+--- !!!SETTING 4!!!
+--- Make sure that the desired computational infrastructure is included below.
+---  including LAMBDA-STANDARD .
+---  including LAMBDA-CALL-BY-VALUE .
+---  including LAMBDA-WITH-COMBINATORS .
+  including LAMBDA-WITH-DE-BRUIJN .
+endm
+
+--- Testing lambda calculus
+rew (/\ x . x) y .
+rew (/\ x . x) (/\ x . x) .
+rew (/\ f . (/\ x . f x) y) g .           --- non-deterministic but confluent
+rew (/\ z . z z)(/\ x . /\ y . x y) .     --- tricky variable capture possible
+rew (/\ z . /\ a . /\ b . z a b) (a b)  . --- two fresh variables needed
+rew /\ x . x x .                          --- this is fine in isolation
+***rew (/\ x . x x)(/\ x . x x) .            --- should not terminate
+rew /\ x . f (x x) .
+--- The next two should not terminate under unrestricted application
+***rew (/\ x . f (x x)) (/\ x . f (x x)) .        
+***rew /\ f . (/\ x . f (x x)) (/\ x . f (x x)) .
+
+set trace on .
+---rew (/\ f . (/\ x . f x) y) g .           --- non-deterministic but confluent
 
 q
