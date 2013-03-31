@@ -222,11 +222,18 @@ set print with parentheses on .
 mod DE-BRUIJN is
   including DE-BRUIJN-SYNTAX .
 ---...HW5... (equations defining the substitution and lifting, plus one rule for beta-reduction)
-  op ^ : Exp Var Var -> Exp . --- lift var by amount for index
+  op ^ : Exp Int Int -> Exp . --- lift exp by amount for index
+  ops Lup Ldown : Exp -> Exp . --- lift up and lift down by one index
 
-  var E E1 E2 : Exp . var C N : Var . var I : Int . 
-  eq ^(E1 E2, C, N) = ^ (E1, C, N) ^ (E2, C, N) .
-  eq ^(/\ E, C, {I}) = /\^( E, C, {I +Int 1}) . 
+  var E E1 E2 : Exp . var C N M : Int .
+
+--- lifting
+  eq Lup(E) = ^(E, 1, 0).
+  eq Ldown(E) = ^(E, -1, 0).
+  
+  eq ^(E1 E2, C, N) = ^(E1, C, N) ^(E2, C, N) .
+  eq ^(/\ E, C, N) = /\ ^( E, C, {N +Int 1}) .
+  eq ^({M}, C, N) = if M >=Int N then M +Int C else M fi . 
 
 endm
 
