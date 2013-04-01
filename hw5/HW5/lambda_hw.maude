@@ -213,8 +213,9 @@ mod COMBINATORY-LOGIC is
 --- Like in the case of lambda with substitution above, making
 --- these rules equations may yield faster executions sometimes,
 --- but in general it may lead to unsoundness and non-termination.
-  rl K ...HW5...
-  rl S ...HW5...
+
+  rl K E F => E .
+  rl S E F G => E G ( F G ) .
 endm
 
 --- Testing combinators
@@ -228,7 +229,8 @@ mod LAMBDA-WITH-COMBINATORS is
 --- because that construct gets eliminated anyway.
   including LAMBDA-ABSTRACTION-UNRESTRICTED .
   including COMBINATORY-LOGIC .
-...HW5... (equations defining the translation from lambda calculus to combinators)
+
+
 endm
 
 mod DE-BRUIJN-SYNTAX is
