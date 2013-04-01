@@ -204,6 +204,33 @@ mod LAMBDA-CALL-BY-VALUE is
   rl (/\ X . E) F => E[F / X] .  --- beta reduction
 endm
 
+mod COMBINATORY-LOGIC is
+  including APPLICATION .
+  ops S K : -> Exp .
+  var E F G : Exp .
+--- You may comment out the rules below to see how huge
+--- the SK representations of even small lambda terms can be.
+--- Like in the case of lambda with substitution above, making
+--- these rules equations may yield faster executions sometimes,
+--- but in general it may lead to unsoundness and non-termination.
+  rl K ...HW5...
+  rl S ...HW5...
+endm
+
+--- Testing combinators
+rew S K K x .        --- S K K is the identity
+rew S K K (S K K) .  --- S K K is the identity
+
+mod LAMBDA-WITH-COMBINATORS is
+  including PL-BOOL .
+--- It does not really matter whether we include the restricted
+--- or the unrestricted variant of the original lambda-abstraction,
+--- because that construct gets eliminated anyway.
+  including LAMBDA-ABSTRACTION-UNRESTRICTED .
+  including COMBINATORY-LOGIC .
+...HW5... (equations defining the translation from lambda calculus to combinators)
+endm
+
 mod DE-BRUIJN-SYNTAX is
   including APPLICATION .
   including PL-INT .
