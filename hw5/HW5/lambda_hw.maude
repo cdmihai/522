@@ -367,6 +367,7 @@ mod LAMBDA-WITH-COMBINATORS is
 
   eq /\ X . E = [X]E .
   eq [X]Y = if X ==Bool Y then S K K else K Y fi .
+  eq [X] E F = S ([X] E) ([X] F) .
 endm
 
 mod LAMBDA is
@@ -377,7 +378,6 @@ mod LAMBDA is
   including LAMBDA-WITH-COMBINATORS .
 ---  including LAMBDA-WITH-DE-BRUIJN .
 endm
-
 
 
 --- Testing lambda calculus
