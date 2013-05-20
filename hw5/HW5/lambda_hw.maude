@@ -375,9 +375,9 @@ endm
 mod LAMBDA is
 --- !!!SETTING 4!!!
 --- Make sure that the desired computational infrastructure is included below.
----  including LAMBDA-STANDARD .
+  including LAMBDA-STANDARD .
 ---  including LAMBDA-CALL-BY-VALUE .
-  including LAMBDA-WITH-COMBINATORS .
+---  including LAMBDA-WITH-COMBINATORS .
 ---  including LAMBDA-WITH-DE-BRUIJN .
 endm
 
@@ -394,8 +394,23 @@ rew /\ x . f (x x) .
 --- The next two should not terminate under unrestricted application
 ***rew (/\ x . f (x x)) (/\ x . f (x x)) .        
 ***rew /\ f . (/\ x . f (x x)) (/\ x . f (x x)) .
-
-set trace on .
 ---rew (/\ f . (/\ x . f x) y) g .           --- non-deterministic but confluent
 
-q
+mod CURRYING is
+  including LAMBDA .
+  var X : Var .  var Xs E : Exp .
+--- We do a bit of a syntactic stratch here: using application
+--- to group the binding variables.  It works: it initially
+--- parses uncurried terms to kinds, then to sorts after currying.
+ eq /\ Xs X . E = /\ Xs . /\ X . E .
+endm
+
+rew (/\ x . x) y .
+
+--- Testing currying
+rew (/\ x y z . x y z) a b .
+rew (/\ x y z . x y z) (/\ x y z . x y z) a b .
+rew (/\ x y z . (/\ x y z . x y z) y z) (/\ x y z . x y z) a b .
+
+
+q .
