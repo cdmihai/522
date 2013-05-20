@@ -354,16 +354,31 @@ endm
 rew S K K x .        --- S K K is the identity
 rew S K K (S K K) .  --- S K K is the identity
 
-q .
+mod LAMBDA-WITH-COMBINATORS is
+  including PL-BOOL .
+--- It does not really matter whether we include the restricted
+--- or the unrestricted variant of the original lambda-abstraction,
+--- because that construct gets eliminated anyway.
+  including LAMBDA-ABSTRACTION-UNRESTRICTED .
+  including COMBINATORY-LOGIC .
+  op [_]_ : Var Exp -> Exp .
+
+  var X Y : Var . var E F G : Exp .
+
+  eq /\ X . E = [X]E .
+  eq [X]Y = if X ==Bool Y then S K K else K Y fi .
+endm
 
 mod LAMBDA is
 --- !!!SETTING 4!!!
 --- Make sure that the desired computational infrastructure is included below.
 ---  including LAMBDA-STANDARD .
 ---  including LAMBDA-CALL-BY-VALUE .
----  including LAMBDA-WITH-COMBINATORS .
-  including LAMBDA-WITH-DE-BRUIJN .
+  including LAMBDA-WITH-COMBINATORS .
+---  including LAMBDA-WITH-DE-BRUIJN .
 endm
+
+
 
 --- Testing lambda calculus
 rew (/\ x . x) y .
