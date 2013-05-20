@@ -366,8 +366,10 @@ mod LAMBDA-WITH-COMBINATORS is
   var X Y : Var . var E F G : Exp .
 
   eq /\ X . E = [X]E .
-  eq [X]Y = if X ==Bool Y then S K K else K Y fi .
+  eq [X] Y = if X ==Bool Y then S K K else K Y fi .
   eq [X] E F = S ([X] E) ([X] F) .
+  eq [X] K = K K .
+  eq [X] S = K S . 
 endm
 
 mod LAMBDA is
