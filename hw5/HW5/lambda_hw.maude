@@ -412,5 +412,33 @@ rew (/\ x y z . x y z) a b .
 rew (/\ x y z . x y z) (/\ x y z . x y z) a b .
 rew (/\ x y z . (/\ x y z . x y z) y z) (/\ x y z . x y z) a b .
 
+mod CHURCH-BOOLEANS is
+  including CURRYING .
+--- We prefix with $ Church stuff which may colide with the builtins.
+  ops $true $false and if-then-else : -> Exp .
+  eq $true  = /\ x y . x .
+--- Use constants x, y, etc., of sort Var, and not Maude variables X, Y, etc.
+...HW5...
+endm
+
+--- Testing Church Booleans
+rew and $true $false .
+--- The next two are not necessarily equal.
+rew and (and x y) z .
+rew and x (and y z) .
+--- The next two pairs split cases when x above is true vs. false.  Each pair
+--- may reduce to equal terms in some calculi, but not necessarily in all.
+rew and (and $true y) z .
+rew and $true (and y z) .
+rew and (and $false y) z .
+rew and $false (and y z) .
+--- The only thing which is guaranteed is that they are equal iff x, y, z are
+--- all Church Booleans.  Morover, since the results are lambda abstractions,
+--- one may need to apply them in some calculi in order to see that they are
+--- equal, like below.  One such calculus is combinators with call-by-name.
+rew and (and $false $true) $false t f .
+rew and $false (and $true $false) t f .
+
+
 
 q .
