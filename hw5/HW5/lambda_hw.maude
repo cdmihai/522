@@ -337,6 +337,25 @@ mod LAMBDA-WITH-DE-BRUIJN is
 
 endm
 
+mod COMBINATORY-LOGIC is
+  including APPLICATION .
+  ops S K : -> Exp .
+  var E F G : Exp .
+--- You may comment out the rules below to see how huge
+--- the SK representations of even small lambda terms can be.
+--- Like in the case of lambda with substitution above, making
+--- these rules equations may yield faster executions sometimes,
+--- but in general it may lead to unsoundness and non-termination.
+  rl K E F => E . 
+  rl S E F G => E G ( F G ) . 
+endm
+
+--- Testing combinators
+rew S K K x .        --- S K K is the identity
+rew S K K (S K K) .  --- S K K is the identity
+
+q .
+
 mod LAMBDA is
 --- !!!SETTING 4!!!
 --- Make sure that the desired computational infrastructure is included below.
