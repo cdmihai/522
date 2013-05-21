@@ -176,7 +176,7 @@ mod LAMBDA-STANDARD is
 --- do not obey the frozeness declarations, so one will not
 --- achieve the desired evaluation strategy; in particular,
 --- one may have non-termination where it should terminate.
-  rl (/\ X . E) F => ...HW5...  --- beta reduction
+  rl (/\ X . E) F => E[F / X] .  --- beta reduction
 endm
 
 mod LAMBDA-CALL-BY-VALUE is
@@ -204,33 +204,6 @@ mod LAMBDA-CALL-BY-VALUE is
   rl (/\ X . E) F => E[F / X] .  --- beta reduction
 endm
 
-mod COMBINATORY-LOGIC is
-  including APPLICATION .
-  ops S K : -> Exp .
-  var E F G : Exp .
---- You may comment out the rules below to see how huge
---- the SK representations of even small lambda terms can be.
---- Like in the case of lambda with substitution above, making
---- these rules equations may yield faster executions sometimes,
---- but in general it may lead to unsoundness and non-termination.
-  rl K ...HW5...
-  rl S ...HW5...
-endm
-
---- Testing combinators
-rew S K K x .        --- S K K is the identity
-rew S K K (S K K) .  --- S K K is the identity
-
-mod LAMBDA-WITH-COMBINATORS is
-  including PL-BOOL .
---- It does not really matter whether we include the restricted
---- or the unrestricted variant of the original lambda-abstraction,
---- because that construct gets eliminated anyway.
-  including LAMBDA-ABSTRACTION-UNRESTRICTED .
-  including COMBINATORY-LOGIC .
-...HW5... (equations defining the translation from lambda calculus to combinators)
-endm
-
 mod DE-BRUIJN-SYNTAX is
   including APPLICATION .
   including PL-INT .
@@ -243,10 +216,47 @@ mod DE-BRUIJN-SYNTAX is
   op _[_/_] : Exp Exp Int -> [Exp] [prec 10] .
 endm
 
+
+---set print with parentheses on .
+---set trace on .
+
 mod DE-BRUIJN is
   including DE-BRUIJN-SYNTAX .
-...HW5... (equations defining the substitution and lifting, plus one rule for beta-reduction)
+---...HW5... (equations defining the substitution and lifting, plus one rule for beta-reduction)
+  op ^ : Exp Int Int -> Exp . --- lift exp by amount for index
+  ops Lup Ldown : Exp -> Exp . --- lift up and lift down by one index
+
+  var E E' E1 E2 : Exp . var C N M : Int . var X : Id .
+
+--- lifting
+  eq Lup(E) = ^(E, 1, 0).
+  eq Ldown(E) = ^(E, -1, 0).
+  
+  eq ^(E1 E2, C, N) = ^(E1, C, N) ^(E2, C, N) .
+  eq ^(/\ E, C, N) = /\ ^( E, C, N +Int 1) .
+  eq ^({M}, C, N) = if (M >=Int N) then {M +Int C} else {M} fi .
+  eq ^(X, C, N) = X .
+
+--- substitution
+  eq (E1 E2)[E / {N}] = (E1[E / {N}]) (E2[E / {N}]) .  
+  eq (/\ E')[E / {N}] = /\ E'[Lup(E) / {N +Int 1}] .
+  eq {M}[E / {N}] = if M ==Bool N then E else {M} fi .
+  eq X[E / {N}] = X .
+
+--- beta reduction
+  rl (/\ E') E => Ldown(E'[Lup(E) / {0}]) .
+
 endm
+
+--- Testing Lifting
+---rew Lup({0}) .
+---rew Ldown ({0}) .
+
+---rew Lup({1}) .
+---rew Ldown ({1}) .
+
+---rew Lup((/\ {0} {1})) .
+---rew Ldown (/\ {0} {1}) .
 
 --- Testing De Bruijn
 rew (/\ {0}) x .
@@ -254,9 +264,35 @@ rew (/\ /\ {0}) x .
 rew (/\ /\ {1}) x .
 rew (/\ /\ x {1} y) x .
 
+
 mod DE-BRUIJN-OPTIMIZED is
   including DE-BRUIJN-SYNTAX .
-...HW5... (equations defining the substitution and lifting, plus one rule for beta-reduction)
+---...HW5... (equations defining the substitution and lifting, plus one rule for beta-reduction)
+  op ^ : Exp Int Int -> Exp . --- lift exp by amount for index
+  ops Lup Ldown : Exp -> Exp . --- lift up and lift down by one index
+
+  var E E' E1 E2 : Exp . var C N M : Int . var X : Id .
+
+--- lifting
+  eq Lup(E) = ^(E, 1, 0).
+  eq Ldown(E) = ^(E, -1, 0).
+  
+  eq ^(E1 E2, C, N) = ^(E1, C, N) ^(E2, C, N) .
+  eq ^(/\ E, C, N) = /\ ^( E, C, N +Int 1) .
+  eq ^({M}, C, N) = if (M >=Int N) then {M +Int C} else {M} fi .
+  eq ^(X, C, N) = X .
+
+--- substitution
+  eq (E1 E2)[E / {N}] = (E1[E / {N}]) (E2[E / {N}]) .  
+  eq (/\ E')[E / {N}] = /\ E'[Lup(E) / {N +Int 1}] .
+  eq X[E / {N}] = X .
+
+  eq {M}[E / {N}] = if (M ==Bool N) then E else 
+                      (if (M >Int N) then {M -Int 1} else {M} fi) 
+                    fi .
+
+--- beta reduction
+  rl (/\ E') E => E'[E / {0}] .
 endm
 
 --- Testing optimized De Bruijn
@@ -285,10 +321,55 @@ mod LAMBDA-WITH-DE-BRUIJN is
 --- Below, include either the classic de Bruijn or the optimized version.
 ---  including DE-BRUIJN .
   including DE-BRUIJN-OPTIMIZED .
+
   op de-Bruijn-ify : Exp Var Int -> [Exp] .
+
   var X Y : Var .  var E E1 E2 : Exp .  var N : Int .  var B : Builtin .
+
   eq /\ X . E = /\ de-Bruijn-ify(E, X, 0) .
-...HW5...
+  eq de-Bruijn-ify(E1 E2, X, N) = de-Bruijn-ify(E1, X, N) de-Bruijn-ify(E2, X, N) .
+  eq de-Bruijn-ify(Y, X, N) = if X ==Bool Y then {N} else Y fi .
+
+ *** I guess the following rule is not needed since it starts from the innermost lambdas and then goes upward 
+ --- eq de-Bruijn-ify(/\ Y . E, X, N) = /\ Y . de-Bruijn-ify(E, X, N +Int 1) . ---assume everything has been alpha converted to uniqueness
+
+  eq de-Bruijn-ify(/\ E, X, N) = /\ de-Bruijn-ify(E, X, N +Int 1) . ---assume everything has been alpha converted to uniqueness
+
+endm
+
+mod COMBINATORY-LOGIC is
+  including APPLICATION .
+  ops S K : -> Exp .
+  var E F G : Exp .
+--- You may comment out the rules below to see how huge
+--- the SK representations of even small lambda terms can be.
+--- Like in the case of lambda with substitution above, making
+--- these rules equations may yield faster executions sometimes,
+--- but in general it may lead to unsoundness and non-termination.
+  rl K E F => E . 
+  rl S E F G => E G ( F G ) . 
+endm
+
+--- Testing combinators
+rew S K K x .        --- S K K is the identity
+rew S K K (S K K) .  --- S K K is the identity
+
+mod LAMBDA-WITH-COMBINATORS is
+  including PL-BOOL .
+--- It does not really matter whether we include the restricted
+--- or the unrestricted variant of the original lambda-abstraction,
+--- because that construct gets eliminated anyway.
+  including LAMBDA-ABSTRACTION-UNRESTRICTED .
+  including COMBINATORY-LOGIC .
+  op [_]_ : Var Exp -> Exp .
+
+  var X Y : Var . var E F G : Exp .
+
+  eq /\ X . E = [X]E .
+  eq [X] Y = if X ==Bool Y then S K K else K Y fi .
+  eq [X] E F = S ([X] E) ([X] F) .
+  eq [X] K = K K .
+  eq [X] S = K S . 
 endm
 
 mod LAMBDA is
@@ -299,6 +380,7 @@ mod LAMBDA is
 ---  including LAMBDA-WITH-COMBINATORS .
 ---  including LAMBDA-WITH-DE-BRUIJN .
 endm
+
 
 --- Testing lambda calculus
 rew (/\ x . x) y .
@@ -312,6 +394,7 @@ rew /\ x . f (x x) .
 --- The next two should not terminate under unrestricted application
 ***rew (/\ x . f (x x)) (/\ x . f (x x)) .        
 ***rew /\ f . (/\ x . f (x x)) (/\ x . f (x x)) .
+---rew (/\ f . (/\ x . f x) y) g .           --- non-deterministic but confluent
 
 mod CURRYING is
   including LAMBDA .
@@ -319,8 +402,10 @@ mod CURRYING is
 --- We do a bit of a syntactic stratch here: using application
 --- to group the binding variables.  It works: it initially
 --- parses uncurried terms to kinds, then to sorts after currying.
-  eq /\ Xs X . E = ...HW5...
+ eq /\ Xs X . E = /\ Xs . /\ X . E .
 endm
+
+rew (/\ x . x) y .
 
 --- Testing currying
 rew (/\ x y z . x y z) a b .
@@ -332,8 +417,11 @@ mod CHURCH-BOOLEANS is
 --- We prefix with $ Church stuff which may colide with the builtins.
   ops $true $false and if-then-else : -> Exp .
   eq $true  = /\ x y . x .
+  eq $false = /\ x y . y .
+  eq if-then-else = /\ x y z . x y z .
+  eq and = /\ x y . x y $false . 
 --- Use constants x, y, etc., of sort Var, and not Maude variables X, Y, etc.
-...HW5...
+
 endm
 
 --- Testing Church Booleans
@@ -366,8 +454,8 @@ mod CHURCH-NUMERALS is
   eq succ  = /\ n s z . n s (s z) .
   eq succ' = /\ n s z . s (n s z) .
   eq plus  = /\ m n s z . m s (n s z) .
-  eq mult  = ...HW5...
-  eq power = ...HW5...
+  eq mult  = /\ m n . m (plus n) ($0) .
+  eq power = /\ m n . n (mult m) ($1) . 
 endm
 
 mod DISPLAY-CHURCH-NUMERALS is
@@ -396,12 +484,15 @@ rew display(plus $0 $5) .           --- testing Peano for particular values
 rew display(plus (succ $5) $4) .    --- should be equal to the following
 rew display(succ (plus $5 $4)) .
 rew display(mult $5 $5) .           --- $(25)
-rew display(power $5 $3) .          --- $(125); slow with combinators
+---rew display(power $5 $3) .          --- $(125); slow with combinators
 
 mod CHURCH-PAIRS is
   including CHURCH-BOOLEANS .
   ops pair 1st 2nd : -> Exp .
-...HW5... (3 equations)
+
+  eq pair = /\ x y b . b x y .
+  eq 1st = /\ p . p $true .
+  eq 2nd = /\ p . p $false .
 endm
 
 --- Testing pairing
@@ -418,7 +509,10 @@ rew 2nd p .
 mod CHURCH-FIBONACCI is
   including DISPLAY-CHURCH-NUMERALS + CHURCH-PAIRS .
   ops start-fibo step-fibo fibo : -> Exp .
-...HW5... (3 equations)
+
+  eq start-fibo = pair $0 $1 .
+  eq step-fibo = /\ p . pair (2nd p) (plus (1st p) (2nd p)) .
+  eq fibo = /\ n . 1st (n step-fibo start-fibo) .
 endm
 
 --- Testing Fibonacci
@@ -428,7 +522,10 @@ rew display(fibo $4) .
 mod CHURCH-PREDECESSOR is
   including DISPLAY-CHURCH-NUMERALS + CHURCH-PAIRS .
   ops start-pred step-pred pred : -> Exp .
-...HW5... (3 equations)
+  
+  eq start-pred = pair $0 $0 .
+  eq step-pred = /\ p . pair (2nd p) (plus (2nd p) $1) .
+  eq pred = /\ n . 1st (n step-pred start-pred) .
 endm
 
 --- Testing Church predecessor
@@ -470,7 +567,7 @@ mod FIXED-POINT-COMBINATORS is
   including CURRYING .
 --- Here are several classic combinators:
   ops Y-name Y-value Y-Turing Y-Turing-value Y-Klop L : -> Exp .
-  eq Y-name         = ...HW5...
+  eq Y-name         = /\ f . (/\ x . f (x x)) (/\ x . f (x x)) .
   eq Y-value        = /\ f . (/\ x . f (/\ y . x x y)) (/\ x . f (/\ y . x x y)) .
   eq Y-Turing       = (/\ x f . f (x x f)) (/\ x f . f (x x f)) .
   eq Y-Turing-value = (/\ x f . (f (/\ y . x x f y))) (/\ x f . (f (/\ y . x x f y))) .
@@ -511,7 +608,7 @@ mod FACTORIALS is
   including FIXED-POINT-AXIOMATIC .
   ops factorial-untypable factorial-body factorial-name
       factorial-value factorial-Turing factorial-Turing-value
-	  factorial-Klop factorial-fix : -> Exp .
+    factorial-Klop factorial-fix : -> Exp .
   eq factorial-untypable
    = /\ n . ((/\ t n . t t n)
        (/\ f n . if-then-else zero? (n) $1 (mult n (f f (pred n)))) n) .
@@ -586,7 +683,7 @@ mod FACTORIALS-WITH-BUILTINS is
   including FIXED-POINT-AXIOMATIC .
   ops factorial-untypable factorial-body factorial-name
       factorial-value factorial-Turing factorial-Turing-value
-	  factorial-Klop factorial-fix : -> Exp .
+    factorial-Klop factorial-fix : -> Exp .
   eq factorial-untypable
    = /\ n . (/\ t n . t t n) (/\ f n . if n (* n (f f (+ n -1))) 1) n .
   eq factorial-body         = /\ f n . if n (* n (f (+ n -1))) 1 .
@@ -621,4 +718,4 @@ rew factorial-fix          10 .
 --- capture, but they have to do something else in turn (the S combinator
 --- stands for and smartly encodes "substitution").
 
-q
+q .
