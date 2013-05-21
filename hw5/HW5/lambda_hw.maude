@@ -519,4 +519,18 @@ endm
 rew display(fibo $4) .
 ***rew display(fibo (mult $5 $2)) .  --- slow
 
+mod CHURCH-PREDECESSOR is
+  including DISPLAY-CHURCH-NUMERALS + CHURCH-PAIRS .
+  ops start-pred step-pred pred : -> Exp .
+  
+  eq start-pred = pair $0 $1 .
+  eq step-pred = /\ p . pair (2nd p) (plus (2nd p) $1) .
+  eq pred = /\ n . 1st n step-pred start-pred .
+endm
+
+--- Testing Church predecessor
+rew display(pred $0) .  --- 0
+rew display(pred $1) .  --- 0
+rew display(pred $5) .  --- 4
+
 q .
