@@ -523,9 +523,9 @@ mod CHURCH-PREDECESSOR is
   including DISPLAY-CHURCH-NUMERALS + CHURCH-PAIRS .
   ops start-pred step-pred pred : -> Exp .
   
-  eq start-pred = pair $0 $1 .
+  eq start-pred = pair $0 $0 .
   eq step-pred = /\ p . pair (2nd p) (plus (2nd p) $1) .
-  eq pred = /\ n . 1st n step-pred start-pred .
+  eq pred = /\ n . 1st (n step-pred start-pred) .
 endm
 
 --- Testing Church predecessor
