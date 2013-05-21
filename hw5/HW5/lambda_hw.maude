@@ -506,5 +506,17 @@ rew 1st p .
 rew 2nd (pair (1st p) (2nd p)) .  --- should be equal to next
 rew 2nd p .
 
+mod CHURCH-FIBONACCI is
+  including DISPLAY-CHURCH-NUMERALS + CHURCH-PAIRS .
+  ops start-fibo step-fibo fibo : -> Exp .
+
+  eq start-fibo = pair $0 $1 .
+  eq step-fibo = /\ p . pair (2nd p) (plus (1st p) (2nd p)) .
+  eq fibo = /\ n . 1st (n step-fibo start-fibo) .
+endm
+
+--- Testing Fibonacci
+rew display(fibo $4) .
+***rew display(fibo (mult $5 $2)) .  --- slow
 
 q .
