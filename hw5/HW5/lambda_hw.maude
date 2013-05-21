@@ -484,7 +484,27 @@ rew display(plus $0 $5) .           --- testing Peano for particular values
 rew display(plus (succ $5) $4) .    --- should be equal to the following
 rew display(succ (plus $5 $4)) .
 rew display(mult $5 $5) .           --- $(25)
-rew display(power $5 $3) .          --- $(125); slow with combinators
+---rew display(power $5 $3) .          --- $(125); slow with combinators
+
+mod CHURCH-PAIRS is
+  including CHURCH-BOOLEANS .
+  ops pair 1st 2nd : -> Exp .
+
+  eq pair = /\ x y b . b x y .
+  eq 1st = /\ p . p $true .
+  eq 2nd = /\ p . p $false .
+endm
+
+--- Testing pairing
+rew 1st (pair a b) .              --- a
+rew 2nd (pair a b) .              --- b
+--- An expression which is (1st,2nd)-extensionally equivalent to p:
+rew pair (1st p) (2nd p) .
+--- This can be checked as follows:
+rew 1st (pair (1st p) (2nd p)) .  --- should be equal to next
+rew 1st p .
+rew 2nd (pair (1st p) (2nd p)) .  --- should be equal to next
+rew 2nd p .
 
 
 q .
