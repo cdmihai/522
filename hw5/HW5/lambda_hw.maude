@@ -543,5 +543,179 @@ endm
 rew display(sub $5 $3) .  --- 2 --- may be slow in some settings
 rew display(sub $3 $5) .  --- 0 
 
+mod CHURCH-RELATIONS is
+  including CHURCH-SUBTRACTION .
+  ops sub zero? leq geq equal : -> Exp .
+  eq zero? = /\ n . n (and $false) $true .
+  eq leq   = /\ m n . zero? (sub m n) .
+  eq geq   = /\ m n . zero? (sub n m) .
+  eq equal = /\ m n . and (leq m n) (geq m n) .
+endm
+
+--- Testing Church relations
+--- These work with all strategies, but may take a lot to rewrite,
+--- particularly with combinators; you may want to comment them out
+--- while you work on other parts.  To understand why it takes so long
+--- with combinators, if you comment the two SK rewrite rules above out
+--- and rewrite the first term below, then you can see that the resulting
+--- SK term is huge: it has more than 4,000,000 occurrences of S and K!
+--- To see the true/false result better, we also apply them to t and f.
+***rew equal (mult $5 $3) (pred (power $2 $4)) t f .  --- true; very slow
+***rew equal (mult $5 $3) (succ (power $2 $4)) t f .  --- false
+
+mod FIXED-POINT-COMBINATORS is
+  including CURRYING .
+--- Here are several classic combinators:
+  ops Y-name Y-value Y-Turing Y-Turing-value Y-Klop L : -> Exp .
+  eq Y-name         = /\ f . (/\ x . f (x x)) (/\ x . f (x x)) .
+  eq Y-value        = /\ f . (/\ x . f (/\ y . x x y)) (/\ x . f (/\ y . x x y)) .
+  eq Y-Turing       = (/\ x f . f (x x f)) (/\ x f . f (x x f)) .
+  eq Y-Turing-value = (/\ x f . (f (/\ y . x x f y))) (/\ x f . (f (/\ y . x x f y))) .
+--- The next combinator is funny, but it needs all the alphabet letters.
+--- We could not add the constant "o" to builtin Ids, because of parsing
+--- conflicts with the "one-step capability" operation that is needed in
+--- small-step SOS.  We all wish Maude had a better parser.
+  op o : -> Id .
+  eq Y-Klop = L L L L L L L L L L L L L L L L L L L L L L L L L L .
+  eq L = /\ a b c d e f g h i j k l m n o p q s t u v w x y z r .
+            (r (t h i s  i s  a f i x e d  p o i n t  c o m b i n a t o r)) .
+endm
+
+--- Testing fixed-point combinators.
+--- These may not terminate under unrestricted lambda-abstraction.
+--- All of them should terminate with restricted lambda-abstractions
+--- (i.e., where no reductions are allowed in lambda abstraction bodies)
+rew Y-name .
+rew Y-value .
+rew Y-Turing .
+rew Y-Turing-value .
+--- The next may run out of memory with combinators; huge SK representation.
+rew Y-Klop .
+
+mod FIXED-POINT-AXIOMATIC is
+--- This is an axiomatic definition (rather than constructive) of the
+--- fixed-point construct.  This is garanteed to only work under call-by-name
+--- in all cases, but Maude seems to avoid nontermination in all our examples.
+  including CURRYING .
+  op fix : -> Builtin .
+  var F : Exp .
+  rl fix F => F (fix F) .
+endm
+
+mod FACTORIALS is
+  including CHURCH-RELATIONS .
+  including FIXED-POINT-COMBINATORS .
+  including FIXED-POINT-AXIOMATIC .
+  ops factorial-untypable factorial-body factorial-name
+      factorial-value factorial-Turing factorial-Turing-value
+    factorial-Klop factorial-fix : -> Exp .
+  eq factorial-untypable
+   = /\ n . ((/\ t n . t t n)
+       (/\ f n . if-then-else zero? (n) $1 (mult n (f f (pred n)))) n) .
+--- The factorial definition above is based on mimicking recursion by passing
+--- a function to itself.  It works, but it does not type.
+  eq factorial-body =
+       /\ f n . if-then-else zero? (n) $1 (mult n (f (pred n))) .
+--- The factorial-body above is guaranteed to only work with call-by-name,
+--- because there is a chance that the fixed-point will apply indefinitely.
+--- It appears that Maude does not choose to do so, so it appears to work.
+--- Anyway, if you have problems with it under unrestriced application then
+--- choose the one below instead.
+***  eq factorial-body = /\ f n . (if-then-else zero? (n)
+***                                 (/\ d . $1) 
+***                                 (/\ d . mult n (f(pred n)))
+***                               ) d .
+  eq factorial-name         = Y-name         factorial-body .
+  eq factorial-value        = Y-value        factorial-body .
+  eq factorial-Turing       = Y-Turing       factorial-body .
+  eq factorial-Turing-value = Y-Turing-value factorial-body .
+  eq factorial-Klop         = Y-Klop         factorial-body .
+  eq factorial-fix          = fix            factorial-body .
+endm
+
+--- Testing the factorial.
+--- These may not terminate under unrestricted lambda abstraction, because
+--- the fixed-point combinators may reduce forever, but somehow Maude manages
+--- again to avoid the non-terminating reductions in many cases.
+--- These are all very very slow (4-5 minutes!) with combinators.
+--- Also, call-by-value hangs on them; strange that it hangs also on
+--- factorial-value, not sure why yet.
+--- $2 is riddiculous, but it recurses twice, so is good enough for testing.
+rew display(factorial-untypable     $2) .
+rew display(factorial-name          $2) .
+rew display(factorial-value         $2) .
+rew display(factorial-Turing        $2) .
+rew display(factorial-Turing-value  $2) .
+rew display(factorial-Klop          $2) .  --- Y-Klop too big with combinators
+rew display(factorial-fix           $2) .
+
+mod LAMBDA-WITH-BUILTINS is
+  including PL-INT .    --- the builtins
+  including CURRYING .  --- we want currying as well
+  subsorts Int < Builtin .
+  var X : Var .  var N N1 N2 : Int .
+  var E E' E1 E2 E2' : Exp .  var B : Builtin .
+--- We add expresion constructs that correspond to builtin operations.
+  ops + * if : -> Builtin .
+--- Generic rule to reduce arguments of builtins (even under call-by-name):
+ crl B E => B E' if E => E' /\ (E' =/=Bool E) .
+--- Builtins taking two arguments need an additional rule for the second
+--- argument, as seen below.
+ crl + E1 E2 => + E1 E2' if E2 => E2' /\ (E2' =/=Bool E2) .
+  rl + N1 N2 => N1 +Int N2 .
+ crl * E1 E2 => * E1 E2' if E2 => E2' /\ (E2' =/=Bool E2) .
+  rl * N1 N2 => N1 *Int N2 .
+--- Only the first argument is evaluated for the conditional, then one
+--- of the two rules below is applied.
+  eq if 0 = /\ x y . y .
+ ceq if N = /\ x y . x if N =/=Bool 0 .
+endm
+
+--- Testing lambda with builtins
+rew (/\ x . /\ y . + x (y 7)) 5 (/\ y . * y 3) .                --- 26
+rew (/\ x y . if x (* (y x) x) (/\ y . y x)) 3 (/\ x . * 2 x) . --- 18
+rew (/\ x y . if x (* (y x) x) (/\ y . y x)) 0 (/\ x . * 2 x) . --- /\ y . y 0
+rew (/\ x y . if x (* (y x) x) (/\ y . y x)) x (/\ x . * 2 x) . --- an if term
+
+mod FACTORIALS-WITH-BUILTINS is
+  including LAMBDA-WITH-BUILTINS .
+  including FIXED-POINT-COMBINATORS .
+  including FIXED-POINT-AXIOMATIC .
+  ops factorial-untypable factorial-body factorial-name
+      factorial-value factorial-Turing factorial-Turing-value
+    factorial-Klop factorial-fix : -> Exp .
+  eq factorial-untypable
+   = /\ n . (/\ t n . t t n) (/\ f n . if n (* n (f f (+ n -1))) 1) n .
+  eq factorial-body         = /\ f n . if n (* n (f (+ n -1))) 1 .
+  eq factorial-name         = Y-name         factorial-body .
+  eq factorial-value        = Y-value        factorial-body .
+  eq factorial-Turing       = Y-Turing       factorial-body .
+  eq factorial-Turing-value = Y-Turing-value factorial-body .
+  eq factorial-Klop         = Y-Klop         factorial-body .
+  eq factorial-fix          = fix            factorial-body .
+endm
+
+--- Testing factorial with builtins
+--- These may not terminate under unrestricted lambda abstraction, but Maude
+--- manages to find terminating reductions in many cases.
+--- Same comment as above regarding call-by-value.
+rew factorial-untypable    10 .
+rew factorial-name         10 .
+rew factorial-value        10 .
+rew factorial-Turing       10 .
+rew factorial-Turing-value 10 .
+rew factorial-Klop          2 .  --- runs out of memory with combinators
+rew factorial-fix          10 .
+
+--- Morale: all these lambda-based computational models work in theory, but
+--- they are far from being practical.  Sometimes turning rules into equations
+--- and/or turning equations into rules may speed things up on some programs.
+--- That is because rules vs. equations makes Maude use different
+--- rewriting strategies and indexing algorithms. However, there appears to be
+--- no general schema that makes lambda calculus based on substitution fast.
+--- Note that all three approaches are based in principle on substitution!
+--- Combinators and de Bruijn "cheat" by not having to deal with variable
+--- capture, but they have to do something else in turn (the S combinator
+--- stands for and smartly encodes "substitution").
 
 q .
