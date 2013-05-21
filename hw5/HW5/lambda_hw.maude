@@ -417,8 +417,11 @@ mod CHURCH-BOOLEANS is
 --- We prefix with $ Church stuff which may colide with the builtins.
   ops $true $false and if-then-else : -> Exp .
   eq $true  = /\ x y . x .
+  eq $false = /\ x y . y .
+  eq if-then-else = /\ x y z . x y z .
+  eq and = /\ x y . x y $false . 
 --- Use constants x, y, etc., of sort Var, and not Maude variables X, Y, etc.
-...HW5...
+
 endm
 
 --- Testing Church Booleans
