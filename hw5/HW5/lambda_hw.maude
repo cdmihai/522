@@ -533,4 +533,15 @@ rew display(pred $0) .  --- 0
 rew display(pred $1) .  --- 0
 rew display(pred $5) .  --- 4
 
+mod CHURCH-SUBTRACTION is
+  including CHURCH-PREDECESSOR .
+  op sub : -> Exp .
+  eq sub = /\ m n . n pred m .
+endm
+
+--- Testing Church subtraction
+rew display(sub $5 $3) .  --- 2 --- may be slow in some settings
+rew display(sub $3 $5) .  --- 0 
+
+
 q .
