@@ -442,6 +442,33 @@ rew and $false (and y z) .
 rew and (and $false $true) $false t f .
 rew and $false (and $true $false) t f .
 
+mod DISPLAY-CHURCH-NUMERALS is
+  including CHURCH-NUMERALS .
+  including PL-INT .
+--- Displaying Church numerals.
+--- This has two benefits: first, makes Church numerals easier to read.
+--- Second, under call-by-name, the resulting lambda abstractions may not
+--- be fully evaluated; display(E) enforces the complete evaluation of E.
+  op display : Exp -> [Exp] .
+  op $ : Int -> Var .
+  var E E' : Exp .  var N M : Int .
+  eq display(E) = E (/\ k . $(1) k) $(0) .
+  eq $(N) $(M) = $(N +Int M) .
+ crl $(N) E => $(N) E' if E => E' /\ (E' =/=Bool E) .
+endm
+
+--- Testing Church numerals
+rew display($5) .                   --- displays $(5), not the Church number
+rew display(succ $5) .              --- should be equal to the following
+rew display(succ' $5) .
+rew display(succ (/\ x y . x)) .    --- should not be equal to the following
+rew display(succ' (/\ x y . x)) .
+rew display(plus $5 $5) .           --- $(10)
+rew display(plus $0 $5) .           --- testing Peano for particular values
+rew display(plus (succ $5) $4) .    --- should be equal to the following
+rew display(succ (plus $5 $4)) .
+rew display(mult $5 $5) .           --- $(25)
+rew display(power $5 $3) .          --- $(125); slow with combinators
 
 
 q .
