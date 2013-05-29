@@ -1,0 +1,25 @@
+---PCF flavor of lambda
+
+mod LAMBDA-SYNTAX is including PL-INT + PL-BOOL + PL-ID .
+
+--- Var
+sort Var .
+  subsort Id < Var .
+
+---Type
+sort Type .
+  ops nat, bool : -> Type .
+  op _->_ : Type Type -> Type .
+
+--- EXP
+sort Exp .
+  subsort Var < Exp .
+  op __ : Exp Exp -> Exp .
+  op /\_:_._ : Var Type Exp -> Exp .
+  op m_:_._ : Var Type Exp -> Exp .
+
+  ops zero true false: -> Exp .
+  ops succ pred zero? : Exp -> Exp .
+  op cond : Exp Exp Exp -> Exp .
+
+endm
