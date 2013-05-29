@@ -7,6 +7,21 @@ in ../lambda-programs.maude
 
 mod TEST is including LAMBDA-SEMANTICS-BIGSTEP + LAMBDA-PROGRAMS .  endm
 
+
+set print with parentheses on .
+
+parse x .
+parse zr .
+parse succ(zr) .
+parse zero?(x) .
+parse zero?(succ(zr)) .
+parse /\ x : nat . x .
+---set trace on .
+rewrite < zero?(zr) > .
+rewrite < zero?(x) > .
+
+rewrite < zero?(succ(zr)) > .
+rewrite < x > .
 rewrite < id > .
 
 ---search < sumPgm > =>! Cfg:Configuration .

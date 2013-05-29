@@ -5,21 +5,29 @@ mod LAMBDA-SYNTAX is including PL-INT + PL-BOOL + PL-ID .
 --- Var
 sort Var .
   subsort Id < Var .
+  subsort Id < Var .
 
 ---Type
-sort Type .
-  ops nat, bool : -> Type .
+sorts Nat Boolean Type .
+  subsort Nat < Type .
+  subsort Boolean < Type .
+  op nat : -> Nat .
+  op bool : -> Boolean .
   op _->_ : Type Type -> Type .
 
 --- EXP
 sort Exp .
   subsort Var < Exp .
+  subsort Type < Exp .
+
   op __ : Exp Exp -> Exp .
   op /\_:_._ : Var Type Exp -> Exp .
   op m_:_._ : Var Type Exp -> Exp .
 
-  ops zero true false: -> Exp .
-  ops succ pred zero? : Exp -> Exp .
+  op zr : -> Nat .
+  ops false' true' : -> Boolean .
+  ops succ pred : Nat -> Nat .
+  op zero? : Exp -> Boolean .
   op cond : Exp Exp Exp -> Exp .
 
 endm
