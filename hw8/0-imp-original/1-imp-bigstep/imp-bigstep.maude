@@ -1,4 +1,4 @@
-in ../../../builtins.maude
+in ../../builtins.maude
 in ../imp-syntax.maude
 in ../../state.maude
 

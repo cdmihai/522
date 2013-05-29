@@ -1,0 +1,9 @@
+mod LAMBDA-CONFIGURATIONS-BIGSTEP is including LAMBDA-SYNTAX .
+  sort Configuration .
+  op   <_> : Var -> Configuration .
+  op   <_> : Exp -> Configuration .
+endm
+
+mod LAMBDA-SEMANTICS-BIGSTEP is including LAMBDA-CONFIGURATIONS-BIGSTEP .
+  
+endm

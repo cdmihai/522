@@ -1,0 +1,4 @@
+mod LAMBDA-PROGRAMS is including LAMBDA-SYNTAX .
+  op id : -> Exp .
+  eq id = /\ x : nat . x .
+endm
