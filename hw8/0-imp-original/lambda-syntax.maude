@@ -20,9 +20,9 @@ sort Exp .
   subsort Var < Exp .
   subsort Type < Exp .
 
-  op __ : Exp Exp -> Exp .
-  op /\_:_._ : Var Type Exp -> Exp .
-  op m_:_._ : Var Type Exp -> Exp .
+  op __ : Exp Exp -> Exp [prec 25] . 
+  op /\_:_._ : Var Type Exp -> Exp [prec 50] .
+  op m_:_._ : Var Type Exp -> Exp [prec 50] .
 
   op 0 : -> Nat .
   ops false true : -> Boolean .
