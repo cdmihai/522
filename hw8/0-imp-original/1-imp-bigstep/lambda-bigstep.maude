@@ -16,7 +16,7 @@ parse succ(0) .
 parse zero?(x) .
 parse zero?(succ(0)) .
 parse /\ x : nat . x .
-
+parse nonZeroVal(succ(0)) .
 
 
 ---set trace on .
@@ -32,6 +32,11 @@ rewrite < zero?(succ(0)) > .
 rewrite < pred(0) > .
 rewrite < pred(succ(0)) > .
 rewrite < pred(succ(succ(0))) > .
+
+rewrite < cond(true, 0, succ(0)) > .
+rewrite < cond(false, 0, succ(0)) > .
+rewrite < cond(zero?(0), 0, succ(0)) > .
+rewrite < cond(zero?(succ(0)), 0, succ(0)) > .
 
 q .
 

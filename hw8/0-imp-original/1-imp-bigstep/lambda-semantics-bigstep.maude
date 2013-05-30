@@ -8,7 +8,7 @@ endm
 mod LAMBDA-SEMANTICS-BIGSTEP is including LAMBDA-CONFIGURATIONS-BIGSTEP .
   
   var X Y Z : Var . 
-  var E F G : Exp .
+  var E F C E1 E2 : Exp .
   var S T : Type .
   var V : Val .
 
@@ -25,5 +25,8 @@ mod LAMBDA-SEMANTICS-BIGSTEP is including LAMBDA-CONFIGURATIONS-BIGSTEP .
 
   crl < zero?(E) > => < true > if < E > => < 0 > .
   crl < zero?(E) > => < false > if < E > => < nonZeroVal(E) > .
+
+  crl < cond(C, E1, E2) > => < V > if < C > => < true > /\ < E1 > => < V > .
+  crl < cond(C, E1, E2) > => < V > if < C > => < false > /\ < E2 > => < V > .
 
 endm
