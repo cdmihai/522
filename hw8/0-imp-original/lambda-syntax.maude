@@ -1,6 +1,8 @@
 ---PCF flavor of lambda
 
-mod LAMBDA-SYNTAX is including PL-ID .
+---in ../builtins.maude
+
+mod LAMBDA-SYNTAX is including PL-ID + PL-GENERIC-SUBSTITUTION .
 
 --- Variables
 sort Var .
@@ -15,8 +17,9 @@ sorts Nat Boolean Type .
   op bool : -> Boolean .
   op _->_ : Type Type -> Type .
 
---- Expressions
+--- Exps
 sort Exp .
+  subsort Exp < GenericTerm . ---for builtins substitution
   subsort Var < Exp .
   subsort Type < Exp .
 
@@ -24,8 +27,8 @@ sort Exp .
   op /\_:_._ : Var Type Exp -> Exp [prec 50] .
   op m_:_._ : Var Type Exp -> Exp [prec 50] .
 
-  op 0 : -> Nat .
-  ops false true : -> Boolean .
+  op 0' : -> Nat .
+  ops false' true' : -> Boolean .
   ops succ pred : Nat -> Nat .
   op zero? : Exp -> Boolean .
   op cond : Exp Exp Exp -> Exp .

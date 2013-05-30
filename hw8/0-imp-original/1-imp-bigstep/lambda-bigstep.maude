@@ -11,39 +11,40 @@ mod TEST is including LAMBDA-SEMANTICS-BIGSTEP + LAMBDA-PROGRAMS .  endm
 set print with parentheses on .
 
 parse x .
-parse 0 .
-parse succ(0) .
+parse 0' .
+parse succ(0') .
 parse zero?(x) .
-parse zero?(succ(0)) .
+parse zero?(succ(0')) .
 parse /\ x : nat . x .
-parse nonZeroVal(succ(0)) .
+parse nonZeroVal(succ(0')) .
 
 
 ---set trace on .
 
-rewrite < 0 > .
-rewrite < succ(0) > .
-rewrite < succ(succ(0)) > .
+rewrite < 0' > .
+rewrite < succ(0') > .
+rewrite < succ(succ(0')) > .
 
-rewrite < zero?(0) > .
+rewrite < zero?(0') > .
 rewrite < zero?(x) > .
-rewrite < zero?(succ(0)) > .
+rewrite < zero?(succ(0')) > .
 
-rewrite < pred(0) > .
-rewrite < pred(succ(0)) > .
-rewrite < pred(succ(succ(0))) > .
+rewrite < pred(0') > .
+rewrite < pred(succ(0')) > .
+rewrite < pred(succ(succ(0'))) > .
 
-rewrite < cond(true, 0, succ(0)) > .
-rewrite < cond(false, 0, succ(0)) > .
-rewrite < cond(zero?(0), 0, succ(0)) > .
-rewrite < cond(zero?(succ(0)), 0, succ(0)) > .
+rewrite < cond(true', 0', succ(0')) > .
+rewrite < cond(false', 0', succ(0')) > .
+rewrite < cond(zero?(0'), 0', succ(0')) > .
+rewrite < cond(zero?(succ(0')), 0', succ(0')) > .
 
-rewrite < cond(zero?(succ(0)), 0, zero?(succ(0))) > .
+rewrite < conditional > .
 
-q .
+--- set trace on .
 
-rewrite < x > .
-rewrite < id > .
+rewrite < (id) 0' > .
+rewrite < (id) succ(0') > .
+rewrite < (id) conditional > .
 
 ---search < sumPgm > =>! Cfg:Configuration .
 

@@ -1,4 +1,5 @@
 mod LAMBDA-PROGRAMS is including LAMBDA-SYNTAX .
-  op id : -> Exp .
-  eq id = /\ x : nat . x .
+  ops id conditional : -> Exp .
+  eq id = /\ x : nat . x.
+  eq conditional = cond(zero?(succ(0')), 0', zero?(succ(0'))) .
 endm

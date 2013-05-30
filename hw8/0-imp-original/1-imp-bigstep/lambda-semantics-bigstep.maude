@@ -12,21 +12,23 @@ mod LAMBDA-SEMANTICS-BIGSTEP is including LAMBDA-CONFIGURATIONS-BIGSTEP .
   var S T : Type .
   var V : Val .
 
-  rl < 0 > => < zeroVal > .
-  rl < true > => < trueVal > .
-  rl < false > => < falseVal > .
+  rl < 0' > => < zeroVal > .
+  rl < true' > => < trueVal > .
+  rl < false' > => < falseVal > .
   rl < succ(E) > => < nonZeroVal(succ(E)) > .
   rl < /\ X : T . E > => < lambdaVal(X, T, E) > .
 
  --- crl < succ(E) > => < succ(V) > if < E > => < succ(V) > .
 
   crl < pred(E) > => < F > if < E > => < succ(F) > .
-  crl < pred(E) > => < 0 > if < E > => < 0 > .
+  crl < pred(E) > => < 0' > if < E > => < 0' > .
 
-  crl < zero?(E) > => < true > if < E > => < 0 > .
-  crl < zero?(E) > => < false > if < E > => < nonZeroVal(E) > .
+  crl < zero?(E) > => < true' > if < E > => < 0' > .
+  crl < zero?(E) > => < false' > if < E > => < nonZeroVal(E) > .
 
-  crl < cond(C, E1, E2) > => < V > if < C > => < true > /\ < E1 > => < V > .
-  crl < cond(C, E1, E2) > => < V > if < C > => < false > /\ < E2 > => < V > .
+  crl < cond(C, E1, E2) > => < V > if < C > => < true' > /\ < E1 > => < V > .
+  crl < cond(C, E1, E2) > => < V > if < C > => < false' > /\ < E2 > => < V > .
+
+  crl < E1 E2 > => < V > if < E1 > => < /\ X : T . E  > /\ < substitute(E, E2, X) > => < V > .
 
 endm
