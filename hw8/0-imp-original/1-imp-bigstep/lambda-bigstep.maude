@@ -38,6 +38,8 @@ rewrite < cond(false, 0, succ(0)) > .
 rewrite < cond(zero?(0), 0, succ(0)) > .
 rewrite < cond(zero?(succ(0)), 0, succ(0)) > .
 
+rewrite < cond(zero?(succ(0)), 0, zero?(succ(0))) > .
+
 q .
 
 rewrite < x > .
