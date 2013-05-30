@@ -2,7 +2,7 @@
 
 mod LAMBDA-SYNTAX is including PL-INT + PL-BOOL + PL-ID .
 
---- Var
+--- Variables
 sort Var .
   subsort Id < Var .
   subsort Id < Var .
@@ -15,7 +15,7 @@ sorts Nat Boolean Type .
   op bool : -> Boolean .
   op _->_ : Type Type -> Type .
 
---- EXP
+--- Expressions
 sort Exp .
   subsort Var < Exp .
   subsort Type < Exp .
@@ -30,11 +30,12 @@ sort Exp .
   op zero? : Exp -> Boolean .
   op cond : Exp Exp Exp -> Exp .
 
-sort Value .
-  subsort Value < Exp .
+--- Vals
+sort Val .
+  subsort Val < Exp .
 
-  ops zeroVal trueVal falseVal : -> Value .
-  op succVal : Value -> Value .
-  op lambdaVal_:_._ : Var Type Exp -> Value .
+  ops zeroVal trueVal falseVal : -> Val .
+  op succVal : Val -> Val .
+  op lambdaVal : Var Type Exp -> Val .
 
 endm
