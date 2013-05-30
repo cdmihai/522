@@ -23,7 +23,7 @@ mod LAMBDA-SEMANTICS-BIGSTEP is including LAMBDA-CONFIGURATIONS-BIGSTEP .
   crl < pred(E) > => < F > if < E > => < succ(F) > .
   crl < pred(E) > => < 0 > if < E > => < 0 > .
 
-  crl < zero?(E) > => < true > if < E > => < zeroVal > .
-  crl < zero?(E) > => < false > if < E > => < nonZeroVal(E) > .
+  crl < zero?(E) > => < true > if < E > => < 0 > .
+  crl < zero?(E) > => < false > if < E > => < succ(E) > .
 
 endm
