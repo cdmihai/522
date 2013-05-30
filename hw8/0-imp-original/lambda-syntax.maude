@@ -30,4 +30,11 @@ sort Exp .
   op zero? : Exp -> Boolean .
   op cond : Exp Exp Exp -> Exp .
 
+sort Value .
+  subsort Value < Exp .
+
+  ops zeroVal trueVal falseVal : -> Value .
+  op succVal : Value -> Value .
+  op lambdaVal_:_._ : Var Type Exp -> Value .
+
 endm
