@@ -35,7 +35,7 @@ sort Val .
   subsort Val < Exp .
 
   ops zeroVal trueVal falseVal : -> Val .
-  op succVal : Val -> Val .
+  op nonZeroVal : Exp -> Val .
   op lambdaVal : Var Type Exp -> Val .
 
 endm
