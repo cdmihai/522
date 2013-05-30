@@ -1,6 +1,6 @@
 ---PCF flavor of lambda
 
-mod LAMBDA-SYNTAX is including PL-INT + PL-BOOL + PL-ID .
+mod LAMBDA-SYNTAX is including PL-ID .
 
 --- Variables
 sort Var .
@@ -24,8 +24,8 @@ sort Exp .
   op /\_:_._ : Var Type Exp -> Exp .
   op m_:_._ : Var Type Exp -> Exp .
 
-  op zr : -> Nat .
-  ops false' true' : -> Boolean .
+  op 0 : -> Nat .
+  ops false true : -> Boolean .
   ops succ pred : Nat -> Nat .
   op zero? : Exp -> Boolean .
   op cond : Exp Exp Exp -> Exp .

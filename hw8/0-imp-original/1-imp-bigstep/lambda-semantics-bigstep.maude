@@ -7,27 +7,25 @@ endm
 
 mod LAMBDA-SEMANTICS-BIGSTEP is including LAMBDA-CONFIGURATIONS-BIGSTEP .
   
-  var X Y Z V : Var . 
+  var X Y Z : Var . 
   var E F G : Exp .
   var S T : Type .
-
-
-  rl < zr > => < 0 > .
-  rl < false' > => < false > .
-  rl < true' > => < true > .
+  var V : Val .
 
   rl < 0 > => < zeroVal > .
   rl < true > => < trueVal > .
   rl < false > => < falseVal > .
-  rl < succ(E) > => < succVal(E) > .
+  rl < succ(E) > => < succVal(succ(E)) > .
   rl < /\ X : T . E > => < lambdaVal(X, T, E) > .
 
  --- rl < X > => < X > .
- ---   rl < zero?(zr) > => < true' > .
- ---   rl < zero?(E) > => < false' > .
+ ---   rl < zero?(zr) > => < true > .
+ ---   rl < zero?(E) > => < false > .
 
-    crl < zero?(E) > => < true' > if < E > => < 0 > .
-    ---crl < zero?(E) > => < false' > if < E > => < succ() > .
+  crl < succ(E) > => < succ(V) > if < E > => < succ(V) > .
+
+  crl < zero?(E) > => < true > if < E > => < zeroVal > .
+  crl < zero?(E) > => < false > if < E > => < succVal(E) > .
 
     ---crl < succ(E) > => < succ(V) > if < E > => < V > .
 

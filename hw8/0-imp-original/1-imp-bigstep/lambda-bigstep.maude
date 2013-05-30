@@ -11,16 +11,26 @@ mod TEST is including LAMBDA-SEMANTICS-BIGSTEP + LAMBDA-PROGRAMS .  endm
 set print with parentheses on .
 
 parse x .
-parse zr .
-parse succ(zr) .
+parse 0 .
+parse succ(0) .
 parse zero?(x) .
-parse zero?(succ(zr)) .
+parse zero?(succ(0)) .
 parse /\ x : nat . x .
----set trace on .
-rewrite < zero?(zr) > .
-rewrite < zero?(x) > .
 
-rewrite < zero?(succ(zr)) > .
+
+
+---set trace on .
+
+rewrite < 0 > .
+rewrite < succ(0) > .
+rewrite < succ(succ(0)) > .
+
+rewrite < zero?(0) > .
+rewrite < zero?(x) > .
+rewrite < zero?(succ(0)) > .
+
+q .
+
 rewrite < x > .
 rewrite < id > .
 
