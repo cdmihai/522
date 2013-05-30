@@ -29,6 +29,10 @@ rewrite < zero?(0) > .
 rewrite < zero?(x) > .
 rewrite < zero?(succ(0)) > .
 
+rewrite < pred(0) > .
+rewrite < pred(succ(0)) > .
+rewrite < pred(succ(succ(0))) > .
+
 q .
 
 rewrite < x > .
