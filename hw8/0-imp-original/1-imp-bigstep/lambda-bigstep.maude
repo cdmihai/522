@@ -17,7 +17,7 @@ parse zero?(x) .
 parse zero?(succ(0')) .
 parse /\ x : nat . x .
 parse nonZeroVal(succ(0')) .
-
+parse (m f : nat -> nat . /\ n : nat . cond(zero?(n), n, f pred(n))) 0' .
 
 ---set trace on .
 
@@ -33,6 +33,8 @@ rewrite < pred(0') > .
 rewrite < pred(succ(0')) > .
 rewrite < pred(succ(succ(0'))) > .
 
+rewrite < succ ((id) 0') > .
+
 rewrite < cond(true', 0', succ(0')) > .
 rewrite < cond(false', 0', succ(0')) > .
 rewrite < cond(zero?(0'), 0', succ(0')) > .
@@ -40,11 +42,15 @@ rewrite < cond(zero?(succ(0')), 0', succ(0')) > .
 
 rewrite < conditional > .
 
---- set trace on .
 
 rewrite < (id) 0' > .
 rewrite < (id) succ(0') > .
 rewrite < (id) conditional > .
+
+
+set trace on .
+rewrite < ((mZeroerBody) 0' mCombinator) > .
+---rewrite < ((mZeroerBody) 0') > .
 
 ---search < sumPgm > =>! Cfg:Configuration .
 

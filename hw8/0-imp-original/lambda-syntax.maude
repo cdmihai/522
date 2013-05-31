@@ -23,13 +23,13 @@ sort Exp .
   subsort Var < Exp .
   subsort Type < Exp .
 
-  op __ : Exp Exp -> Exp [prec 25] . 
+  op __ : Exp Exp -> Exp [prec 25 gather(E e)] . 
   op /\_:_._ : Var Type Exp -> Exp [prec 50] .
   op m_:_._ : Var Type Exp -> Exp [prec 50] .
 
   op 0' : -> Nat .
   ops false' true' : -> Boolean .
-  ops succ pred : Nat -> Nat .
+  ops succ pred : Exp -> Nat .
   op zero? : Exp -> Boolean .
   op cond : Exp Exp Exp -> Exp .
 

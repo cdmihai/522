@@ -1,5 +1,14 @@
 mod LAMBDA-PROGRAMS is including LAMBDA-SYNTAX .
-  ops id conditional : -> Exp .
-  eq id = /\ x : nat . x.
+  ops id conditional zeroer mZeroer mZeroerBody mCombinator : -> Exp .
+
+  eq id = /\ x : nat . x .
   eq conditional = cond(zero?(succ(0')), 0', zero?(succ(0'))) .
+  
+  eq zeroer = /\ f : nat -> nat . /\ n : nat . cond(zero?(n), n, f pred(n)) .
+
+  eq mZeroer = m f : nat -> nat . /\ n : nat . cond(zero?(n), n, f pred(n)) .
+
+  eq mZeroerBody = (/\ n : nat . cond(zero?(n), n, f pred(n))) .
+  eq mCombinator = /\ a : nat -> nat . m f : nat -> nat . a . 
+
 endm
