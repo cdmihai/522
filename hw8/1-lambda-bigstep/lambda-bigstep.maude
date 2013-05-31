@@ -47,10 +47,12 @@ rewrite < (id) 0' > .
 rewrite < (id) succ(0') > .
 rewrite < (id) conditional > .
 
+	
+rewrite < (mCombinator) mZeroerBody f > .
 
 ---set trace on .
-rewrite < ((mZeroerBody) 0' mCombinator) > .
-rewrite < ((mZeroerBody) succ(0') mCombinator) > .
+---rewrite < ((mZeroerBody) 0' mCombinator) > .
+---rewrite < ((mZeroerBody) succ(0') mCombinator) > .
 ---rewrite < ((mZeroerBody) 0') > .
 
 ---search < ((mZeroerBody) 0' mCombinator) > =>! Cfg:Configuration .

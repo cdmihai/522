@@ -8,7 +8,7 @@ mod LAMBDA-PROGRAMS is including LAMBDA-SYNTAX .
 
   eq mZeroer = m f : nat -> nat . /\ n : nat . cond(zero?(n), n, f pred(n)) .
 
-  eq mZeroerBody = (/\ n : nat . cond(zero?(n), n, f pred(n))) .
-  eq mCombinator = /\ a : nat -> nat . m f : nat -> nat . a . 
+  eq mZeroerBody = /\ n : nat . cond(zero?(n), n, f pred(n)) .
+  eq mCombinator = /\ f : nat -> nat . /\ n : nat . m n : nat -> f .
 
 endm
