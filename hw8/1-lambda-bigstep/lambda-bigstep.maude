@@ -10,17 +10,6 @@ mod TEST is including LAMBDA-SEMANTICS-BIGSTEP + LAMBDA-PROGRAMS .  endm
 
 set print with parentheses on .
 
-parse x .
-parse 0' .
-parse succ(0') .
-parse zero?(x) .
-parse zero?(succ(0')) .
-parse /\ x : nat . x .
-parse nonZeroVal(succ(0')) .
-parse (m f : nat -> nat . /\ n : nat . cond(zero?(n), n, f pred(n))) 0' .
-
----set trace on .
-
 rewrite < 0' > .
 rewrite < succ(0') > .
 rewrite < succ(succ(0')) > .
@@ -42,18 +31,16 @@ rewrite < cond(zero?(succ(0')), 0', succ(0')) > .
 
 rewrite < conditional > .
 
-
 rewrite < (id) 0' > .
 rewrite < (id) succ(0') > .
 rewrite < (id) conditional > .
 
-	
-rewrite < (mCombinator) mZeroerBody f > .
+rewrite < (trueL) 0' succ(0') > .
+rewrite < (falseL) 0' succ(0') > .
 
 ---set trace on .
----rewrite < ((mZeroerBody) 0' mCombinator) > .
----rewrite < ((mZeroerBody) succ(0') mCombinator) > .
----rewrite < ((mZeroerBody) 0') > .
+rewrite < (mZeroer) 0' > .
+rewrite < (mZeroer) succ(0') > .
 
 ---search < ((mZeroerBody) 0' mCombinator) > =>! Cfg:Configuration .
 
