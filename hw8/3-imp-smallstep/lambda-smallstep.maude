@@ -7,7 +7,6 @@ in ../lambda-programs.maude
 
 mod TEST is including LAMBDA-SEMANTICS-SMALLSTEP + LAMBDA-PROGRAMS .  endm
 
-q .
 
 set print with parentheses on .
 

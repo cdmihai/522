@@ -12,7 +12,7 @@ endm
 
 mod LAMBDA-SEMANTICS-SMALLSTEP is including LAMBDA-CONFIGURATIONS-SMALLSTEP .
   var X Y Z : Var . 
-  var E F C E1 E2 : Exp .
+  var E F F' C C' E1 E2 E' : Exp .
   var S T : Type .
   var V : Val .
 
@@ -22,8 +22,25 @@ mod LAMBDA-SEMANTICS-SMALLSTEP is including LAMBDA-CONFIGURATIONS-SMALLSTEP .
   rl o < succ(E) > => < nonZeroVal(succ(E)) > .
   rl o < /\ X : T . E > => < lambdaVal(X, T, E) > .
 
+  rl o < zero?(zeroVal) > => < true' > .
+  rl o < zero?(nonZeroVal(succ(E))) > => < false' > . 
 
+  rl o < pred(zeroVal) > => < 0' > .
+  rl o < pred(nonZeroVal(succ(E))) > => < E > .
 
+  rl o < cond(trueVal, E1, E2 ) > => < E1 > .
+  rl o < cond(falseVal, E1, E2 ) > => < E2 > .
+
+  rl < lambdaVal(X, T, E) F > => < substitute(E, F, X) > .
+  rl < m X : T . E > => < substitute(E, m X : T . E , X) > .
+
+  crl o < succ(E) > => < succ(E') > if o < E > => < E' > .
+  crl o < pred(E) > => < pred(E') > if o < E > => < E' > .
+  crl o < zero?(E) > => < zero?(E') > if o < E > => < E' > .
+
+  crl o < cond(C, E1, E2) > => < cond(C', E1, E2) > if o < C > => < C' > .
+
+  crl o < F E > => < F' E > if o < F > => < F' > .
 
  ---crl o < X,Sigma > => < Sigma(X),Sigma > if Sigma(X) =/=Bool undefined .
 
