@@ -52,6 +52,6 @@ set trace on .
 rewrite < ((mZeroerBody) 0' mCombinator) > .
 ---rewrite < ((mZeroerBody) 0') > .
 
----search < sumPgm > =>! Cfg:Configuration .
+search < ((mZeroerBody) 0' mCombinator) > =>! Cfg:Configuration .
 
 quit
