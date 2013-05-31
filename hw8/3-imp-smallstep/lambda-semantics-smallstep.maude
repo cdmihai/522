@@ -1,0 +1,32 @@
+mod LAMBDA-CONFIGURATIONS-SMALLSTEP is including LAMBDA-SYNTAX .
+  sorts Configuration ExtendedConfiguration .
+  subsort Configuration < ExtendedConfiguration .
+  op   <_> : Var -> Configuration .
+  op   <_> : Exp -> Configuration .
+  op   <_> : Val -> Configuration .
+  op o_ : Configuration -> ExtendedConfiguration [prec 80] .   --- one step
+  op *_ : Configuration -> ExtendedConfiguration [prec 80] .   --- all steps
+  var Cfg Cfg' : Configuration .
+ crl * Cfg => * Cfg' if o Cfg => Cfg' .
+endm
+
+mod LAMBDA-SEMANTICS-SMALLSTEP is including LAMBDA-CONFIGURATIONS-SMALLSTEP .
+  var X Y Z : Var . 
+  var E F C E1 E2 : Exp .
+  var S T : Type .
+  var V : Val .
+
+  rl o < 0' > => < zeroVal > .
+  rl o < true' > => < trueVal > .
+  rl o < false' > => < falseVal > .
+  rl o < succ(E) > => < nonZeroVal(succ(E)) > .
+  rl o < /\ X : T . E > => < lambdaVal(X, T, E) > .
+
+
+
+
+ ---crl o < X,Sigma > => < Sigma(X),Sigma > if Sigma(X) =/=Bool undefined .
+
+ 
+
+endm
