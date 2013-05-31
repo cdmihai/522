@@ -1,4 +1,4 @@
-in ../../builtins.maude
+in ../builtins.maude
 in ../lambda-syntax.maude
 
 in lambda-semantics-bigstep.maude
@@ -48,10 +48,11 @@ rewrite < (id) succ(0') > .
 rewrite < (id) conditional > .
 
 
-set trace on .
+---set trace on .
 rewrite < ((mZeroerBody) 0' mCombinator) > .
+rewrite < ((mZeroerBody) succ(0') mCombinator) > .
 ---rewrite < ((mZeroerBody) 0') > .
 
-search < ((mZeroerBody) 0' mCombinator) > =>! Cfg:Configuration .
+---search < ((mZeroerBody) 0' mCombinator) > =>! Cfg:Configuration .
 
 quit

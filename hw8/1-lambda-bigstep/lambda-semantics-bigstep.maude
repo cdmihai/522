@@ -12,18 +12,19 @@ mod LAMBDA-SEMANTICS-BIGSTEP is including LAMBDA-CONFIGURATIONS-BIGSTEP .
   var S T : Type .
   var V : Val .
 
+--- This is the closest I have come to the concept of values: wrap and freeze the constructs deemed as values in a "Value" wrapper
   rl < 0' > => < zeroVal > .
   rl < true' > => < trueVal > .
   rl < false' > => < falseVal > .
   rl < succ(E) > => < nonZeroVal(succ(E)) > .
   rl < /\ X : T . E > => < lambdaVal(X, T, E) > .
 
- --- crl < succ(E) > => < succ(V) > if < E > => < succ(V) > .
+  crl < succ(E) > => < succ(V) > if < E > => < V > .
 
-  crl < pred(E) > => < F > if < E > => < succ(F) > .
-  crl < pred(E) > => < 0' > if < E > => < 0' > .
+  crl < pred(E) > => < F > if < E > => < nonZeroVal(succ(F)) > .
+  crl < pred(E) > => < 0' > if < E > => < zeroVal > .
 
-  crl < zero?(E) > => < true' > if < E > => < 0' > .
+  crl < zero?(E) > => < true' > if < E > => < zeroVal > .
   crl < zero?(E) > => < false' > if < E > => < nonZeroVal(E) > .
 
   crl < cond(C, E1, E2) > => < V > if < C > => < true' > /\ < E1 > => < V > .
