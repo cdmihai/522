@@ -1,0 +1,14 @@
+mod CHANGE is protecting INT .
+	sorts Change .
+
+	op __ : Change Change -> Change [assoc] .
+	ops C1 C2 C3 C4 C5 : -> Change .
+	ops CREF1 CREF2 CREF3 : -> Change .
+
+	rl C1 C2 => CREF1 .
+	rl C4 C5 => CREF2 .
+	rl C1 C3 C5 => CREF3 .
+
+endm
+
+rewrite C1 C2 C3 C4 C5 C1 C3 C2 C4 C5 C1 C3 C5 C1 C2 C4 C5 C1 .

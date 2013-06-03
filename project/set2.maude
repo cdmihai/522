@@ -1,0 +1,18 @@
+
+fmod INT-SET is  
+    pr SET{Int} .  
+endfm
+
+red 4 in (-1, 2, -3, 3, 2, -1) .
+red (1, 2, 3, 4) subset (5, 4, 3, 2, 1) .
+red (1, 2, 3, 4, 6) subset (5, 4, 3, 2, 1) .
+
+red (1, 2, 3, 4) subset (3, 1, 4, 2) and (3, 1, 4, 2) subset (1, 2, 3, 4) .
+
+fmod STRING-SET is  
+    pr SET{String} .  
+endfm
+
+red ("a", "b", "c") subset ("c", "a", "b") .
+
+q .
