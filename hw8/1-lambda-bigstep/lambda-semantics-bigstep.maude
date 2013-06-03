@@ -10,7 +10,7 @@ mod LAMBDA-SEMANTICS-BIGSTEP is including LAMBDA-CONFIGURATIONS-BIGSTEP .
   var X Y Z : Var . 
   var E F C E1 E2 : Exp .
   var S T : Type .
-  var V : Val .
+  var V V' : Val .
 
 --- This is the closest I came to the concept of values: wrap and freeze the constructs deemed as values in a "Value" wrapper
   rl < 0' > => < zeroVal > .
@@ -30,7 +30,8 @@ mod LAMBDA-SEMANTICS-BIGSTEP is including LAMBDA-CONFIGURATIONS-BIGSTEP .
   crl < cond(C, E1, E2) > => < V > if < C > => < true' > /\ < E1 > => < V > .
   crl < cond(C, E1, E2) > => < V > if < C > => < false' > /\ < E2 > => < V > .
 
-  crl < E1 E2 > => < V > if < E1 > => < lambdaVal(X, T, E)  > /\ < substitute(E, E2, X) > => < V > .
+  --- call by value. E2 needs to be evaluated before the substitution is performed
+  crl < E1 E2 > => < V' > if < E1 > => < lambdaVal(X, T, E)  > /\ < E2 > => < V > /\ < substitute(E, V, X) > => < V' > .
 
   crl < m X : T . E > => < V > if < substitute(E, m X : T . E, X) > => < V > .
 
