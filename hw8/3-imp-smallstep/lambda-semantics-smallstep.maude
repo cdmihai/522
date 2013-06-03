@@ -31,7 +31,9 @@ mod LAMBDA-SEMANTICS-SMALLSTEP is including LAMBDA-CONFIGURATIONS-SMALLSTEP .
   rl o < cond(trueVal, E1, E2 ) > => < E1 > .
   rl o < cond(falseVal, E1, E2 ) > => < E2 > .
 
-  rl < lambdaVal(X, T, E) F > => < substitute(E, F, X) > .
+  ---Call by value. Application arguments should have been reduced to values
+  rl < lambdaVal(X, T, E) V > => < substitute(E, V, X) > .
+
   rl < m X : T . E > => < substitute(E, m X : T . E , X) > .
 
   crl o < succ(E) > => < succ(E') > if o < E > => < E' > .
@@ -39,6 +41,9 @@ mod LAMBDA-SEMANTICS-SMALLSTEP is including LAMBDA-CONFIGURATIONS-SMALLSTEP .
   crl o < zero?(E) > => < zero?(E') > if o < E > => < E' > .
 
   crl o < cond(C, E1, E2) > => < cond(C', E1, E2) > if o < C > => < C' > .
+
+  --- Call by value. Evaluate the arguments before application
+  crl o < F E > => < F E' > if o < E > => < E' > .
 
   crl o < F E > => < F' E > if o < F > => < F' > .
 
