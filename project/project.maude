@@ -42,8 +42,6 @@ mod CHANGE2 is protecting INT + BOOL + STRING .
 	op match : Change Change -> Bool .
 	ops CA, CB, CC, CREF1 : -> Change .
 
-	op match : Change Change -> Bool .
-
 	vars Property1 Property2 : Int .
 	vars C1 C2 C3 : Change .
 	vars ID1 ID2 : String .
@@ -51,17 +49,19 @@ mod CHANGE2 is protecting INT + BOOL + STRING .
 	eq CA = change("a", 4) .
 	eq CB = change("b", 5) .
 	eq CC = change("c", 6) .
+	eq CREF1 = change("refactoring 1", 0) .
 
-	---eq match(change(ID1, Property1), change(ID2, Property2)) = if Property1 == Property2 then true else false fi .
+	eq match(change(ID1, Property1), change(ID2, Property2)) = if ID1 == ID2 and Property1 == Property2 then true else false fi .
 	
-	crl match(change(ID1, Property1), change(ID2, Property2)) => true if ID1 == ID2 /\ Property1 == Property2 .
-	crl match(change(ID1, Property1), change(ID2, Property2)) => false if ID1 =/= ID2 . 
-	crl match(change(ID1, Property1), change(ID2, Property2)) => false if Property1 =/= Property2 . 
-
-	crl C1 C2 => CREF1 if match(CA, C1) => true if match (CA, C1) => true /\ match(CB, CC) => true . 
+	
+	crl C1 C2 => CREF1 if match(CA, C1) => true /\ match(CB, C2) => true . 
 
 endm
 
+---set trace on .
 
+rewrite CA CB .
+
+rewrite change("a", 2) change("b", 5) change("a", 4) change("b", 5) .
 
 q .
