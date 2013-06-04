@@ -1,0 +1,37 @@
+in set.maude .
+
+mod CHANGE is protecting INT + BOOL + STRING + SET .
+	sorts Change Property .
+	subsort Property < Element .
+
+	op __ : Change Change -> Change [assoc] .
+	op change : String Set -> Change . ---property set
+	op property : Int -> Property .
+
+	op match : Change Change -> Bool .
+	
+	ops CA, CB, CC, CREF1 : -> Change .
+
+	vars PropertySet1 PropertySet2 : Set .
+	vars C1 C2 C3 : Change .
+	vars ID1 ID2 : String .
+
+	eq CA = change("a", property(4) property(5)) .
+	eq CB = change("b", property(4)) .
+	eq CC = change("c", property(2) property(3)) .
+	eq CREF1 = change("refactoring 1", none) .
+
+	eq match(change(ID1, PropertySet1), change(ID2, PropertySet2)) = if ID1 == ID2 and PropertySet1 equal PropertySet2 then true else false fi .
+	
+	
+	crl C1 C2 => CREF1 if match(CA, C1) => true /\ match(CB, C2) => true . 
+
+endm
+
+---set trace on .
+
+rewrite CA CB .
+
+rewrite change("a", property(1) property(5)) change("b", property(5) property(6)) change("a", property(4) property(5)) change("b", property(4)) .
+
+q .
