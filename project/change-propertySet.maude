@@ -9,7 +9,7 @@ mod CHANGE is protecting INT + BOOL + STRING + SET .
 	op property : Int -> Property .
 
 	op match : Change Change -> Bool .
-	
+
 	ops CA, CB, CC, CREF1 : -> Change .
 
 	vars PropertySet1 PropertySet2 : Set .
