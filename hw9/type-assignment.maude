@@ -1,0 +1,30 @@
+in lambda-types.maude .
+in builtins.maude .
+
+mod TYPE-ASSIGNMENT is including LAMBDA-TYPES + PL-ID .
+  sort State .
+  subsort Undefined < Type .
+
+  op _|->_ : List{Id} Type -> State [prec 0] .
+  op .State : -> State .
+  op _&_ : State State -> State [assoc comm id: .State format(d s s d)] .
+
+  op _(_) : State Id -> Type [prec 0] .          --- lookup
+  op _[_/_] : State Type Id -> State [prec 0] .  --- update
+
+  var Sigma : State .  var T T' : Type .  var X X' : Id .  var Xl : List{Id} .
+
+  eq X |-> undefined = .State .                 --- "undefine" a variable in a state
+
+  eq (Sigma & X |-> T)(X) = T .
+  eq Sigma(X) = undefined [owise] .
+
+  eq (Sigma &  X |-> T)[T' / X ] = (Sigma & X |-> T') .
+  eq Sigma[T / X] = (Sigma & X |-> T) [owise] .
+
+  eq (X,X',Xl) |-> T = X |-> T & X' |-> T & Xl |-> T .
+  eq .List{Id} |-> T = .State .
+endm
+
+rew (x |-> nat & y |-> bool )(y) .
+rew (x |-> nat & y |-> bool )(x) .
