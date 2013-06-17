@@ -1,0 +1,43 @@
+mod LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BIGSTEP is including LAMBDA-SYNTAX + LAMBDA-TYPES + TYPE-ASSIGNMENT .
+  sort Configuration .
+  op <_,_> : Var TypeAssignment -> Configuration .
+  op <_,_> : Exp TypeAssignment -> Configuration .
+  op   <_> : Type -> Configuration .
+endm
+
+mod LAMBDA-TYPE-SYSTEM-BIGSTEP is including LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BIGSTEP .
+  var X : Id .  var TA : TypeAssignment .  var T : Type . 
+  var E E1 E2 : Exp .
+
+
+
+---  rl < I,Xl > => < int > .
+---  rl < X,(Xl,X,Xl') > => < int > .
+--- crl < A1 + A2,Xl > => < int >
+---  if < A1,Xl > => < int > /\ < A2,Xl > => < int > .
+--- crl < A1 / A2,Xl > => < int >
+---  if < A1,Xl > => < int > /\ < A2,Xl > => < int > .
+---
+---  rl < T,Xl > => < bool > .
+--- crl < A1 <= A2,Xl > => < bool >
+---  if < A1,Xl > => < int > /\ < A2,Xl > => < int > .
+--- crl < ! B,Xl > => < bool >
+---  if < B,Xl > => < bool > .
+--- crl < B1 && B2,Xl > => < bool >
+---  if < B1,Xl > => < bool > /\ < B2,Xl > => < bool > .
+---
+---  rl < {},Xl > => < block > .
+--- crl < {S},Xl > => < block >
+---  if < S,Xl > => < ST > .
+--- crl < X = A ;,(Xl,X,Xl') > => < stmt >
+---  if < A,(Xl,X,Xl') > => < int > .
+--- crl < S1 S2,Xl > => < stmt >
+---  if < S1,Xl > => < ST1 > /\ < S2,Xl > => < ST2 > .
+--- crl < if (B) S1 else S2,Xl > => < stmt >
+  ---if < B,Xl > => < bool > /\ < S1,Xl > => < block > /\ < S2,Xl > => < block > .
+--- crl < while (B) S,Xl > => < stmt >
+---  if < B,Xl > => < bool > /\ < S,Xl > => < block > .
+---
+--- crl < int Xl ; S > => < pgm >
+---  if < S,Xl > => < ST > .
+endm

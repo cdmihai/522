@@ -1,6 +1,6 @@
 mod LAMBDA-TYPES is 
 	sorts Nat Boolean Type .
-	  op nat : -> Nat .
-	  op bool : -> Boolean .
+	  op nat : -> Type .
+	  op bool : -> Type .
 	  op _->_ : Type Type -> Type .
 endm

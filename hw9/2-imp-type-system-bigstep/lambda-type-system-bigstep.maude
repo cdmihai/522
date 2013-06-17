@@ -1,0 +1,19 @@
+in ../builtins.maude
+in ../lambda-types.maude
+in ../type-assignment.maude
+in ../lambda-syntax.maude
+
+in lambda-type-system-semantics-bigstep
+
+mod TEST is including LAMBDA-TYPE-SYSTEM-BIGSTEP .  endm
+
+---rewrite < sumPgm > .
+---rewrite < collatzStmt, (n,q,r,s) > .
+---rewrite < collatzPgm > .
+---rewrite < multiplicationStmt, (x,y,q,r,z) > .
+---rewrite < primalityStmt, (n,i,q,r,t,x,y,z) > .
+---rewrite < countPrimesPgm > .
+
+---search < sumPgm > =>! Cfg:Configuration .
+
+quit
