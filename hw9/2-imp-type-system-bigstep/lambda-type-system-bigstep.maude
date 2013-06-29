@@ -7,6 +7,8 @@ in lambda-type-system-semantics-bigstep
 
 mod TEST is including LAMBDA-TYPE-SYSTEM-BIGSTEP .  endm
 
+rewrite < 0', emptyAssignment > .
+
 ---rewrite < sumPgm > .
 ---rewrite < collatzStmt, (n,q,r,s) > .
 ---rewrite < collatzPgm > .

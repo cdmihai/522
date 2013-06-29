@@ -6,10 +6,17 @@ mod LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BIGSTEP is including LAMBDA-SYNTAX + LAMBD
 endm
 
 mod LAMBDA-TYPE-SYSTEM-BIGSTEP is including LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BIGSTEP .
-  var X : Id .  var TA : TypeAssignment .  var T : Type . 
+  var X : Id .  var TA : TypeAssignment .  var S T : Type . 
   var E E1 E2 : Exp .
 
+ rl < 0', TA > => < nat > .
+ rl < false', TA > => < bool > .
+ rl < true', TA > => < bool > .
 
+ rl < X, TA > => < TA(X) > .
+crl < /\ X : S . E, TA > => < T > if < E, TA[S / X] > => < T > .  
+crl < E1 E2, TA > => < T > if < E1, TA > => < S -> T > /\ < E2, TA > => < S > .
+crl < m X : T . E, TA > => < T > if < E, TA[T / X] > => < T > .
 
 ---  rl < I,Xl > => < int > .
 ---  rl < X,(Xl,X,Xl') > => < int > .
