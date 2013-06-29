@@ -34,6 +34,7 @@ rewrite < /\ x : nat . zero?(pred(x)), emptyTypeAssignment > .
 rewrite < /\ x : nat . succ(x), emptyTypeAssignment > .
 rewrite < /\ x : bool . succ(x), emptyTypeAssignment > .
 
+rewrite < (/\ x : nat . succ(x)) 0', emptyTypeAssignment > .
 
 
 ---rewrite < sumPgm > .

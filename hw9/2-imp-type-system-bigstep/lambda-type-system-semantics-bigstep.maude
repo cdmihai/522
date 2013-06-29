@@ -20,7 +20,7 @@ mod LAMBDA-TYPE-SYSTEM-BIGSTEP is including LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BI
  crl < cond(E, E1, E2), TA > => < T > if < E, TA > => < bool > /\ < E1, TA > => < T > /\ < E2, TA > => < T > .
 
  rl < X, TA > => < TA(X) > .
-crl < /\ X : S . E, TA > => < T > if < E, TA[S / X] > => < T > .  
+crl < /\ X : S . E, TA > => < S -> T > if < E, TA[S / X] > => < T > .  
 crl < E1 E2, TA > => < T > if < E1, TA > => < S -> T > /\ < E2, TA > => < S > .
 crl < m X : T . E, TA > => < T > if < E, TA[T / X] > => < T > .
 
