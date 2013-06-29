@@ -1,6 +1,10 @@
-mod LAMBDA-TYPES is 
-	sorts Nat Boolean Type .
-	  op nat : -> Type .
-	  op bool : -> Type .
-	  op _->_ : Type Type -> Type .
+mod LAMBDA-TYPES is including PL-ID .
+	sorts Nat Boolean TypeVar Type .
+	subsorts Nat Boolean TypeVar < Type .
+	subsort Id < TypeVar .
+
+	op nat : -> Type .
+	op bool : -> Type .
+	op _->_ : Type Type -> Type .
+	op (\/_)_ : TypeVar Type -> Type .
 endm

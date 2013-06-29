@@ -7,7 +7,34 @@ in lambda-type-system-semantics-bigstep
 
 mod TEST is including LAMBDA-TYPE-SYSTEM-BIGSTEP .  endm
 
-rewrite < 0', emptyAssignment > .
+rewrite < 0', emptyTypeAssignment > .
+rewrite < true', emptyTypeAssignment > .
+rewrite < false', emptyTypeAssignment > .
+rewrite < false', emptyTypeAssignment > .
+
+rewrite < succ(0'), emptyTypeAssignment > .
+rewrite < succ(succ(0')), emptyTypeAssignment > .
+rewrite < pred(0'), emptyTypeAssignment > .
+rewrite < pred(pred(0')), emptyTypeAssignment > .
+rewrite < succ(pred(0')), emptyTypeAssignment > .
+rewrite < pred(succ(0')), emptyTypeAssignment > .
+rewrite < succ(pred(succ(0'))), emptyTypeAssignment > .
+
+rewrite < zero?(succ(0')), emptyTypeAssignment > .
+rewrite < zero?(true'), emptyTypeAssignment > .
+
+rewrite < cond(zero?(0'), succ(0'), 0'), emptyTypeAssignment > .
+rewrite < cond(zero?(0'), succ(0'), true'), emptyTypeAssignment > .
+
+rewrite < x, x |-> nat > .
+rewrite < x, x |-> bool > .
+
+rewrite < /\ x : nat . zero?(pred(x)), emptyTypeAssignment > .
+
+rewrite < /\ x : nat . succ(x), emptyTypeAssignment > .
+rewrite < /\ x : bool . succ(x), emptyTypeAssignment > .
+
+
 
 ---rewrite < sumPgm > .
 ---rewrite < collatzStmt, (n,q,r,s) > .
