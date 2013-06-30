@@ -15,11 +15,13 @@ mod LAMBDA-TYPE-SYSTEM-BIGSTEP is including LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BI
  rl < 0', TA > => < nat > .
  rl < false', TA > => < bool > .
  rl < true', TA > => < bool > .
+
  crl < succ(E), TA > => < nat > if < E , TA > => < nat > .
  crl < pred(E), TA > => < nat > if < E , TA > => < nat > .
+ 
  crl < zero?(E), TA > => < bool > if < E, TA > => < nat > .
 
- ---a condition has to have both branches of the same type
+ ---TODO: make this polymorphic and then rewrite every example that uses cond. Maybe create a polyCond instead to not affect previous examples
  crl < cond(E, E1, E2), TA > => < bool -> T -> T -> T > if < E, TA > => < bool > /\ < E1, TA > => < T > /\ < E2, TA > => < T > .
 
  rl < X, TA > => < TA(X) > .
@@ -28,6 +30,8 @@ crl < E1 E2, TA > => < T > if < E1, TA > => < S -> T > /\ < E2, TA > => < S > .
 crl < m X : T . E, TA > => < T > if < E, TA[T / X] > => < T > .
 
 crl < /\ TV . E, TA > => < ( \/ TV ) T > if < E, TA > => < T > .
+
+crl < E [ T ], TA > => < substitute(S, T, TV) > if < E, TA > => < ( \/ TV ) S > .
  
 ---  rl < I,Xl > => < int > .
 ---  rl < X,(Xl,X,Xl') > => < int > .
