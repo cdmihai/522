@@ -1,0 +1,25 @@
+---PCF flavor of lambda
+
+mod LAMBDA-SYNTAX is including PL-ID + PL-GENERIC-SUBSTITUTION + LAMBDA-TYPES .
+
+--- Variables
+sort Var .
+  subsort Id < Var .
+  subsort Id < Var .
+
+--- Exps
+sort Exp .
+  subsort Exp < GenericTerm . ---for builtins substitution
+  subsort Var < Exp .
+  subsort Type < Exp .
+
+  op __ : Exp Exp -> Exp [prec 25 gather(E e)] . --- Call by value. Arguments are not frozen.
+  op /\_:_._ : Var Type Exp -> Exp [prec 50] .
+
+  op 0' : -> Exp .
+  ops false' true' : -> Exp .
+  ops succ pred : Exp -> Exp .
+  op zero? : Exp -> Exp .
+  op cond : Exp Exp Exp -> Exp .
+
+endm

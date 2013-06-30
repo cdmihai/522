@@ -1,0 +1,44 @@
+in ../builtins.maude
+in ../lambda-types.maude
+in ../type-assignment.maude
+in ../lambda-syntax.maude
+
+in lambda-type-system-semantics-bigstep
+
+mod TEST is including LAMBDA-TYPE-SYSTEM-BIGSTEP .  endm
+
+---set print with parentheses on .
+---parse (t -> t) -> t -> t -> t .
+---parse x y z .
+---parse /\ t . /\ x : t . x .
+---parse /\ t . /\ x : t . x [ nat ] .
+
+rewrite < 0', emptyTypeAssignment > .
+rewrite < true', emptyTypeAssignment > .
+rewrite < false', emptyTypeAssignment > .
+rewrite < false', emptyTypeAssignment > .
+
+rewrite < succ(0'), emptyTypeAssignment > .
+rewrite < succ(succ(0')), emptyTypeAssignment > .
+rewrite < pred(0'), emptyTypeAssignment > .
+rewrite < pred(pred(0')), emptyTypeAssignment > .
+rewrite < succ(pred(0')), emptyTypeAssignment > .
+rewrite < pred(succ(0')), emptyTypeAssignment > .
+rewrite < succ(pred(succ(0'))), emptyTypeAssignment > .
+
+rewrite < zero?(succ(0')), emptyTypeAssignment > .
+rewrite < zero?(true'), emptyTypeAssignment > .
+
+rewrite < cond(zero?(0'), succ(0'), 0'), emptyTypeAssignment > .
+rewrite < cond(zero?(0'), succ(0'), true'), emptyTypeAssignment > .
+
+rewrite < x, x |-> nat > .
+rewrite < x, x |-> bool > .
+
+rewrite < /\ x : nat . zero?(pred(x)), emptyTypeAssignment > .
+rewrite < /\ y : nat . /\ x : nat . cond(zero?(x), y, x), emptyTypeAssignment > .
+rewrite < /\ x : nat . succ(x), emptyTypeAssignment > .
+rewrite < /\ x : bool . succ(x), emptyTypeAssignment > .
+rewrite < (/\ x : nat . succ(x)) 0', emptyTypeAssignment > .
+
+quit

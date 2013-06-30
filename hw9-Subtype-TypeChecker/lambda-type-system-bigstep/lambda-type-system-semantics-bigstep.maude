@@ -1,0 +1,30 @@
+mod LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BIGSTEP is including LAMBDA-SYNTAX + LAMBDA-TYPES + TYPE-ASSIGNMENT .
+  sort Configuration .
+  op <_,_> : Var TypeAssignment -> Configuration .
+  op <_,_> : Exp TypeAssignment -> Configuration .
+  op   <_> : Type -> Configuration .
+endm
+
+mod LAMBDA-TYPE-SYSTEM-BIGSTEP is including LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BIGSTEP .
+  var X : Id .  
+  var TA : TypeAssignment .  
+  var S T : Type . 
+  var E E1 E2 : Exp .
+
+ rl < 0', TA > => < nat > .
+ rl < false', TA > => < bool > .
+ rl < true', TA > => < bool > .
+
+ crl < succ(E), TA > => < nat > if < E , TA > => < nat > .
+ crl < pred(E), TA > => < nat > if < E , TA > => < nat > .
+ 
+ crl < zero?(E), TA > => < bool > if < E, TA > => < nat > .
+
+ ---instead of having to tell cond the concrete type of its branches, it can actually infer this information itself
+ crl < cond(E, E1, E2), TA > => < bool -> T -> T -> T > if < E, TA > => < bool > /\ < E1, TA > => < T > /\ < E2, TA > => < T > .
+
+ rl < X, TA > => < TA(X) > .
+crl < /\ X : S . E, TA > => < S -> T > if < E, TA[S / X] > => < T > .  
+crl < E1 E2, TA > => < T > if < E1, TA > => < S -> T > /\ < E2, TA > => < S > .
+
+endm

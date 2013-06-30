@@ -1,0 +1,8 @@
+mod LAMBDA-TYPES is including PL-ID + PL-GENERIC-SUBSTITUTION .
+	sorts Nat Boolean Type .
+	subsorts Nat Boolean < Type .
+
+	op nat : -> Type .
+	op bool : -> Type .
+	op _->_ : Type Type -> Type [gather(e E)] .
+endm
