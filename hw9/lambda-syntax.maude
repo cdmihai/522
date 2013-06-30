@@ -25,5 +25,6 @@ sort Exp .
   ops succ pred : Exp -> Exp .
   op zero? : Exp -> Exp .
   op cond : Exp Exp Exp -> Exp .
+  op condPolymorphic : Exp Exp Exp -> Exp .
 
 endm

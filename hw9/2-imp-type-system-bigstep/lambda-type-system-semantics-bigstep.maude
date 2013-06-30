@@ -21,8 +21,11 @@ mod LAMBDA-TYPE-SYSTEM-BIGSTEP is including LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BI
  
  crl < zero?(E), TA > => < bool > if < E, TA > => < nat > .
 
- ---TODO: make this polymorphic and then rewrite every example that uses cond. Maybe create a polyCond instead to not affect previous examples
+ ---instead of having to tell cond the concrete type of its branches, it can actually infer this information itself
  crl < cond(E, E1, E2), TA > => < bool -> T -> T -> T > if < E, TA > => < bool > /\ < E1, TA > => < T > /\ < E2, TA > => < T > .
+
+ ---polymorphic cond as described in the course slides. I think this is more error prone than the one above. The one above infers its types whereas this one needs the programmer to specify the types
+ rl < condPolymorphic(E, E1, E2), TA > => < (\/ t) bool -> t -> t -> t > .
 
  rl < X, TA > => < TA(X) > .
 crl < /\ X : S . E, TA > => < S -> T > if < E, TA[S / X] > => < T > .  

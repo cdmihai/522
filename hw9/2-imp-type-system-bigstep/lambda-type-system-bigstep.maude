@@ -45,14 +45,9 @@ rewrite < (/\ x : nat . succ(x)) 0', emptyTypeAssignment > .
 rewrite < /\ t . (/\ x : t . x), emptyTypeAssignment > .
 rewrite < (/\ t . (/\ x : t . x) [ nat ] ), emptyTypeAssignment > .
 
+rewrite < ( /\ i : ( \/ t ) t -> t . (i [ nat ]) succ(0') ) (/\ t . (/\ x : t . x) ), emptyTypeAssignment > .
 
----rewrite < sumPgm > .
----rewrite < collatzStmt, (n,q,r,s) > .
----rewrite < collatzPgm > .
----rewrite < multiplicationStmt, (x,y,q,r,z) > .
----rewrite < primalityStmt, (n,i,q,r,t,x,y,z) > .
----rewrite < countPrimesPgm > .
-
----search < sumPgm > =>! Cfg:Configuration .
+---parse ( /\ i : ( \/ t ) t -> t . cond((zero?(0')), ((i [ nat ]) succ(0')), 0' )) (/\ t . (/\ x : t . x) ) .
+rewrite < ( /\ i : ( \/ t ) t -> t . cond((zero?(0')), ((i [ nat ]) succ(0')), 0' )) (/\ t . (/\ x : t . x) ), emptyTypeAssignment > .
 
 quit
