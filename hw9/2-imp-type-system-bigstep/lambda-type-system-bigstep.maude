@@ -7,6 +7,10 @@ in lambda-type-system-semantics-bigstep
 
 mod TEST is including LAMBDA-TYPE-SYSTEM-BIGSTEP .  endm
 
+---set print with parentheses on .
+---parse (t -> t) -> t -> t -> t .
+---parse x y z .
+
 rewrite < 0', emptyTypeAssignment > .
 rewrite < true', emptyTypeAssignment > .
 rewrite < false', emptyTypeAssignment > .
