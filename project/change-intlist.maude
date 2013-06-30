@@ -1,0 +1,17 @@
+mod INT-LIST is protecting INT .
+	sort IntList .
+	subsort Int < IntList .
+	op nil : -> IntList .
+	op __ : IntList IntList -> IntList [assoc id: nil] .
+	op _in_ : Int IntList -> Bool .
+	var I : Int . vars L L' : IntList .
+	eq I in L I L' = true .
+	eq I in L = false [owise] .
+
+	rl 2 3 => 9 .
+endm
+
+parse 1 2 3 4 5 .
+
+rewrite 1 in 2 3 1 3 .
+rewrite 1 2 3 4 5 6 .
