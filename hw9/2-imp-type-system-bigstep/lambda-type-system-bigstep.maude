@@ -42,6 +42,8 @@ rewrite < /\ x : bool . succ(x), emptyTypeAssignment > .
 
 rewrite < (/\ x : nat . succ(x)) 0', emptyTypeAssignment > .
 
+rewrite < /\ t . (/\ x : t . x), emptyTypeAssignment > .
+
 
 ---rewrite < sumPgm > .
 ---rewrite < collatzStmt, (n,q,r,s) > .

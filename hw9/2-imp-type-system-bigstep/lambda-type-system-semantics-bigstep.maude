@@ -24,6 +24,8 @@ crl < /\ X : S . E, TA > => < S -> T > if < E, TA[S / X] > => < T > .
 crl < E1 E2, TA > => < T > if < E1, TA > => < S -> T > /\ < E2, TA > => < S > .
 crl < m X : T . E, TA > => < T > if < E, TA[T / X] > => < T > .
 
+crl < /\ TV . E, TA > => < ( \/ TV ) T > if < E, TA > => < T > .
+ 
 ---  rl < I,Xl > => < int > .
 ---  rl < X,(Xl,X,Xl') > => < int > .
 --- crl < A1 + A2,Xl > => < int >

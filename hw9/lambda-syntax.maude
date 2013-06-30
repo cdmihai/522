@@ -17,6 +17,9 @@ sort Exp .
   op /\_:_._ : Var Type Exp -> Exp [prec 50] .
   op m_:_._ : Var Type Exp -> Exp [prec 50] .
 
+  op /\_._ : TypeVar Exp -> Exp .
+  op _[_] : Exp Type -> Exp .
+
   op 0' : -> Exp .
   ops false' true' : -> Exp .
   ops succ pred : Exp -> Exp .
