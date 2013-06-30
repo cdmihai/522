@@ -1,6 +1,8 @@
 mod LAMBDA-TYPES is including PL-ID .
 	sorts Nat Boolean TypeVar Type .
 	subsorts Nat Boolean TypeVar < Type .
+	
+	--- TypeVar is implemented with the builtin IDs
 	subsort Id < TypeVar .
 
 	op nat : -> Type .
