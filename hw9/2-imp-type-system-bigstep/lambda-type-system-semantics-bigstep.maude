@@ -17,7 +17,7 @@ mod LAMBDA-TYPE-SYSTEM-BIGSTEP is including LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BI
  crl < zero?(E), TA > => < bool > if < E, TA > => < nat > .
 
  ---a condition has to have both branches of the same type
- crl < cond(E, E1, E2), TA > => < T > if < E, TA > => < bool > /\ < E1, TA > => < T > /\ < E2, TA > => < T > .
+ crl < cond(E, E1, E2), TA > => < bool -> T -> T -> T > if < E, TA > => < bool > /\ < E1, TA > => < T > /\ < E2, TA > => < T > .
 
  rl < X, TA > => < TA(X) > .
 crl < /\ X : S . E, TA > => < S -> T > if < E, TA[S / X] > => < T > .  
