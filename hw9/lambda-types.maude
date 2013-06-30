@@ -1,9 +1,12 @@
-mod LAMBDA-TYPES is including PL-ID .
+mod LAMBDA-TYPES is including PL-ID + PL-GENERIC-SUBSTITUTION .
 	sorts Nat Boolean TypeVar Type .
 	subsorts Nat Boolean TypeVar < Type .
 	
 	--- TypeVar is implemented with the builtin IDs
 	subsort Id < TypeVar .
+
+	--- Substitution needs to be performed in types when instantiating generic types
+	subsort Type < GenericTerm .
 
 	op nat : -> Type .
 	op bool : -> Type .
