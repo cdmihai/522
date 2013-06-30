@@ -10,6 +10,8 @@ mod TEST is including LAMBDA-TYPE-SYSTEM-BIGSTEP .  endm
 ---set print with parentheses on .
 ---parse (t -> t) -> t -> t -> t .
 ---parse x y z .
+---parse /\ t . /\ x : t . x .
+---parse /\ t . /\ x : t . x [ nat ] .
 
 rewrite < 0', emptyTypeAssignment > .
 rewrite < true', emptyTypeAssignment > .
