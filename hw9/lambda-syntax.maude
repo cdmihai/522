@@ -17,8 +17,8 @@ sort Exp .
   op /\_:_._ : Var Type Exp -> Exp [prec 50] .
   op m_:_._ : Var Type Exp -> Exp [prec 50] .
 
-  op /\_._ : TypeVar Exp -> Exp .
-  op _[_] : Exp Type -> Exp .
+  op /\_._ : TypeVar Exp -> Exp [prec 80].
+  op _[_] : Exp Type -> Exp [prec 100 gather(E e)] .
 
   op 0' : -> Exp .
   ops false' true' : -> Exp .
