@@ -1,8 +1,8 @@
 ---PCF flavor of lambda
 
-in builtins.maude
-in set.maude
-in lambda-types.maude
+---in builtins.maude
+---in set.maude
+---in lambda-types.maude
 
 mod LAMBDA-SYNTAX is including PL-ID + PL-GENERIC-SUBSTITUTION + LAMBDA-TYPES + CSET .
 
@@ -36,10 +36,13 @@ sort Exp .
   op [_] : Set' -> Record [prec 20] .
   op _._ : Record String -> Exp .
 
+  var RS : Set' .
+  var E : Exp .
+  var S : String .
+
+  eq [ S = E ; RS ] . S = E .
 
 endm
 
 ---set print with parentheses on .
 ---parse [ "a" = (/\ x : nat . x) ; "b" = succ(0') ] .
-
-q .

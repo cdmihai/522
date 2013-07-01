@@ -28,12 +28,14 @@ rewrite < /\ y : nat . /\ x : nat . cond(zero?(x), y, x), emptyTypeAssignment > 
 
 rew t1 < t1' .
 rew t1' < t1 .
-
 rew t2 < t2' .
 rew t2' < t2 .
-
 rew t1 < t1 .
-
 rew t1' -> t2 < t1 -> t2' .
+
+rew [ "a" = (/\ x : nat . succ(x)) ; "b" = succ(0') ] . "a" .
+rew [ "a" = (/\ x : nat . succ(x)) ; "b" = succ(0') ] . "b" .
+rew [ "a" = (/\ x : nat . succ(x)) ; "b" = succ(0') ] . "c" .
+
 
 quit
