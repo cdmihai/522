@@ -1,6 +1,14 @@
 ---PCF flavor of lambda
 
-mod LAMBDA-SYNTAX is including PL-ID + PL-GENERIC-SUBSTITUTION + LAMBDA-TYPES .
+in builtins.maude
+in set.maude
+in lambda-types.maude
+
+mod LAMBDA-SYNTAX is including PL-ID + PL-GENERIC-SUBSTITUTION + LAMBDA-TYPES + CSET .
+
+  sorts RecordField Record  .
+  subsort RecordField < Element .
+
 
 --- Variables
 sort Var .
@@ -12,6 +20,7 @@ sort Exp .
   subsort Exp < GenericTerm . ---for builtins substitution
   subsort Var < Exp .
   subsort Type < Exp .
+  subsort Record < Exp .
 
   op __ : Exp Exp -> Exp [prec 25 gather(E e)] . --- Call by value. Arguments are not frozen.
   op /\_:_._ : Var Type Exp -> Exp [prec 50] .
@@ -22,4 +31,15 @@ sort Exp .
   op zero? : Exp -> Exp .
   op cond : Exp Exp Exp -> Exp .
 
+---Record specific operations
+  op _=_ : String Exp -> RecordField [prec 10] .
+  op [_] : Set' -> Record [prec 20] .
+  op _._ : Record String -> Exp .
+
+
 endm
+
+---set print with parentheses on .
+---parse [ "a" = (/\ x : nat . x) ; "b" = succ(0') ] .
+
+q .
