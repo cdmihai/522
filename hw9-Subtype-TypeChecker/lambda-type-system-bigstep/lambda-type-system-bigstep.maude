@@ -1,44 +1,39 @@
 in ../builtins.maude
+in ../set.maude
 in ../lambda-types.maude
 in ../type-assignment.maude
 in ../lambda-syntax.maude
 
 in lambda-type-system-semantics-bigstep
 
-mod TEST is including LAMBDA-TYPE-SYSTEM-BIGSTEP .  endm
+mod TEST is including LAMBDA-TYPE-SYSTEM-BIGSTEP .  
 
----set print with parentheses on .
----parse (t -> t) -> t -> t -> t .
----parse x y z .
----parse /\ t . /\ x : t . x .
----parse /\ t . /\ x : t . x [ nat ] .
+	ops t1, t1', t2, t2' : -> RecordType .
+
+	eq t1 = { ("t1a" : nat) ; ("t1b" : bool) ; ("t1c" : nat)} .
+	eq t1' = { ("t1a" : nat) ; ("t1b" : bool) } .
+
+	eq t2 = { ("t2a" : bool) ; ("t2b" : nat) ; ("t2c" : bool) ; ("t2d" : bool) } .
+	eq t2' = { ("t2a" : bool) } .
+
+endm
+
 
 rewrite < 0', emptyTypeAssignment > .
 rewrite < true', emptyTypeAssignment > .
 rewrite < false', emptyTypeAssignment > .
-rewrite < false', emptyTypeAssignment > .
-
-rewrite < succ(0'), emptyTypeAssignment > .
-rewrite < succ(succ(0')), emptyTypeAssignment > .
-rewrite < pred(0'), emptyTypeAssignment > .
-rewrite < pred(pred(0')), emptyTypeAssignment > .
-rewrite < succ(pred(0')), emptyTypeAssignment > .
-rewrite < pred(succ(0')), emptyTypeAssignment > .
 rewrite < succ(pred(succ(0'))), emptyTypeAssignment > .
-
-rewrite < zero?(succ(0')), emptyTypeAssignment > .
-rewrite < zero?(true'), emptyTypeAssignment > .
-
 rewrite < cond(zero?(0'), succ(0'), 0'), emptyTypeAssignment > .
-rewrite < cond(zero?(0'), succ(0'), true'), emptyTypeAssignment > .
-
-rewrite < x, x |-> nat > .
-rewrite < x, x |-> bool > .
-
-rewrite < /\ x : nat . zero?(pred(x)), emptyTypeAssignment > .
 rewrite < /\ y : nat . /\ x : nat . cond(zero?(x), y, x), emptyTypeAssignment > .
-rewrite < /\ x : nat . succ(x), emptyTypeAssignment > .
-rewrite < /\ x : bool . succ(x), emptyTypeAssignment > .
-rewrite < (/\ x : nat . succ(x)) 0', emptyTypeAssignment > .
+
+rew t1 < t1' .
+rew t1' < t1 .
+
+rew t2 < t2' .
+rew t2' < t2 .
+
+rew t1 < t1 .
+
+rew t1' -> t2 < t1 -> t2' .
 
 quit

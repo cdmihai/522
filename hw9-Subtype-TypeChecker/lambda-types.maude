@@ -1,5 +1,5 @@
-in builtins.maude .
-in set.maude .
+---in builtins.maude .
+---in set.maude .
 
 mod LAMBDA-TYPES is including PL-ID + PL-GENERIC-SUBSTITUTION + CSET .
 	sorts Nat Boolean RecordType Type .
@@ -10,13 +10,38 @@ mod LAMBDA-TYPES is including PL-ID + PL-GENERIC-SUBSTITUTION + CSET .
 
 	op nat : -> Type .
 	op bool : -> Type .
-	op _->_ : Type Type -> Type [gather(e E)] .
+	op _->_ : Type Type -> Type [prec 25 gather(e E)] .
 
 	op _:_ : String Type -> RecordTypeElement .
-
 	---TODO: learn how to use maude's set with generics
 	op {_} : Set' -> RecordType .
 
-endm
+	--- subtyping operator
+	op _<_ : Type Type -> Bool [prec 30] .
 
-parse { ("age" : nat) ; ("whatever" : bool) } .
+	var T1 T2 T1' T2' : Type .
+	var R1 R2 : Set' .
+
+	--- subtyping for arrow types
+	eq T1 -> T1' < T2 -> T2' = 
+							if T2 < T1 andBool T1' < T2' then
+								true
+							else
+								false
+							fi .
+
+	--- subtyping for record types
+	--- TODO: iterate over elements and ask if they are subtypes as well
+	eq { R1 } < { R2 } =
+						if R2 subset R1 then
+							true
+						else
+							false
+						fi .
+
+	eq nat < nat = true .
+	eq nat < bool = false .
+	eq bool < bool = true .
+	eq bool < nat = false .
+
+endm
