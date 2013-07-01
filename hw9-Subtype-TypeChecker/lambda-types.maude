@@ -1,8 +1,22 @@
-mod LAMBDA-TYPES is including PL-ID + PL-GENERIC-SUBSTITUTION .
-	sorts Nat Boolean Type .
-	subsorts Nat Boolean < Type .
+in builtins.maude .
+in set.maude .
+
+mod LAMBDA-TYPES is including PL-ID + PL-GENERIC-SUBSTITUTION + CSET .
+	sorts Nat Boolean RecordType Type .
+	subsorts Nat Boolean RecordType < Type .
+	
+	sort RecordTypeElement .
+	subsort RecordTypeElement < Element .
 
 	op nat : -> Type .
 	op bool : -> Type .
 	op _->_ : Type Type -> Type [gather(e E)] .
+
+	op _:_ : String Type -> RecordTypeElement .
+
+	---TODO: learn how to use maude's set with generics
+	op {_} : Set' -> RecordType .
+
 endm
+
+parse { ("age" : nat) ; ("whatever" : bool) } .
