@@ -8,13 +8,18 @@ in lambda-type-system-semantics-bigstep
 
 mod TEST is including LAMBDA-TYPE-SYSTEM-BIGSTEP .  
 
-	ops t1, t1', t2, t2' : -> RecordType .
+	ops t1, t1', t2, t2' t3Type : -> RecordType .
+	op t3 : -> Record .
 
 	eq t1 = { ("t1a" : nat) ; ("t1b" : bool) ; ("t1c" : nat)} .
 	eq t1' = { ("t1a" : nat) ; ("t1b" : bool) } .
 
 	eq t2 = { ("t2a" : bool) ; ("t2b" : nat) ; ("t2c" : bool) ; ("t2d" : bool) } .
 	eq t2' = { ("t2a" : bool) } .
+
+	eq t3 = [ "a" = (/\ x : nat . succ(x)) ; "b" = succ(0') ] .
+
+	eq t3Type = { ("a" : nat -> nat) ; ("b" : nat) } .
 
 endm
 
@@ -25,6 +30,7 @@ rewrite < false', emptyTypeAssignment > .
 rewrite < succ(pred(succ(0'))), emptyTypeAssignment > .
 rewrite < cond(zero?(0'), succ(0'), 0'), emptyTypeAssignment > .
 rewrite < /\ y : nat . /\ x : nat . cond(zero?(x), y, x), emptyTypeAssignment > .
+rewrite < /\ x : nat . x, emptyTypeAssignment > .
 
 rew t1 < t1' .
 rew t1' < t1 .
@@ -33,9 +39,10 @@ rew t2' < t2 .
 rew t1 < t1 .
 rew t1' -> t2 < t1 -> t2' .
 
-rew [ "a" = (/\ x : nat . succ(x)) ; "b" = succ(0') ] . "a" .
-rew [ "a" = (/\ x : nat . succ(x)) ; "b" = succ(0') ] . "b" .
-rew [ "a" = (/\ x : nat . succ(x)) ; "b" = succ(0') ] . "c" .
+rew t3 . "a" .
+rew t3 . "b" .
+rew t3 . "c" .
 
+rew (/\ x : ({ ("a" : nat -> nat) ; ("b" : nat) }) . x . "a") t3 .
 
 quit

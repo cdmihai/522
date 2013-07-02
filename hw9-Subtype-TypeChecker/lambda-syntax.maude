@@ -36,12 +36,6 @@ sort Exp .
   op [_] : Set' -> Record [prec 20] .
   op _._ : Record String -> Exp .
 
-  var RS : Set' .
-  var E : Exp .
-  var S : String .
-
-  eq [ S = E ; RS ] . S = E .
-
 endm
 
 ---set print with parentheses on .

@@ -8,7 +8,7 @@ endm
 mod LAMBDA-TYPE-SYSTEM-BIGSTEP is including LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BIGSTEP .
   var X : Id .  
   var TA : TypeAssignment .  
-  var S T : Type . 
+  var S T T1 T2 : Type . 
   var E E1 E2 : Exp .
 
  rl < 0', TA > => < nat > .
@@ -25,6 +25,13 @@ mod LAMBDA-TYPE-SYSTEM-BIGSTEP is including LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BI
 
  rl < X, TA > => < TA(X) > .
 crl < /\ X : S . E, TA > => < S -> T > if < E, TA[S / X] > => < T > .  
-crl < E1 E2, TA > => < T > if < E1, TA > => < S -> T > /\ < E2, TA > => < S > .
+crl < E1 E2, TA > => < S > if < E1, TA > => < T1 -> S > /\ < E2, TA > => < T2 > /\ T2 < T1 .
+
+
+var RS : Set' .
+var STR : String .
+
+eq [ STR = E ; RS ] . STR = E .
+
 
 endm
