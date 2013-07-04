@@ -5,6 +5,7 @@ mod LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BIGSTEP is including LAMBDA-SYNTAX + LAMBD
   op   <_> : Type -> Configuration .
 endm
 
+---TODO: extract Record code into separate entity
 mod LAMBDA-TYPE-SYSTEM-BIGSTEP is including LAMBDA-TYPE-SYSTEM-CONFIGURATIONS-BIGSTEP .
   var X : Id .  
   var TA : TypeAssignment .  
@@ -28,10 +29,18 @@ crl < /\ X : S . E, TA > => < S -> T > if < E, TA[S / X] > => < T > .
 crl < E1 E2, TA > => < S > if < E1, TA > => < T1 -> S > /\ < E2, TA > => < T2 > /\ T2 < T1 .
 
 
-var RS : Set' .
+--- field access
+var RS RST : Set' .
 var STR : String .
 
 eq [ STR = E ; RS ] . STR = E .
 
+---type checking a record
+op typify : Set' TypeAssignment Set' -> Set' .
+
+rl typify(RS, TA, RST) => none .
+
+crl < [ RS ], TA > => < { RST } > if typify(RS, TA, none) => RST .
+---rl < [ RS ], TA > => < nat >  .
 
 endm
