@@ -42,7 +42,8 @@ rew t1' -> t2 < t1 -> t2' .
 rew t3 . "a" .
 rew t3 . "b" .
 rew t3 . "c" .
-
 rew (/\ x : ({ ("a" : nat -> nat) ; ("b" : nat) }) . x . "a") t3 .
+
+rew < t3, emptyTypeAssignment > . 
 
 quit

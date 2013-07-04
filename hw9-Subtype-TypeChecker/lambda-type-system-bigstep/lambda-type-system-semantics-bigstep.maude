@@ -37,16 +37,10 @@ eq [ STR = E ; RS ] . STR = E .
 
 ---type checking a record
 op typify : Set' TypeAssignment Set' -> Set' .
-op typifyEQ : Set' TypeAssignment Set' -> Set' .
 
-subsort String < Element .
-
-eq typifyEQ(STR = E ; RS, TA, RST) = typifyEQ( RS, TA, (RST add STR : nat )) .
-eq typifyEQ(none, TA, RST) = RST [owise] .
-
-rl typify(RS, TA, RST) => typifyEQ(RS, TA, RST) .
+crl typify(STR = E ; RS, TA, RST) => typify( RS, TA, (RST add STR : T )) if < E, TA > => < T > .
+rl typify(none, TA, RST) => RST .
 
 crl < [ RS ], TA > => < { RST } > if typify(RS, TA, none) => RST .
----rl < [ RS ], TA > => < nat >  .
 
 endm
