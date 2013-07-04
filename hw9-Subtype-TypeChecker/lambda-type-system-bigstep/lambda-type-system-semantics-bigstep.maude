@@ -39,7 +39,10 @@ eq [ STR = E ; RS ] . STR = E .
 op typify : Set' TypeAssignment Set' -> Set' .
 op typifyEQ : Set' TypeAssignment Set' -> Set' .
 
-eq typifyEQ(RS, TA, RST) = none .
+subsort String < Element .
+
+eq typifyEQ(STR = E ; RS, TA, RST) = typifyEQ( RS, TA, (RST add STR : nat )) .
+eq typifyEQ(none, TA, RST) = RST [owise] .
 
 rl typify(RS, TA, RST) => typifyEQ(RS, TA, RST) .
 
