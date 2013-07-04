@@ -37,8 +37,11 @@ eq [ STR = E ; RS ] . STR = E .
 
 ---type checking a record
 op typify : Set' TypeAssignment Set' -> Set' .
+op typifyEQ : Set' TypeAssignment Set' -> Set' .
 
-rl typify(RS, TA, RST) => none .
+eq typifyEQ(RS, TA, RST) = none .
+
+rl typify(RS, TA, RST) => typifyEQ(RS, TA, RST) .
 
 crl < [ RS ], TA > => < { RST } > if typify(RS, TA, none) => RST .
 ---rl < [ RS ], TA > => < nat >  .
