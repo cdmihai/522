@@ -29,13 +29,13 @@ crl < /\ X : S . E, TA > => < S -> T > if < E, TA[S / X] > => < T > .
 crl < E1 E2, TA > => < S > if < E1, TA > => < T1 -> S > /\ < E2, TA > => < T2 > /\ T2 < T1 .
 
 
---- field access
+--- field access in record
 var RS RST : Set' .
 var STR : String .
 
 eq [ STR = E ; RS ] . STR = E .
 
----type checking a record
+---rules for typechecking a record: iterate over each field and get its type
 op typify : Set' TypeAssignment Set' -> Set' .
 
 crl typify(STR = E ; RS, TA, RST) => typify( RS, TA, (RST add STR : T )) if < E, TA > => < T > .

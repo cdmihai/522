@@ -12,8 +12,8 @@ mod LAMBDA-TYPES is including PL-ID + PL-GENERIC-SUBSTITUTION + CSET .
 	op bool : -> Type .
 	op _->_ : Type Type -> Type [prec 25 gather(e E)] .
 
+	--- record types
 	op _:_ : String Type -> RecordTypeElement .
-	---TODO: learn how to use maude's set with generics
 	op {_} : Set' -> RecordType .
 
 	--- subtyping operator
@@ -39,6 +39,7 @@ mod LAMBDA-TYPES is including PL-ID + PL-GENERIC-SUBSTITUTION + CSET .
 							false
 						fi .
 
+	---subtyping for primitive types
 	eq nat < nat = true .
 	eq nat < bool = false .
 	eq bool < bool = true .

@@ -37,6 +37,3 @@ sort Exp .
   op _._ : Record String -> Exp .
 
 endm
-
----set print with parentheses on .
----parse [ "a" = (/\ x : nat . x) ; "b" = succ(0') ] .
