@@ -1,16 +1,25 @@
 in set.maude .
 
+---TODO
+--- figure out how to make the order of changes for a refactoring not matter (CA CB turns to REF1 but CB CA does not although it should)
+--- implement property sets: a property set should be a set of name-value pairs
+--- mechanically write the templates for all 100+ AST operations and 10+ refactorings
+
 mod CHANGE is protecting INT + BOOL + STRING + SET .
 	sorts Change Property .
 	subsort Property < Element .
 
 	op __ : Change Change -> Change [assoc] .
-	op change : String Set -> Change . ---property set
-	op property : Int -> Property .
+	op change : String Set -> Change . --- a change has a name and a set of properties
+	op property : Int -> Property . --- properties should be sets of attribute-value pairs but here, for simplicity, they are ints
 
-	op match : Change Change -> Bool .
+	op match : Change Change -> Bool . --- two changes match if they have the same ID and the same property set
 
-	ops CA, CB, CC, CREF1 : -> Change .
+	---atomic changes that represent AST operations. An operation for each AST operation should be added (add variable declaration, remove simple name, etc)
+	ops CA, CB, CC : -> Change .
+
+	---a refactoring. An operation for each desired refactoring should be added
+	op CREF1 : -> Change .
 
 	vars PropertySet1 PropertySet2 : Set .
 	vars C1 C2 C3 : Change .
@@ -23,7 +32,7 @@ mod CHANGE is protecting INT + BOOL + STRING + SET .
 
 	eq match(change(ID1, PropertySet1), change(ID2, PropertySet2)) = if ID1 == ID2 and PropertySet1 equal PropertySet2 then true else false fi .
 	
-	
+	---rule for REF1	
 	crl C1 C2 => CREF1 if match(CA, C1) => true /\ match(CB, C2) => true . 
 
 endm
@@ -32,6 +41,6 @@ endm
 
 rewrite CA CB .
 
-rewrite change("a", property(1) property(5)) change("b", property(5) property(6)) change("a", property(4) property(5)) change("b", property(4)) .
+rewrite change("b", property(5) property(6)) change("c", property(2) property(3)) change("a", property(4) property(5)) change("b", property(4)) change("c", property(2) property(3)) .
 
 q .
