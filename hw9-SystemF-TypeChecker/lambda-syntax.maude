@@ -17,7 +17,9 @@ sort Exp .
   op /\_:_._ : Var Type Exp -> Exp [prec 50] .
   op m_:_._ : Var Type Exp -> Exp [prec 50] .
 
+  ---generic abstraction
   op /\_._ : TypeVar Exp -> Exp [prec 80].
+  ---generic instantiation
   op _[_] : Exp Type -> Exp [prec 100 gather(E e)] .
 
   op 0' : -> Exp .
